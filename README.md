@@ -1,4 +1,4 @@
-Here’s your updated code structure in Markdown format:
+Here's your updated code structure in Markdown format:
 
 ```javascript
 const users = {
@@ -58,7 +58,7 @@ const questionBank = {
     organisation: {
         id: {
            tagName: {
-                difficultyTagLevel :{
+                difficultyTagLevel: {
                     questionId: {
                         questionId: "id",
                         question: "question name",
@@ -84,7 +84,7 @@ const questionBank = {
     },
     public: {
         tagName: {
-            difficultyTagLevel : {
+            difficultyTagLevel: {
                 questionId: {
                     questionId: "id",
                     question: "question name",
@@ -322,6 +322,48 @@ const globalLeaderboard = {
                 }
             }
         }
+    }
+}
+
+// PVE, PVP, Single Player
+const gamingMode = {
+    id: {
+        name: "string",
+        ruleSet: {
+            ruleId: "string",
+            options: "string"
+        },
+        participants: {
+            userId: {
+                id: "string",
+                name: "username",
+                avatar: "avatar url"
+            }
+        },
+        quiz: {
+            quizId: "name"
+        },
+        questionBank: {
+            qId: "id",
+            categoryName: {
+                category: "name"
+            },
+            difficultyTagLevel: {
+                difficultyLevel: "name"
+            }
+        }
+    }
+}
+
+const reports = {
+    quizId: {
+        quizId: "id",
+        reportedBy: {
+            userId: {
+                name: "username",
+                reason: "string"
+            }
+        },
     }
 }
 ```
