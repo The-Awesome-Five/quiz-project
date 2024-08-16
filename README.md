@@ -1,7 +1,4 @@
-Here's your code structure formatted in Markdown:
-
-```javascript
-const users = {
+```const users = {
     uid: "id",
     username: "username",
     firstName: 'firstName',
@@ -24,16 +21,27 @@ const users = {
         }
     },
     completedQuizzesIds: {
-        id:  {
-            quizId: "id",
-            score: "number",
-            completedOn: "date"
+        organisation: {
+            id:  {
+                quizId: "id",
+                score: "number",
+                completedOn: "date"
+            }
+        }, 
+        public: {
+            categoryName: {
+                difficultyTagLevel: {
+                    quizId: {
+                        score: "number"
+                    }
+                }
+            }
         }
     },
-    group: {
+    organisation: {
         id: {
-            groupId: "id",
-            groupName: "name"
+            orgId: "id",
+            orgName: "name"
         }
     },
     quizzesLeader: {
@@ -101,6 +109,7 @@ const quizzes = {
                 quizId: {
                     quizId: "id",
                     name: "name",
+                    avatar: 'img',
                     description: "description",
                     numberOfQuestions: "number",
                     tags :{ 
@@ -163,6 +172,7 @@ const quizzes = {
                     quizId: {
                         quizId: "id",
                         name: "name",
+                        avatar: 'img',
                         description: "description",
                         numberOfQuestions: "number",
                         tags: {
@@ -222,6 +232,8 @@ const quizzes = {
     }
 }
 
+// timer, number of lives, score > 0,
+
 const rules = {
     timerId: {
         name: "timer",
@@ -239,5 +251,74 @@ const rules = {
     }
 }
 
-// timer, number of lives, score > 0,
+const organisation = {
+    id: {
+        orgId: "id",
+        organisationAvatar: "avatar URL",
+        description: "string",
+        educators: {
+            userId: "username"
+        }, 
+        owner: {
+            userId: "username"
+        },
+        students : {
+            userId: "username",
+        },
+        quizzesId: {
+            quizId:{ 
+                name:"quiz name",
+                quizAvatar: 'img',
+            }
+        },
+        leaderBoard : { 
+            categoryName: {
+                difficultyTagLevel: {
+                    top10: {
+                        numberOne: {
+                            userId: "string",
+                            totalScore: "number",
+                            name: "username"
+                        },
+                        numberTwo: {
+                            userId: "string",
+                            totalScore: "number",
+                            name: "username"
+                        },
+                        numberThree: {
+                            userId: "string",
+                            totalScore: "number",
+                            name: "username"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// available only for public view
+const globalLeaderboard = { 
+    categoryName: {
+        difficultyTagLevel: {
+            top10: {
+                numberOne: {
+                    userId: "string",
+                    totalScore: "number",
+                    name: "username"
+                },
+                numberTwo: {
+                    userId: "string",
+                    totalScore: "number",
+                    name: "username"
+                },
+                numberThree: {
+                    userId: "string",
+                    totalScore: "number",
+                    name: "username"
+                }
+            }
+        }
+    }
+}
 ```
