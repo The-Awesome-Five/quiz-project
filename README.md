@@ -1,4 +1,7 @@
-```const users = {
+Here’s your updated code structure in Markdown format:
+
+```javascript
+const users = {
     uid: "id",
     username: "username",
     firstName: 'firstName',
