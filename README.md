@@ -1,3 +1,6 @@
+Here's your code structure formatted in Markdown:
+
+```javascript
 const users = {
     uid: "id",
     username: "username",
@@ -86,10 +89,9 @@ const questionBank = {
                         id: "tag name"
                     },
                 }
-        }
+            }
         }
     }
-
 }
 
 const quizzes = {
@@ -218,7 +220,6 @@ const quizzes = {
             }
         }
     }
-
 }
 
 const rules = {
@@ -236,7 +237,7 @@ const rules = {
         maxScore: "number",
         penalty: "number"
     }
-
 }
 
 // timer, number of lives, score > 0,
+```
