@@ -1,5 +1,11 @@
 .header-container {
     border-bottom:0.8px solid rgb(199, 199, 199);
+    max-width: 1280px; 
+    width: 100%; 
+    margin: 0 auto; 
+    padding: 20px; 
+    box-sizing: border-box; 
+    
 }
 
 .header-bar {

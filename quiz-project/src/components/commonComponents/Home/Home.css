@@ -1,0 +1,39 @@
+
+.createquiz-container {
+    background-color: #19444a; 
+    border-radius: .75rem;
+    padding: 20px;
+    width: 600px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.img-container img {
+    width: 150px; 
+}
+
+.text-container h3 {
+    color: white;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.text-container p {
+    color: white;
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.create-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+.create-btn:hover {
+    background-color: #00b377; 
+}
+

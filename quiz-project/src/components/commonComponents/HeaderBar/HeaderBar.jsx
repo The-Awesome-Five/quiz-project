@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
 import './HeaderBar.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useNavigate } from 'react-router-dom';
 
 const HeaderBar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate()
+
+    const handleLogoClick = () => {
+        navigate('/');
+    }
 
     return (
         <div className="header-container d-flex align-items-center justify-content-between p-3">
-            <div className="logo-container d-flex">
+            <div className="logo-container d-flex" onClick={handleLogoClick}>
                 <img src="../../../../public/img/quizhub-logo.png" alt="Logo" className="logo" />
             </div>
             <div className='header-bar d-flex'>
