@@ -21,7 +21,7 @@ const Home = () => {
     }, []);
 
     return (
-        <div className="home-container d-flex justify-content-center align-items-center mt-4">
+        <div className="home-container d-flex flex-column justify-content-center align-items-center mt-4">
             <div className="d-flex quiz-section">
                 
                 <div className="createquiz-container d-flex align-items-center">
@@ -47,6 +47,38 @@ const Home = () => {
                         <p>conquer new knowledge</p>
                         <button className="create-btn btn btn-info">Organization creator</button>
                     </div>
+                </div>
+            </div>
+
+
+            <div className="game-modes-container row mt-4 text-start">
+                <h4>Game modes</h4>
+                <div className="quiz-list d-flex">
+                    <div className="quiz-item">
+                        <img src="https://via.placeholder.com/150" alt="Quiz" />
+                        <p>Countries</p>
+                    </div>
+                    <div className="quiz-item">
+                        <img src="https://via.placeholder.com/150" alt="Quiz" />
+                        <p>Astrology</p>
+                    </div>
+                    <div className="quiz-item">
+                        <img src="https://via.placeholder.com/150" alt="Quiz" />
+                        <p>Astrology</p>
+                    </div>
+                    <div className="quiz-item">
+                        <img src="https://via.placeholder.com/150" alt="Quiz" />
+                        <p>Astrology</p>
+                    </div>
+                    <div className="quiz-item">
+                        <img src="https://via.placeholder.com/150" alt="Quiz" />
+                        <p>Astrology</p>
+                    </div>
+                    <div className="quiz-item">
+                        <img src="https://via.placeholder.com/150" alt="Quiz" />
+                        <p>Astrology</p>
+                    </div>
+                    
                 </div>
             </div>
         </div>

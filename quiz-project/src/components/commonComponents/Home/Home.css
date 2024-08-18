@@ -16,6 +16,10 @@
     margin-bottom: 10px;
 }
 
+.text-container span {
+    margin-left: 6rem;
+}
+
 .text-container p {
     color: white;
     margin: 0;
@@ -108,4 +112,32 @@
         background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%, 110% 10%;
         background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
     }
+}
+
+.quiz-list {
+    margin-top: 20px;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.quiz-item {
+    text-align: center;
+    width: 150px !important;
+}
+
+.quiz-item p {
+    text-align: center;
+    width: 150px !important;
+}
+
+.custom-gap .quiz-item {
+    margin-right: 5px; 
+}
+
+.custom-gap .quiz-item:last-child {
+    margin-right: 0; 
+}
+
+.game-modes-container {
+    max-width: 1280px !important;
 }
