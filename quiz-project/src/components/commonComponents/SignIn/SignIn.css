@@ -1,0 +1,59 @@
+
+  .signin-card {
+    background-color: #f1f1f1;
+    border-radius: 20px;
+    width: 400px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .google-btn {
+    background-color: #f8e6d6;
+    color: black;
+    font-weight: bold;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .google-logo {
+    height: 20px;
+    margin-right: 10px;
+  }
+  
+  input.form-control {
+    padding: 10px;
+    background-color: #f8e6d6;
+    border: 2px solid transparent;
+  }
+  
+  input.form-control:focus {
+    border: 2px solid #00b377;
+    outline: none;
+  }
+  
+  .btn-success {
+    background-color: #00b377;
+    border: none;
+    font-weight: bold;
+    font-size: 1rem;
+  }
+  
+  a {
+    font-size: 0.9rem;
+    text-decoration: none; /* Премахваме подчертаването за целия линк */
+  }
+  
+  a:hover {
+    text-decoration: none; /* Премахваме подчертаването при hover */
+  }
+  
+  .highlighted {
+    text-decoration: underline; /* Подчертаваме само "Create here" */
+  }
+  
+  .highlighted:hover {
+    text-decoration: underline; /* Подчертаването остава при hover */
+  }

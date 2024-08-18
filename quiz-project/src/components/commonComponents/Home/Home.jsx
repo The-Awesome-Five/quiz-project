@@ -79,6 +79,7 @@ const Home = () => {
                         <p>Astrology</p>
                     </div>
                     
+                    
                 </div>
             </div>
         </div>

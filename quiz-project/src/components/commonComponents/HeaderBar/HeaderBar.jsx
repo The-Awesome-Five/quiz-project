@@ -31,7 +31,7 @@ const HeaderBar = () => {
                     {isLoggedIn ? (
                         <img src="/img/user-avatar.png" alt="User Avatar" className="user-avatar" />
                     ) : (
-                        <a href="/login" className='btn btn-primary d-flex align-items-center'>
+                        <a href="/signin" className='btn btn-primary d-flex align-items-center'>
                             Sign in
                         </a>
                     )}

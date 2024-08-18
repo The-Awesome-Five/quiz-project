@@ -117,7 +117,7 @@
 .quiz-list {
     margin-top: 20px;
     justify-content: space-between;
-    gap: 30px;
+    gap: 30px !important;
 }
 
 .quiz-item {
