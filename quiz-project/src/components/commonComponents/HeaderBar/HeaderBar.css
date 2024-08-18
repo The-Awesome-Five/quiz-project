@@ -1,37 +1,78 @@
+.header-container {
+    border-bottom:0.8px solid rgb(199, 199, 199);
+}
 
 .header-bar {
     background-color: #ffafa1; 
     padding: 15px 30px;
     border-radius: 15px; 
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-    display: flex;
     align-items: center;
     justify-content: space-between;
-}
+    width: 800px;
+}                  
 
 
 .logo-container {
     margin-right: 15px;
+    
 }
 
 .logo {
     height: 50px;
 }
 
+.btn-primary {
+    height: 50px;
+    background-color: rgb(184, 255, 184) !important;
+    border-radius: 60px !important;
+    padding: 0 25px 0 25px !important;
+    border: 3px solid black !important;
+    color: black !important;
+    font-weight: bold !important; 
+}
+
 
 .pin-input {
-    border: 2px solid black; 
-    border-radius: 30px; 
+    border: 3px solid black !important; 
+    border-radius: 50px !important; 
     font-size: 1.2rem;
     padding: 5px 10px;
     width: 150px;
+    height: 50px;
     text-align: center;
 }
+
+.pin-input::placeholder {
+    color: rgb(143, 143, 143) !important; 
+    font-weight: bold !important;
+    font-size: larger !important;
+}
+
+.pin-input:focus::placeholder {
+    color: transparent !important;
+}
+
+
+p {
+    width: 360px;
+    color: #000000; 
+    font-size: 18px !important; 
+    font-family: Arial, sans-serif; 
+    font-weight: bold !important;
+    text-align: center; 
+    
+}
+
 
 
 @media (max-width: 768px) {
     .pin-input {
         width: 120px;
+    }
+
+    .custom-signin-btn{
+        font-size: 0.9rem;
     }
 }
 
@@ -39,4 +80,9 @@
     .pin-input {
         width: 100px;
     }
+
+    .custom-signin-btn{
+        font-size: 10px !important; 
+    }
 }
+

@@ -1,37 +1,35 @@
 import React, { useState } from 'react';
 import './HeaderBar.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const HeaderBar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    // const handleLogin = () => {
-    //     setIsLoggedIn(true);
-    // };
-
     return (
-        <div className="header-bar d-flex align-items-center justify-content-between p-3">
-            <div className="logo-container">
-                <img src="/img/GameHub-logo-stroked.png" alt="Logo" className="logo" />
+        <div className="header-container d-flex align-items-center justify-content-between p-3">
+            <div className="logo-container d-flex">
+                <img src="../../../../public/img/quizhub-logo.png" alt="Logo" className="logo" />
             </div>
-
-            <div className="pin-input-container">
-                <input
-                    type="password"
-                    className="form-control pin-input"
-                    placeholder="Enter PIN"
-                    maxLength="4"
-                />
+            <div className='header-bar d-flex'>
+                <div className="pin-input-container d-flex align-items-center">
+                    <p className='text mb-0 me-2'>Join game? Enter PIN:</p>
+                    <input
+                        type="password"
+                        className="form-control pin-input"
+                        placeholder="123 456"
+                        maxLength="6"
+                    />
+                </div>
             </div>
-
-            <div className="login-section">
-                {isLoggedIn ? (
-                    <img src="/img/user-avatar.png" alt="User Avatar" className="user-avatar" />
-                ) : (
-                    <a href="/login" className='btn btn-primary'>
-                        Sign in
-                    </a>
-                )}
-            </div>
+            <div className="login-section d-flex align-items-center ms-3">
+                    {isLoggedIn ? (
+                        <img src="/img/user-avatar.png" alt="User Avatar" className="user-avatar" />
+                    ) : (
+                        <a href="/login" className='btn btn-primary d-flex align-items-center'>
+                            Sign in
+                        </a>
+                    )}
+                </div>          
         </div>
     );
 };
