@@ -6,31 +6,14 @@ import SignIn from './components/commonComponents/SignIn/SignIn';
 import {AdminMenuView} from "./views/AdminMenu/AdminMenuView/AdminMenuView.jsx";
 import Register from './auth/Register.jsx';
 import './App.css';
+import {ButtonEffectsProvider} from "./hoc/ButtonEffectsProvider.jsx";
 
 
 function App() {
   const [count, setCount] = useState(0);
 
-  useEffect(() => {
-    const buttons = document.querySelectorAll("button");
-
-    buttons.forEach(button => {
-      button.addEventListener("click", (e) => {
-        e.preventDefault();
-
-        if (!button.classList.contains("animate")) {
-          button.classList.add("animate");
-          console.log(button)
-          setTimeout(() => {
-            button.classList.remove("animate");
-          }, 500);
-        }
-      });
-    });
-  }, []);
-
   return (
-    <>
+    <ButtonEffectsProvider>
     <Router>
       <HeaderBar />
       <div>
@@ -43,7 +26,7 @@ function App() {
         </Routes>
       </div>
       </Router>
-    </>
+    </ButtonEffectsProvider>
   );
 }
 
