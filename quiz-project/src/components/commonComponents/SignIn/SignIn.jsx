@@ -1,9 +1,55 @@
-import React, { useState } from 'react';
+import { useContext, useState } from 'react';
 import './SignIn.css';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { loginUser } from '../../../services/auth.service';
+import { getUserByID } from '../../../services/user.service';
+import { toast } from 'react-toastify';
+import { AppContext } from '../../../appState/app.context.js';
 
 const SignIn = () => {
+
   const [passwordShown, setPasswordShown] = useState(false);
 
+  const [userLog, setUserLog] = useState({
+    email: '',
+    password: '',
+  });
+  const { user, userData, setAppState } = useContext(AppContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const updateUser = prop => e => {
+    setUserLog({
+      ...userLog,
+      [prop]: e.target.value,
+    })
+  };
+
+
+  const login = async () => {
+    if (!userLog.email || !userLog.password) {
+      return toast.error('No credentials provided!');
+    }
+
+    try {
+      console.log(userLog);
+      const credentials = await loginUser(userLog.email, userLog.password);
+      const userInfo= await getUserByID(credentials.user.uid)
+      console.log(credentials);
+      console.log(userInfo);
+      setAppState({
+        user: credentials.user,
+        userData: userInfo,
+      });
+      console.log(userData)
+      console.log(user);
+      toast.success(`You logged in successfully!`)
+
+      navigate(location.state?.from.pathname ?? '/');
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
   const togglePasswordVisibility = () => {
     setPasswordShown(!passwordShown);
   };
@@ -32,6 +78,8 @@ const SignIn = () => {
             type="email"
             className="form-control rounded-pill"
             placeholder="Email"
+            value={userLog.email}
+            onChange={updateUser('email')}
           />
         </div>
 
@@ -43,11 +91,13 @@ const SignIn = () => {
             type={passwordShown ? "text" : "password"}
             className="form-control rounded-pill"
             placeholder="Password"
+            value={userLog.password} 
+            onChange={updateUser('password')}
           />
         </div>
 
         
-        <button className="sign-in-btn btn btn-success w-100 rounded-pill mt-3">Sign in</button>
+        <button className="sign-in-btn btn btn-success w-100 rounded-pill mt-3" onClick={login}>Sign in</button>
 
      
         <div className="d-flex justify-content-between mt-3">
