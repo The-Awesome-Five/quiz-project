@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './HeaderBar.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
+import {Container, Navbar, Nav, NavDropdown} from "react-bootstrap";
 
 const HeaderBar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -12,31 +13,50 @@ const HeaderBar = () => {
     }
 
     return (
-        <div className="header-container d-flex align-items-center justify-content-between p-3">
-            <div className="logo-container d-flex" onClick={handleLogoClick}>
-                <img src="../../../../public/img/quizhub-logo.png" alt="Logo" className="logo" />
-            </div>
-            <div className='header-bar d-flex'>
-                <div className="pin-input-container d-flex align-items-center">
-                    <p className='text mb-0 me-2'>Join game? Enter PIN:</p>
-                    <input
-                        type="password"
-                        className="form-control pin-input"
-                        placeholder="123 456"
-                        maxLength="6"
-                    />
-                </div>
-            </div>
-            <div className="login-section d-flex align-items-center ms-3">
-                    {isLoggedIn ? (
-                        <img src="/img/user-avatar.png" alt="User Avatar" className="user-avatar" />
-                    ) : (
-                        <a href="/signin" className='btn btn-primary d-flex align-items-center'>
-                            Sign in
-                        </a>
-                    )}
-                </div>          
-        </div>
+            <Navbar expand="lg" className="bg-body-tertiary">
+                <Container>
+                    <Navbar.Brand href="/"><img src="../../../../public/img/quizhub-logo.png" alt="Logo" className="logo" /></Navbar.Brand>
+                    <div className="header-container d-flex align-items-center justify-content-between p-3">
+                        <div className='header-bar d-flex'>
+                            <div className="pin-input-container d-flex align-items-center">
+                                <p className='text mb-0 me-2'>Join game? Enter PIN:</p>
+                                <input
+                                    type="password"
+                                    className="form-control pin-input"
+                                    placeholder="123 456"
+                                    maxLength="6"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto">
+                            <Nav.Link href="#link">Link</Nav.Link>
+                            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+                                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+                                <NavDropdown.Item href="#action/3.2">
+                                    Another action
+                                </NavDropdown.Item>
+                                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item href="#action/3.4">
+                                    Separated link
+                                </NavDropdown.Item>
+                            </NavDropdown>
+                        </Nav>
+                    </Navbar.Collapse>
+                        <div className="login-section d-flex align-items-center ms-3">
+                            {isLoggedIn ? (
+                                <img src="/img/user-avatar.png" alt="User Avatar" className="user-avatar" />
+                            ) : (
+                                <a href="/signin" className='btn btn-primary d-flex align-items-center'>
+                                    Sign in
+                                </a>
+                            )}
+                        </div>
+                </Container>
+            </Navbar>
     );
 };
 
