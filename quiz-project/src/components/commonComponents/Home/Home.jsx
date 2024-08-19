@@ -3,27 +3,10 @@ import './Home.css';
 
 const Home = () => {
 
-    useEffect(() => {
-        const buttons = document.querySelectorAll(".create-btn");
-
-        buttons.forEach(button => {
-            button.addEventListener("click", (e) => {
-                e.preventDefault();
-        
-                if (!button.classList.contains("animate")) {
-                    button.classList.add("animate");
-                    setTimeout(() => {
-                        button.classList.remove("animate");
-                    }, 800); 
-                }
-            });
-        });
-    }, []);
-
     return (
         <div className="home-container d-flex flex-column justify-content-center align-items-center mt-4">
             <div className="d-flex quiz-section">
-                
+
                 <div className="createquiz-container d-flex align-items-center">
                     <div className="img-container">
                         <img src="../../../../public/img/brain-icon.png" alt="Quiz Image" />
@@ -32,11 +15,11 @@ const Home = () => {
                         <h3 className="text-center"><strong>Create a quiz</strong></h3>
                         <p>Play for free with</p>
                         <p>your friends</p>
-                        <button className="create-btn btn btn-success">Quiz editor</button>
+                        <button className="btn create-btn btn-success">Quiz editor</button>
                     </div>
                 </div>
 
-                
+
                 <div className="createquiz-container d-flex align-items-center ms-4">
                     <div className="img-container">
                         <img src="../../../../public/img/organization-icon.png" alt="Organization Image" />
@@ -45,7 +28,7 @@ const Home = () => {
                         <h3 className="text-center"><strong>Create an organization</strong></h3>
                         <p>with your friends and</p>
                         <p>conquer new knowledge</p>
-                        <button className="create-btn btn btn-info">Organization creator</button>
+                        <button className="btn create-btn btn-info">Organization creator</button>
                     </div>
                 </div>
             </div>
@@ -78,8 +61,8 @@ const Home = () => {
                         <img src="https://via.placeholder.com/150" alt="Quiz" />
                         <p>Astrology</p>
                     </div>
-                    
-                    
+
+
                 </div>
             </div>
         </div>
