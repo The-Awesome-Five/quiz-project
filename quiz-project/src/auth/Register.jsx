@@ -5,6 +5,7 @@ import { createUserID, getUserDataByEmail } from '../services/user.service';
 import { registerUser } from '../services/auth.service';
 import { toast } from "react-toastify";
 import { getUserDataByUsername } from '../services/user.service';
+import './Register.css'
 
 const Register = () => {
   const [user, setUser] = useState({
@@ -213,9 +214,14 @@ const Register = () => {
   };
 
   return (
-    <div className="reg-container">
-      <h2>Register</h2>
-      {renderStep()}
+    <div className='pre-reg-container d-flex justify-content-center align-items-center'>
+
+    
+      <div className="reg-container d-grid justify-content-center align-items-center p-4 mt-4">
+        <h2>Register</h2>
+        {renderStep()}
+      </div>
+
     </div>
   );
 }
