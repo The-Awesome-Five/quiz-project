@@ -1,11 +1,13 @@
 .header-container {
-    border-bottom:0.8px solid rgb(199, 199, 199);
     max-width: 1280px; 
     width: 100%; 
     margin: 0 auto; 
     padding: 20px; 
     box-sizing: border-box; 
-    
+}
+
+.container {
+    border-bottom:0.8px solid rgb(231, 231, 231) ;
 }
 
 .header-bar {
@@ -16,6 +18,7 @@
     align-items: center;
     justify-content: space-between;
     width: 800px;
+    
 }                  
 
 
@@ -70,7 +73,9 @@ p {
     
 }
 
-
+body .bg-body-tertiary {
+    background-color: white !important;
+}
 
 @media (max-width: 768px) {
     .pin-input {
