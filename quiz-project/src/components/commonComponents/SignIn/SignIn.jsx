@@ -32,17 +32,12 @@ const SignIn = () => {
     }
 
     try {
-      console.log(userLog);
       const credentials = await loginUser(userLog.email, userLog.password);
       const userInfo= await getUserByID(credentials.user.uid)
-      console.log(credentials);
-      console.log(userInfo);
       setAppState({
         user: credentials.user,
         userData: userInfo,
       });
-      console.log(userData)
-      console.log(user);
       toast.success(`You logged in successfully!`)
 
       navigate(location.state?.from.pathname ?? '/');
@@ -91,15 +86,15 @@ const SignIn = () => {
             type={passwordShown ? "text" : "password"}
             className="form-control rounded-pill"
             placeholder="Password"
-            value={userLog.password} 
+            value={userLog.password}
             onChange={updateUser('password')}
           />
         </div>
 
-        
+
         <button className="sign-in-btn btn btn-success w-100 rounded-pill mt-3" onClick={login}>Sign in</button>
 
-     
+
         <div className="d-flex justify-content-between mt-3">
           <a href="/register" className="text-muted">
             No account? <span className="highlighted"><strong>Create here</strong></span>

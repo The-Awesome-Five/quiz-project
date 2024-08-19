@@ -7,11 +7,7 @@ import { AppContext } from '../../../appState/app.context';
 
 const HeaderBar = ({logout}) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const navigate = useNavigate()
-    const {userData}= useContext(AppContext)
-    const handleLogoClick = () => {
-        navigate('/');
-    }
+    const {userData}= useContext(AppContext);
 
     return (
             <Navbar expand="lg" className="bg-body-tertiary">
@@ -48,9 +44,8 @@ const HeaderBar = ({logout}) => {
                         </Nav>
                     </Navbar.Collapse>
                         <div className="login-section d-flex align-items-center ms-3">
-                            {console.log(userData)};
                             {userData ? (
-                                <button onClick={logout}>  LOG OUT</button>
+                                <button onClick={logout}>LOG OUT</button>
                             ) : (
                                 <a href="/signin" className='btn btn-primary d-flex align-items-center'>
                                     Sign in

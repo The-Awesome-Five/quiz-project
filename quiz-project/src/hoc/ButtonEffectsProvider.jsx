@@ -7,7 +7,7 @@ export const ButtonEffectsProvider = ({children}) => {
 
         buttons.forEach(button => {
             button.addEventListener("click", (e) => {
-                e.preventDefault();
+                //e.preventDefault();
 
                 if (!button.classList.contains("animate")) {
                     button.classList.add("animate");

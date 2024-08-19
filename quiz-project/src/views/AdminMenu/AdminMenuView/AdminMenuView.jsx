@@ -1,5 +1,6 @@
 import {Button, Card, Col, Container, Nav, NavLink, Row} from "react-bootstrap";
 import React from "react";
+import {Link} from "react-router-dom";
 
 export const AdminMenuView = () => {
 
@@ -9,31 +10,33 @@ export const AdminMenuView = () => {
                     <Col>
                         <Card className="text-center">
                             <Card.Body>
-                                <Button variant="primary"><Nav.Link href="/user-management">User Menu</Nav.Link></Button>
+                                <Link to="/user-management">
+                                    <Button variant="primary">User Menu</Button>
+                                </Link>
                             </Card.Body>
                         </Card>
                     </Col>
                     <Col>
                         <Card className="text-center">
-                            <Card.Body>
-                                <Button variant="primary"><Nav.Link href="/organisation-management">Organisation Menu</Nav.Link></Button>
-                            </Card.Body>
+                            <Link to="/organisation-management">
+                                <Button variant="primary">Organisation Menu</Button>
+                            </Link>
                         </Card>
                     </Col>
                 </Row>
                 <Row>
                     <Col>
                         <Card className="text-center">
-                            <Card.Body>
-                                <Button variant="primary"><Nav.Link href="/quiz-management">Quiz Menu</Nav.Link></Button>
-                            </Card.Body>
+                            <Link to="/quiz-management">
+                                <Button variant="primary">Quiz Menu</Button>
+                            </Link>
                         </Card>
                     </Col>
                     <Col>
                         <Card className="text-center">
-                            <Card.Body>
-                                <Button variant="primary"><Nav.Link href="/questionbank-management">Question Bank Menu</Nav.Link></Button>
-                            </Card.Body>
+                            <Link to="/questionbank-management">
+                                <Button variant="primary">Question Bank Menu</Button>
+                            </Link>
                         </Card>
                     </Col>
                 </Row>
