@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import './HeaderBar.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
-import {Container, Navbar, Nav, NavDropdown} from "react-bootstrap";
+import {Container, Navbar, Nav, NavDropdown, Button} from "react-bootstrap";
 import { AppContext } from '../../../appState/app.context';
 
 const HeaderBar = ({logout}) => {
