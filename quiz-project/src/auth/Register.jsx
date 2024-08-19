@@ -132,25 +132,13 @@ const Register = () => {
         return (
           <div className="card text-center" style={{ width: '18rem' }}>
             <div className="card-body">
-              <h5 className="card-title">Please Enter Your First Name</h5>
+              <h5 className="card-title">Please Enter Your First And Last Name</h5>
               <input
                 type="text"
                 placeholder="First Name"
                 value={user.firstName}
                 onChange={updateUser('firstName')}
               />
-              <button onClick={prevStep} className="btn btn-primary">Back</button>
-              <button onClick={nextStep} className="btn btn-primary" disabled={!user.firstName}>
-                Next
-              </button>
-            </div>
-          </div>
-        );
-      case 3:
-        return (
-          <div className="card text-center" style={{ width: '18rem' }}>
-            <div className="card-body">
-              <h5 className="card-title">Please Enter Your Last Name</h5>
               <input
                 type="text"
                 placeholder="Last Name"
@@ -158,13 +146,14 @@ const Register = () => {
                 onChange={updateUser('lastName')}
               />
               <button onClick={prevStep} className="btn btn-primary">Back</button>
-              <button onClick={nextStep} className="btn btn-primary" disabled={!user.lastName}>
+              <button onClick={nextStep} className="btn btn-primary" disabled={!user.firstName || !user.lastName}>
                 Next
               </button>
             </div>
           </div>
         );
-      case 4:
+
+      case 3:
         return (
           <div className="card text-center" style={{ width: '18rem' }}>
             <div className="card-body">
@@ -182,7 +171,7 @@ const Register = () => {
             </div>
           </div>
         );
-      case 5:
+      case 4:
         return (
           <div className="card text-center" style={{ width: '18rem' }}>
             <div className="card-body">
@@ -200,7 +189,7 @@ const Register = () => {
             </div>
           </div>
         );
-      case 6:
+      case 5:
         return (
           <div className="card text-center" style={{ width: '18rem' }}>
             <div className="card-body">
