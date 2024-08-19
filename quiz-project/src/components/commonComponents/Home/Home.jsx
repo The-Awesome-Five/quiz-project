@@ -26,7 +26,7 @@ const Home = () => {
                 
                 <div className="createquiz-container d-flex align-items-center">
                     <div className="img-container">
-                        <img src="https://via.placeholder.com/150" alt="Quiz Image" />
+                        <img src="../../../../public/img/brain-icon.png" alt="Quiz Image" />
                     </div>
                     <div className="text-container text-center ms-4">
                         <h3 className="text-center"><strong>Create a quiz</strong></h3>
@@ -39,7 +39,7 @@ const Home = () => {
                 
                 <div className="createquiz-container d-flex align-items-center ms-4">
                     <div className="img-container">
-                        <img src="https://via.placeholder.com/150" alt="Organization Image" />
+                        <img src="../../../../public/img/organization-icon.png" alt="Organization Image" />
                     </div>
                     <div className="text-container text-center ms-4">
                         <h3 className="text-center"><strong>Create an organization</strong></h3>
