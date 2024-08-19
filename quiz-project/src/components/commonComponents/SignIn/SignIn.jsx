@@ -47,7 +47,7 @@ const SignIn = () => {
         </div>
 
         
-        <button className="btn btn-success w-100 rounded-pill mt-3">Sign in</button>
+        <button className="sign-in-btn btn btn-success w-100 rounded-pill mt-3">Sign in</button>
 
      
         <div className="d-flex justify-content-between mt-3">

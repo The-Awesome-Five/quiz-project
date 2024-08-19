@@ -57,3 +57,7 @@
   .highlighted:hover {
     text-decoration: underline; /* Подчертаването остава при hover */
   }
+
+.sign-in-btn {
+    width: 100px !important;
+}
