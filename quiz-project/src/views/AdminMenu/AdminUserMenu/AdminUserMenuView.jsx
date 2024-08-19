@@ -27,7 +27,12 @@ export const AdminUserMenuView = () => {
                                 <ListGroup.Item key={user.uid}>
                                     <Row style={{alignItems: "center"}}>
                                         <Col xs={2}>
-                                            {user.uid === 'header' ? 'Avatar Image' : <Image src={user.avatarUrl} alt='Avatar Image' thumbnail/>}
+                                            {user.uid === 'header'
+                                                ? 'Avatar Image'
+                                                : user.avatarUrl.includes('http')
+                                                    ? <Image src={user.avatarUrl} alt='Avatar Image' thumbnail/>
+                                                        : <Image src="https://st3.depositphotos.com/9998432/13335/v/450/depositphotos_133351928-stock-illustration-default-placeholder-man-and-woman.jpg" alt='Avatar Image' thumbnail/>
+                                            }
                                         </Col>
                                         <Col xs={2}>
                                             {user.username}
