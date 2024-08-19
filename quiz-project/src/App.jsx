@@ -20,9 +20,10 @@ function App() {
 
         if (!button.classList.contains("animate")) {
           button.classList.add("animate");
+          console.log(button)
           setTimeout(() => {
             button.classList.remove("animate");
-          }, 800);
+          }, 500);
         }
       });
     });
