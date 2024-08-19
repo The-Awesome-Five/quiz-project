@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './HeaderBar.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
 import {Container, Navbar, Nav, NavDropdown} from "react-bootstrap";
+import { AppContext } from '../../../appState/app.context';
 
-const HeaderBar = () => {
+const HeaderBar = ({logout}) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const navigate = useNavigate()
-
+    const {userData}= useContext(AppContext)
     const handleLogoClick = () => {
         navigate('/');
     }
@@ -47,8 +48,9 @@ const HeaderBar = () => {
                         </Nav>
                     </Navbar.Collapse>
                         <div className="login-section d-flex align-items-center ms-3">
-                            {isLoggedIn ? (
-                                <img src="/img/user-avatar.png" alt="User Avatar" className="user-avatar" />
+                            {console.log(userData)};
+                            {userData ? (
+                                <button onClick={logout}>  LOG OUT</button>
                             ) : (
                                 <a href="/signin" className='btn btn-primary d-flex align-items-center'>
                                     Sign in
