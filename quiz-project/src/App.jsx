@@ -20,6 +20,7 @@ import {AdminUserMenuView} from "./views/AdminMenu/AdminUserMenu/AdminUserMenuVi
 import Organization from './components/organizationComponents/Organization/Organization.jsx';
 import CreateOrganization from './components/organizationComponents/CreateOrganizationForm/CreateOrganization.jsx';
 import Profile from './components/commonComponents/Profile/Profile.jsx';
+import EditProfile from './components/commonComponents/EditProfile/EditProfile.jsx';
 
 function App() {
     const [count, setCount] = useState(0);
@@ -69,6 +70,7 @@ function App() {
                         <Route path="/create-organization" element={<CreateOrganization />} />
                         <Route path="/register" element={<Register />} />
                         <Route path='/profile' element={<Profile />} />
+                        <Route path='/edit-profile' element={<EditProfile />} />
                     </Routes>
                 </div>
             </ButtonEffectsProvider>

@@ -75,3 +75,28 @@ export const getUserNameUrlByUID = async (uid) => {
     }
 };
 
+export const updateUserAvatar = async (uid, avatarUrl) => {
+  const userRef = ref(db, `users/${uid}/avatarUrl`);
+  await set(userRef, avatarUrl);
+};
+
+export const updateUserFirstName = async (uid, firstName) => {
+    const updatePath = `users/${uid}`
+    const data = { firstName: firstName};
+    const result = await updateElement(data, updatePath)
+    return result;
+  }
+  
+  export const updateUserLastName = async (uid, lastName) => {
+    const updatePath = `users/${uid}`
+    const data = { lastName: lastName};
+    const result = await updateElement(data, updatePath)
+    return result;
+  }
+  
+  export const updateCustomInfo = async (uid, info) => {
+    const updatePath = `users/${uid}`
+    const data = { customInfo: info};
+    const result = await updateElement(data, updatePath)
+    return result;
+  }

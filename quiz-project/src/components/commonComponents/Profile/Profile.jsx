@@ -5,12 +5,18 @@ import { AppContext } from '../../../appState/app.context';
 import { getUserAvatarUrlByUID } from "../../../services/user.service";
 import { getUserNameUrlByUID } from "../../../services/user.service";
 import './Profile.css'
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
     const {userData}= useContext(AppContext);
     const [avatarURL, setAvatarUrl] = useState(null);
     const [profileData, setProfileData] = useState({ username: '', avatarUrl: null });
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
+
+const handleOnClickEditProfile = () => {
+    navigate('/edit-profile')
+}
 
     useEffect(() => {
         if (userData && userData.uid) {
@@ -123,7 +129,7 @@ const Profile = () => {
                 <Col>
                     <div className="d-flex">
                     <button className="btn btn-success me-3">All Quizes</button>
-                    <button className="btn btn-success">Edit Profile</button>
+                    <button className="btn btn-success" onClick={handleOnClickEditProfile}>Edit Profile</button>
                     </div>
                 </Col>
             </Row>
