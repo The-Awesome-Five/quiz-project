@@ -37,3 +37,14 @@ export const getAllUsers = async () => {
     return Object.values(awaitUsers.val());
 
 }
+
+export const getUserAvatarUrlByUID = async (uid) => {
+    const snapshot = await get(ref(db, `users/${uid}`));
+    const userData = snapshot.val();
+    if (userData) {
+        return userData.avatarUrl;
+    } else {
+        throw new Error('User not found');
+    }
+};
+
