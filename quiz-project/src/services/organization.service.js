@@ -35,3 +35,30 @@ export const  createOrganizationInDB = async (org) => {
     }
 }
 
+export const getSingleOrganization  = async (orgId) => {
+    try{
+    const path= `organizations/${orgId}`;
+    const snapshot = await get(ref(db, `${path}`));
+    return snapshot.val() || [];
+    }
+    catch(err){
+        console.log(err);
+    }
+
+}
+
+
+export const updateOrganizationParticipants = async (info, role, organizationId) => {
+    try {
+        const updatePath = `organizations/${organizationId}/${role}`;
+    
+        const dataRef = ref(db, updatePath);
+     
+        await update(dataRef, info);
+        
+        return 'Element edited successfully!';
+    } catch (e) {
+        console.error('Update failed', e);
+        return e.message;
+    }
+}

@@ -46,6 +46,28 @@ export const editUserByUserId = async (userId, editedUser) => {
 
 }
 
+
+export const updateOrganizationUserInfo = async (uid, organizationId,organizationName, organizationImageUrl) => {
+    try {
+        const updatePath = `users/${uid}/organizations`;
+
+        const data = { [organizationId]: {
+            organizationID: organizationId,
+            organizationName: organizationName,
+            organizationImage: organizationImageUrl
+        } };
+    
+        const dataRef = ref(db, updatePath);
+     
+        await update(dataRef, data);
+        
+        return 'Element edited successfully!';
+    } catch (e) {
+        console.error('Update failed', e);
+        return e.message;
+    }
+}
+
 export const getUserAvatarUrlByUID = async (uid) => {
     const snapshot = await get(ref(db, `users/${uid}`));
     const userData = snapshot.val();
@@ -80,6 +102,20 @@ export const updateUserAvatar = async (uid, avatarUrl) => {
   const userRef = ref(db, `users/${uid}/avatarUrl`);
   await set(userRef, avatarUrl);
 };
+
+
+ const updateElement = async (data, pathForUpdate) => {
+    try {
+        const dataRef = ref(db, pathForUpdate);
+
+        await update(dataRef, data);
+ 
+        return 'Element edited successfully!';
+    } catch (e) {
+        console.error('Update failed', e);
+        return e.message;
+    }
+}
 
 export const updateUserFirstName = async (uid, firstName) => {
     const userRef = ref(db, `users/${uid}/firstName`);
