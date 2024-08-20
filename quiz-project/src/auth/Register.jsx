@@ -49,11 +49,11 @@ const Register = () => {
     console.log('function tirggered')
 
     if (firstName.length < 1 || firstName.length > 30) {
-      return toast.error('First name must be between 4 and 32 characters!');
+      return toast.error('First name must be between 1 and 30  characters!');
     }
 
     if (lastName.length < 1 || lastName.length > 30) {
-      return toast.error('Last name must be between 4 and 32 characters!');
+      return toast.error('Last name must be between  1 and 30 characters!');
     }
     console.log('UserDataTaken');
     try {

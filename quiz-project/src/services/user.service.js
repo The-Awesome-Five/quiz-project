@@ -1,4 +1,4 @@
-import { get, set, ref, query, equalTo, orderByChild } from 'firebase/database';
+import {get, set, ref, query, equalTo, orderByChild, update} from 'firebase/database';
 import { db } from '../firebase/config';
 
 export const getUserByID = async (id) => {
@@ -35,6 +35,14 @@ export const getAllUsers = async () => {
     console.log(Object.values(awaitUsers.val()));
 
     return Object.values(awaitUsers.val());
+
+}
+
+export const editUserByUserId = async (userId, editedUser) => {
+
+    const userRef = ref(db, `users/${userId}`);
+
+    return update(userRef, editedUser);
 
 }
 
