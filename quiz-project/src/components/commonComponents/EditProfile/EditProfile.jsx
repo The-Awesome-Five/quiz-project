@@ -5,7 +5,7 @@ import {
     updateUserAvatar,
     updateUserFirstName,
     updateUserLastName,
-    updateCustomInfo 
+    updateCustomInfo
 } from '../../../services/user.service';
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
@@ -34,7 +34,7 @@ const EditProfile = () => {
               setAvatarUrl(userDataFromDB.avatarUrl || '');
               setFirstName(userDataFromDB.firstName || '');
               setLastName(userDataFromDB.lastName || '');
-              setInfo(userDataFromDB.info || '');
+              setInfo(userDataFromDB.customInfo || '');
               setRole(userDataFromDB.role || '');
             } catch (error) {
               console.error('Failed to load user data:', error);
@@ -67,7 +67,8 @@ const EditProfile = () => {
       }
   
   
-      const saveChanges = async () => {
+      const saveChanges = async (e) => {
+        e.preventDefault();
         try {
           if (userData) {
             await updateUserAvatar(userId, avatarUrl);
@@ -75,7 +76,7 @@ const EditProfile = () => {
             await updateUserLastName(userId, lastName);
             await updateCustomInfo(userId, info);
               console.log(role)
-            await updateUserRole(userId, role);
+            // await updateUserRole(userId, role);
             const updatedUserData = await getUserByID(userId);
             setAppState({ userData: updatedUserData });
   
@@ -125,7 +126,7 @@ const EditProfile = () => {
           </Form.Group>
 
           {/* Save Button */}
-          <Button variant="primary" type="submit" onClick={saveChanges}>
+          <Button variant="primary" type="button" onClick={saveChanges}>
             Save Changes
           </Button>
         </Form>
