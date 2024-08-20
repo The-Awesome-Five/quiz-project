@@ -1,13 +1,34 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './HeaderBar.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
 import {Container, Navbar, Nav, NavDropdown, Button} from "react-bootstrap";
 import { AppContext } from '../../../appState/app.context';
+import { getUserAvatarUrlByUID } from '../../../services/user.service';
 
 const HeaderBar = ({logout}) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [avatatarURL, setAvatarUrl] = useState(null);
+    const navigate = useNavigate()
     const {userData}= useContext(AppContext);
+
+
+    useEffect(() => {
+        if (userData && userData.uid) {
+            getUserAvatarUrlByUID(userData.uid)
+                .then((url) => {
+                    setAvatarUrl(url || '../../../../public/img/default-user-icon.png');
+                })
+                .catch(() => {
+                    console.error("Error fetching avatar URL:", error);
+                    setAvatarUrl('../../../../public/img/default-user-icon.png');
+                });
+        }
+    }, [userData]);
+
+    const handleOnClickProfile = () => {
+        navigate('/profile');
+    }
 
     return (
             <Navbar expand="lg" className="bg-body-tertiary">
@@ -29,7 +50,7 @@ const HeaderBar = ({logout}) => {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
-                            <Nav.Link href="/admin">Admin Menu</Nav.Link>
+                            
                             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                                 <NavDropdown.Item href="/organizations">Organization</NavDropdown.Item>
                                 <NavDropdown.Item href="#action/3.2">
@@ -43,15 +64,31 @@ const HeaderBar = ({logout}) => {
                             </NavDropdown>
                         </Nav>
                     </Navbar.Collapse>
-                        <div className="login-section d-flex align-items-center ms-3">
-                            {userData ? (
-                                <button onClick={logout}>LOG OUT</button>
-                            ) : (
-                                <a href="/signin" className='btn btn-primary d-flex align-items-center'>
-                                    Sign in
-                                </a>
-                            )}
-                        </div>
+                    <div className="login-section d-flex align-items-center ms-3">
+                    {userData ? (
+                        <NavDropdown
+                            title={
+                                <img
+                                    src={avatatarURL}
+                                    alt="User Avatar"
+                                    className="avatar"
+                                    style={{ width: '40px', height: '40px', borderRadius: '50%' }}
+                                />
+                            }
+                            id="user-nav-dropdown"
+                            align="end"
+                        >
+                            <NavDropdown.Item onClick={handleOnClickProfile}>Profile</NavDropdown.Item>
+                            <NavDropdown.Item onClick={logout}>Log Out</NavDropdown.Item>
+                            <NavDropdown.Item href="/admin">Admin Menu</NavDropdown.Item>
+                            
+                        </NavDropdown>
+                    ) : (
+                        <a href="/signin" className='btn btn-primary d-flex align-items-center'>
+                            Sign in
+                        </a>
+                    )}
+                </div>
                 </Container>
             </Navbar>
     );

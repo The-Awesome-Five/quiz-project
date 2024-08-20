@@ -6,12 +6,16 @@
     width: 400px;
 }
 
-body .card-body {
+body .reg-container > .card > .card-body {
     background-color: #f1f1f1;
 
 }
 
 .card {
     --bs-card-border-width: 0 !important;
-  }
+}
+
+.next-btn {
+    width: 100px !important;
+}
 

@@ -104,7 +104,7 @@ const Register = () => {
               </div>
               <button 
                 onClick={nextStep} 
-                className="btn btn-primary" 
+                className="next-btn btn btn-success w-100 rounded-pill mt-3" 
                 disabled={!user.role}
               >
                 Next

@@ -61,3 +61,8 @@
 .sign-in-btn {
     width: 100px !important;
 }
+
+.avatar {
+    cursor: pointer;
+    border: 2px solid #fff;
+  }

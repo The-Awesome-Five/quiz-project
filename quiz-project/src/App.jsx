@@ -19,6 +19,8 @@ import { logoutUser } from './services/auth.service.js';
 import {AdminUserMenuView} from "./views/AdminMenu/AdminUserMenu/AdminUserMenuView.jsx";
 import Organization from './components/organizationComponents/Organization/Organization.jsx';
 import CreateOrganization from './components/organizationComponents/CreateOrganizationForm/CreateOrganization.jsx';
+import Profile from './components/commonComponents/Profile/Profile.jsx';
+import EditProfile from './components/commonComponents/EditProfile/EditProfile.jsx';
 import SingleOrganizationView from './views/SingleOrganizationView/SingleOranizationView.jsx';
 
 function App() {
@@ -68,6 +70,8 @@ function App() {
                         <Route path="/organizations" element={<Organization /> } />
                         <Route path="/create-organization" element={<CreateOrganization />} />
                         <Route path="/register" element={<Register />} />
+                        <Route path='/profile' element={<Profile />} />
+                        <Route path='/edit-profile' element={<EditProfile />} />
                         <Route path="/organization/:organizationId" element={< SingleOrganizationView/>} />
                     </Routes>
                 </div>

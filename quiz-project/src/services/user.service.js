@@ -68,3 +68,71 @@ export const updateOrganizationUserInfo = async (uid, organizationId,organizatio
     }
 }
 
+export const getUserAvatarUrlByUID = async (uid) => {
+    const snapshot = await get(ref(db, `users/${uid}`));
+    const userData = snapshot.val();
+    if (userData) {
+        return userData.avatarUrl;
+    } else {
+        throw new Error('User not found');
+    }
+};
+
+export const getUserNameUrlByUID = async (uid) => {
+    try {
+        const snapshot = await get(ref(db, `users/${uid}`));
+        const userData = snapshot.val();
+
+        if (userData) {
+            return {
+                username: userData.username,
+                avatarUrl: userData.avatarUrl
+            };
+        } else {
+            throw new Error('User not found');
+        }
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+        throw error;
+    }
+};
+
+export const updateUserAvatar = async (uid, avatarUrl) => {
+  const userRef = ref(db, `users/${uid}/avatarUrl`);
+  await set(userRef, avatarUrl);
+};
+
+
+ const updateElement = async (data, pathForUpdate) => {
+    try {
+        const dataRef = ref(db, pathForUpdate);
+
+        await update(dataRef, data);
+ 
+        return 'Element edited successfully!';
+    } catch (e) {
+        console.error('Update failed', e);
+        return e.message;
+    }
+}
+
+export const updateUserFirstName = async (uid, firstName) => {
+    const updatePath = `users/${uid}`
+    const data = { firstName: firstName};
+    const result = await updateElement(data, updatePath)
+    return result;
+  }
+  
+  export const updateUserLastName = async (uid, lastName) => {
+    const updatePath = `users/${uid}`
+    const data = { lastName: lastName};
+    const result = await updateElement(data, updatePath)
+    return result;
+  }
+  
+  export const updateCustomInfo = async (uid, info) => {
+    const updatePath = `users/${uid}`
+    const data = { customInfo: info};
+    const result = await updateElement(data, updatePath)
+    return result;
+  }
