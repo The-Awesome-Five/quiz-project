@@ -56,3 +56,22 @@ export const getUserAvatarUrlByUID = async (uid) => {
     }
 };
 
+export const getUserNameUrlByUID = async (uid) => {
+    try {
+        const snapshot = await get(ref(db, `users/${uid}`));
+        const userData = snapshot.val();
+
+        if (userData) {
+            return {
+                username: userData.username,
+                avatarUrl: userData.avatarUrl
+            };
+        } else {
+            throw new Error('User not found');
+        }
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+        throw error;
+    }
+};
+

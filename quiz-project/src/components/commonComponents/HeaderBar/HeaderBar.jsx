@@ -9,7 +9,9 @@ import { getUserAvatarUrlByUID } from '../../../services/user.service';
 const HeaderBar = ({logout}) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [avatatarURL, setAvatarUrl] = useState(null);
+    const navigate = useNavigate()
     const {userData}= useContext(AppContext);
+
 
     useEffect(() => {
         if (userData && userData.uid) {
@@ -23,6 +25,10 @@ const HeaderBar = ({logout}) => {
                 });
         }
     }, [userData]);
+
+    const handleOnClickProfile = () => {
+        navigate('/profile');
+    }
 
     return (
             <Navbar expand="lg" className="bg-body-tertiary">
@@ -72,7 +78,9 @@ const HeaderBar = ({logout}) => {
                             id="user-nav-dropdown"
                             align="end"
                         >
+                            <NavDropdown.Item onClick={handleOnClickProfile}>Profile</NavDropdown.Item>
                             <NavDropdown.Item onClick={logout}>Log Out</NavDropdown.Item>
+                            
                         </NavDropdown>
                     ) : (
                         <a href="/signin" className='btn btn-primary d-flex align-items-center'>

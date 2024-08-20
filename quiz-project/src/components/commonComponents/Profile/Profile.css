@@ -1,0 +1,91 @@
+.profile-page {
+    padding: 20px;
+}
+
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    display: block;
+    box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.5);
+}
+
+.align-items-center {
+    align-items: flex-start !important; 
+}
+
+.hero-section {
+    text-align: left;
+}
+
+h2, p {
+    text-align: left;
+}
+
+.custom-avatar-col {
+    max-width: 150px; 
+}
+
+.profile-page {
+    background-color: #f1f1f1;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+}
+
+.hero-section {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .hero-customization-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Fill the full height of the card */
+    margin: 0 auto;
+  }
+  
+  .hero-customization {
+    position: relative;
+    width: 150px; /* Adjust as needed */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .hero-part {
+    position: relative !important;
+    width: 100%;
+    height: 100px !important;
+  }
+  
+  .hero-image {
+    width: 100%;
+    height: auto !important;
+    position: absolute !important;
+    left: 0;
+  }
+  
+  .head {
+    height: 150px; 
+  }
+  
+  .torso {
+    height: 150px;
+   
+  }
+  
+  .legs {
+    height: 150px; 
+  }
+  
+  /* Overlay images with higher z-index */
+  .overlay-head, .overlay-torso, .overlay-legs {
+    z-index: 2;
+  }
+
+  .hero-container {
+    
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+  }
