@@ -45,3 +45,26 @@ export const editUserByUserId = async (userId, editedUser) => {
     return update(userRef, editedUser);
 
 }
+
+
+export const updateOrganizationUserInfo = async (uid, organizationId,organizationName, organizationImageUrl) => {
+    try {
+        const updatePath = `users/${uid}/organizations`;
+
+        const data = { [organizationId]: {
+            organizationID: organizationId,
+            organizationName: organizationName,
+            organizationImage: organizationImageUrl
+        } };
+    
+        const dataRef = ref(db, updatePath);
+     
+        await update(dataRef, data);
+        
+        return 'Element edited successfully!';
+    } catch (e) {
+        console.error('Update failed', e);
+        return e.message;
+    }
+}
+

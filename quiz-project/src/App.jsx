@@ -19,6 +19,7 @@ import { logoutUser } from './services/auth.service.js';
 import {AdminUserMenuView} from "./views/AdminMenu/AdminUserMenu/AdminUserMenuView.jsx";
 import Organization from './components/organizationComponents/Organization/Organization.jsx';
 import CreateOrganization from './components/organizationComponents/CreateOrganizationForm/CreateOrganization.jsx';
+import SingleOrganizationView from './views/SingleOrganizationView/SingleOranizationView.jsx';
 
 function App() {
     const [count, setCount] = useState(0);
@@ -64,9 +65,10 @@ function App() {
 
                         <Route path="/admin" element={<AdminMenuView />} />
                         <Route path="/user-management" element={<AdminUserMenuView />} />
-                        <Route path="/organization" element={<Organization /> } />
+                        <Route path="/organizations" element={<Organization /> } />
                         <Route path="/create-organization" element={<CreateOrganization />} />
                         <Route path="/register" element={<Register />} />
+                        <Route path="/organization/:organizationId" element={< SingleOrganizationView/>} />
                     </Routes>
                 </div>
             </ButtonEffectsProvider>

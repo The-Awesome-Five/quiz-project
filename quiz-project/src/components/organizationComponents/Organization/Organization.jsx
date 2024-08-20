@@ -36,6 +36,7 @@ const Organization = () => {
                                 height: "150px",
                                 border: "2px solid black",
                             }}
+                            onClick={() => navigate(`/organization/${org.orgId}`)}
                         >
                             <img
                                 src={org.photoUrl}
