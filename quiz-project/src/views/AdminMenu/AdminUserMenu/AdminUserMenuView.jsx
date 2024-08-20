@@ -1,25 +1,24 @@
-import {getAllUsers} from "../../../services/user.service.js";
+import {editUserByUserId, getAllUsers} from "../../../services/user.service.js";
 import {useEffect, useState} from "react";
 import {Button, Col, Container, Image, ListGroup, Row, Form} from "react-bootstrap";
+import {toast} from "react-toastify";
+import {AdminUserMenuItem} from "../../../components/adminComponents/AdminUserManagement/AdminUserMenuItem.jsx";
 
 export const AdminUserMenuView = () => {
 
-    const [users, setUsers] = useState([{
+    const [editUserId, setEditUserId] = useState(null); // State to track the user being edited
+    const [userData, setUserData] = useState([{
         uid: 'header',
         username: 'Username',
         email: 'Email',
         firstName: 'First Name',
         lastName: 'Last Name',
-    }]);
-
-    const [editUserId, setEditUserId] = useState(null); // State to track the user being edited
-    const [userData, setUserData] = useState(users); // State to hold the user data for editing
+    }]); // State to hold the user data for editing
 
     useEffect(() => {
         const fetchUsers = async () => {
             const users = await getAllUsers();
-            setUsers(prevState => [...prevState, ...users]);
-            setUserData(users)
+            setUserData(prevState => [...prevState, ...users]);
         }
         fetchUsers();
     }, []);
@@ -40,84 +39,24 @@ export const AdminUserMenuView = () => {
         setUserData(newUserData); // Update the user data state
     };
 
-    const handleSave = (userId) => {
+    const handleSave = async (userId) => {
+
+        const userToBeEdited = userData.filter(user => user.uid === userId)[0];
+
         setEditUserId(null); // Disable edit mode after saving
-        console.log('Saved data for user:', userData.find(user => user.uid === userId));
-        // Add your save logic here
+
+        try {
+            await editUserByUserId(userId, userToBeEdited);
+        } catch (e) {
+            toast.error(e)
+        }
     };
 
     return (
         <Container>
             <ListGroup>
                 {userData.map((user) => (
-                    <ListGroup.Item key={user.uid}>
-                        <Row style={{ alignItems: "center" }}>
-                            <Col xs={2}>
-                                {user.uid === 'header'
-                                    ? 'Avatar Image'
-                                    : user.avatarUrl.includes('http')
-                                        ? <Image src={user.avatarUrl} alt='Avatar Image' thumbnail />
-                                        : <Image src="https://st3.depositphotos.com/9998432/13335/v/450/depositphotos_133351928-stock-illustration-default-placeholder-man-and-woman.jpg" alt='Avatar Image' thumbnail />
-                                }
-                            </Col>
-                            <Col xs={2}>
-                                {editUserId === user.uid
-                                    ? <Form.Control
-                                        type="text"
-                                        value={user.username}
-                                        onChange={(e) => handleInputChange(e, user.uid, 'username')}
-                                    />
-                                    : user.username
-                                }
-                            </Col>
-                            <Col xs={2}>
-                                {editUserId === user.uid
-                                    ? <Form.Control
-                                        type="email"
-                                        value={user.email}
-                                        onChange={(e) => handleInputChange(e, user.uid, 'email')}
-                                    />
-                                    : user.email
-                                }
-                            </Col>
-                            <Col xs={2}>
-                                {editUserId === user.uid
-                                    ? <Form.Control
-                                        type="text"
-                                        value={user.firstName}
-                                        onChange={(e) => handleInputChange(e, user.uid, 'firstName')}
-                                    />
-                                    : user.firstName
-                                }
-                            </Col>
-                            <Col xs={2}>
-                                {editUserId === user.uid
-                                    ? <Form.Control
-                                        type="text"
-                                        value={user.lastName}
-                                        onChange={(e) => handleInputChange(e, user.uid, 'lastName')}
-                                    />
-                                    : user.lastName
-                                }
-                            </Col>
-                            <Col className="mx-auto" xs={1}>
-                                {user.uid === 'header' ? 'Edit' : (
-                                    editUserId === user.uid
-                                        ? <Button variant="success" onClick={() => handleSave(user.uid)}>Save</Button>
-                                        : <Button
-                                            variant="success"
-                                            onClick={() => handleEditClick(user.uid)}
-                                            disabled={editUserId !== null && editUserId !== user.uid}
-                                        >
-                                            Edit
-                                        </Button>
-                                )}
-                            </Col>
-                            <Col className="mx-auto" xs={1}>
-                                {user.uid === 'header' ? 'Delete' : <Button variant="danger">Delete</Button>}
-                            </Col>
-                        </Row>
-                    </ListGroup.Item>
+                    <AdminUserMenuItem key={user.uid} user={user} editUserId={editUserId} handleInputChange={handleInputChange} handleSave={handleSave} handleEditClick={handleEditClick} />
                 ))}
             </ListGroup>
         </Container>
