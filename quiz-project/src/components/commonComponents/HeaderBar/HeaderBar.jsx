@@ -34,36 +34,35 @@ const HeaderBar = ({logout}) => {
             <Navbar expand="lg" className="bg-body-tertiary">
                 <Container>
                     <Navbar.Brand href="/"><img src="../../../../public/img/quizhub-logo.png" alt="Logo" className="logo" /></Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto">
+                            <NavDropdown title={<span className="fs-1">≡</span>} id="basic-nav-dropdown">
+                                <NavDropdown.Item href="/all-quizes">
+                                    All Quizzes
+                                </NavDropdown.Item>
+                                <NavDropdown.Item href="/abouts">
+                                    About
+                                </NavDropdown.Item>
+                            </NavDropdown>
+                        </Nav>
+                    </Navbar.Collapse>
                     <div className="header-container d-flex align-items-center justify-content-between p-3">
                         <div className='header-bar d-flex'>
                             <div className="pin-input-container d-flex align-items-center">
-                                <p className='text mb-0 me-2'>Join game? Enter PIN:</p>
+                                <p className='text mb-0 me-2'>Join game?</p>
                                 <input
                                     type="password"
                                     className="form-control pin-input"
-                                    placeholder="123 456"
+                                    placeholder="Enter PIN: 123 456"
                                     maxLength="6"
                                 />
                             </div>
                         </div>
                     </div>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="me-auto">
-                            
-                            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                                <NavDropdown.Item href="/organizations">Organization</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.2">
-                                    Another action
-                                </NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action/3.4">
-                                    Separated link
-                                </NavDropdown.Item>
-                            </NavDropdown>
-                        </Nav>
-                    </Navbar.Collapse>
+                    <Nav.Link href="/leaderboard"><Button>Global Leaderboard</Button></Nav.Link>
+                    <Nav.Link href="/leaderboard"><Button>Gaming Modes</Button></Nav.Link>
+
                     <div className="login-section d-flex align-items-center ms-3">
                     {userData ? (
                         <NavDropdown
@@ -79,9 +78,15 @@ const HeaderBar = ({logout}) => {
                             align="end"
                         >
                             <NavDropdown.Item onClick={handleOnClickProfile}>Profile</NavDropdown.Item>
-                            <NavDropdown.Item onClick={logout}>Log Out</NavDropdown.Item>
+                            <NavDropdown.Item href="/organizations">
+                                My Organizations
+                            </NavDropdown.Item>
+                            <NavDropdown.Item href="/my-quizes">
+                                My Quizzes
+                            </NavDropdown.Item>
                             <NavDropdown.Item href="/admin">Admin Menu</NavDropdown.Item>
-                            
+                            <NavDropdown.Item onClick={logout}>Log Out</NavDropdown.Item>
+
                         </NavDropdown>
                     ) : (
                         <a href="/signin" className='btn btn-primary d-flex align-items-center'>

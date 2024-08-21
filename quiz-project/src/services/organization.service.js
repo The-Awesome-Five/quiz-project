@@ -51,14 +51,25 @@ export const getSingleOrganization  = async (orgId) => {
 export const updateOrganizationParticipants = async (info, role, organizationId) => {
     try {
         const updatePath = `organizations/${organizationId}/${role}`;
-    
+
         const dataRef = ref(db, updatePath);
-     
+
         await update(dataRef, info);
-        
+
         return 'Element edited successfully!';
     } catch (e) {
         console.error('Update failed', e);
         return e.message;
+    }
+}
+
+export const getAllOrganizations = async () => {
+    try{
+        const path = 'organizations';
+        const snapshot = await get(ref(db, `${path}`));
+        return Object.values(snapshot.val());
+    }
+    catch(e){
+        console.log(e);
     }
 }

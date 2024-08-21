@@ -3,10 +3,10 @@ import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 import { AppContext } from '../../../appState/app.context';
 import { getUserDataByUID } from "../../../services/user.service";
 import './Profile.css';
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 
 const Profile = () => {
-    const { userData } = useContext(AppContext);
+    /*const { userData } = useContext(AppContext);
     const [avatarURL, setAvatarUrl] = useState('../../../../public/img/default-user-icon.png'); // default avatar
     const [profileData, setProfileData] = useState({
         username: 'User Name',
@@ -66,14 +66,48 @@ const Profile = () => {
 
     if (error) {
         return <div>Error: {error}</div>; // Show error message
+    }*/
+
+    const { uid } = useParams();
+    const { userData } = useContext(AppContext);
+    const [profileData, setProfileData] = useState(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        console.log("userId:", uid);
+        console.log("userData:", userData);
+
+        if (uid) {
+            getUserDataByUID(uid)
+                .then(data => {
+                    console.log("Fetched data:", data);
+                    setProfileData(Object.values(data)[0]);
+                })
+                .catch(error => console.error("Failed to fetch user data:", error));
+
+            console.log('Current user profile:');
+            console.log(profileData);
+        } else {
+            setProfileData(userData);
+        }
+    }, [uid, userData]);
+
+    if (!profileData) {
+        return <div>Loading...</div>;
     }
+
+    const isCurrentUserProfile = uid === userData.uid || !uid;
+
+    const handleOnClickEditProfile = () => {
+        navigate('/edit-profile');
+    };
 
     return (
         <Container className="profile-page">
             <Row className="align-items-center">
                 <Col xs={12} md={3} className="text-start custom-avatar-col me-4">
                     <img
-                        src={avatarURL}
+                        src={profileData.avatarUrl || "../../../../public/img/default-user-icon.png"}
                         alt="User Avatar"
                         className="profile-avatar"
                     />
@@ -144,7 +178,10 @@ const Profile = () => {
                 <Col>
                     <div className="d-flex">
                         <button className="btn btn-success me-3">All Quizzes</button>
-                        <button className="btn btn-success" onClick={handleOnClickEditProfile}>Edit Profile</button>
+                        {isCurrentUserProfile && (
+                            <Link to='/edit-profile'><button className="btn btn-success">Edit Profile</button></Link>
+                            )
+                        }
                     </div>
                 </Col>
             </Row>

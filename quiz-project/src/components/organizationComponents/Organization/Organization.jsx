@@ -26,7 +26,7 @@ const Organization = () => {
             </div>
             <div className="d-flex flex-wrap justify-content-around">
                 {orgList.length > 0 ? (
-                    <div>
+                    <div className="d-flex flex-row">
                     {orgList.map((org, index) => (
                         <div
                             key={index}
@@ -47,7 +47,7 @@ const Organization = () => {
                                     objectFit: "cover",
                                 }}
                             />
-                            <p className="mt-2 text-center">{org.orgName}</p>
+                            <p className="mt-2 text-flex">{org.orgName}</p>
                         </div>
                     ))}
                     <div

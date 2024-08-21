@@ -22,6 +22,10 @@ import CreateOrganization from './components/organizationComponents/CreateOrgani
 import Profile from './components/commonComponents/Profile/Profile.jsx';
 import EditProfile from './components/commonComponents/EditProfile/EditProfile.jsx';
 import SingleOrganizationView from './views/SingleOrganizationView/SingleOranizationView.jsx';
+import React from "react";
+import {
+    AdminOrganisationView
+} from "./views/AdminMenu/AdminOrganisationMenu/AdminOrganisationView/AdminOrganisationView.jsx";
 
 function App() {
     const [count, setCount] = useState(0);
@@ -67,10 +71,14 @@ function App() {
 
                         <Route path="/admin" element={<AdminMenuView />} />
                         <Route path="/user-management" element={<AdminUserMenuView />} />
+                        <Route path="/organization-management" element={<AdminOrganisationView />} />
+
+
                         <Route path="/organizations" element={<Organization /> } />
                         <Route path="/create-organization" element={<CreateOrganization />} />
                         <Route path="/register" element={<Register />} />
                         <Route path='/profile' element={<Profile />} />
+                        <Route path='/profile/:uid' element={<Profile />} />
                         <Route path='/edit-profile' element={<EditProfile />} />
                         <Route path="/organization/:organizationId" element={< SingleOrganizationView/>} />
                     </Routes>

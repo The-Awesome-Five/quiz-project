@@ -18,8 +18,8 @@ export const AdminMenuView = () => {
                     </Col>
                     <Col>
                         <Card className="text-center">
-                            <Link to="/organisation-management">
-                                <Button variant="primary">Organisation Menu</Button>
+                            <Link to="/organization-management">
+                                <Button variant="primary">Organization Menu</Button>
                             </Link>
                         </Card>
                     </Col>
