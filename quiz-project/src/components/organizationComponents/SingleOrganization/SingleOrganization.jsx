@@ -25,23 +25,27 @@ const SingleOrganization = ({ orgId }) => {
     const handleAddParticipant = async () => {
         const { role, username } = participantInfo;
         if (!username.trim() || !role) return;
-        const id= Object.keys(await getUserDataByUsername(username));
-     
-        const updatedOrgInfo = { [id]: username };
+    
+        try {
+            const id = Object.keys(await getUserDataByUsername(username));
+            const updatedOrgInfo = { ...orgInfo };
             if (role === '1') {
-                await updateOrganizationParticipants(updatedOrgInfo, 'students', orgInfo.id)
+                await updateOrganizationParticipants({ [id]: username }, 'students', orgInfo.id);
+                updatedOrgInfo.students = { ...updatedOrgInfo.students, [id]: username };
             } else if (role === '2') {
-                await updateOrganizationParticipants(updatedOrgInfo, 'educators', orgInfo.id)
+                await updateOrganizationParticipants({ [id]: username }, 'educators', orgInfo.id);
+                updatedOrgInfo.educators = { ...updatedOrgInfo.educators, [id]: username };
             } else if (role === '3') {
-                await updateOrganizationParticipants(updatedOrgInfo, 'owner', orgInfo.id)
+                await updateOrganizationParticipants({ [id]: username }, 'owner', orgInfo.id);
+                updatedOrgInfo.owner = { ...updatedOrgInfo.owner, [id]: username };
             }
-     
-
-        await updateOrganizationUserInfo(id, orgInfo.id, orgInfo.name, orgInfo.imgUrl)
-
-
-        setOrgInfo(updatedOrgInfo);
-        setParticipantInfo({ role: '', username: '' }); 
+            await updateOrganizationUserInfo(id, orgInfo.id, orgInfo.name, orgInfo.imgUrl);
+            setOrgInfo(updatedOrgInfo);
+            setParticipantInfo({ role: '', username: '' });
+    
+        } catch (error) {
+            console.error("Error adding participant:", error);
+        }
     };
     useEffect(() => {
         const fetchOrganization = async () => {
@@ -65,37 +69,39 @@ const SingleOrganization = ({ orgId }) => {
         return (
             <div className="container my-4">
                   <div> Participants</div>
-            <div className="input-group mb-2">
-            <select 
-                    className="custom-select" 
-                    id="inputGroupSelect01" 
-                    name="role"
-                    value={participantInfo.role}
-                    onChange={handleInputChange}
-                >
-                    <option value="" disabled>Choose...</option>
-                    <option value="1">Student</option>
-                    <option value="2">Educator</option>
-                    <option value="3">Owner</option>
-                </select>
-                <input 
-                    type="text" 
-                    className="form-control" 
-                    placeholder="Please enter a username" 
-                    name="username"
-                    value={participantInfo.username}
-                    onChange={handleInputChange}
-                />
-                <div className="input-group-append">
-                    <button 
-                        className="btn btn-outline-secondary" 
-                        type="button" 
-                        onClick={handleAddParticipant}
-                    >
-                        Add Participant
-                    </button>
-                </div>
-            </div>
+                  {orgInfo.students && Object.keys(orgInfo.students).includes(userData.uid)? <></>: 
+                              <div className="input-group mb-2">
+                              <select 
+                                      className="custom-select" 
+                                      id="inputGroupSelect01" 
+                                      name="role"
+                                      value={participantInfo.role}
+                                      onChange={handleInputChange}
+                                  >
+                                      <option value="" disabled>Choose...</option>
+                                      <option value="1">Student</option>
+                                      <option value="2">Educator</option>
+                                      <option value="3">Owner</option>
+                                  </select>
+                                  <input 
+                                      type="text" 
+                                      className="form-control" 
+                                      placeholder="Please enter a username" 
+                                      name="username"
+                                      value={participantInfo.username}
+                                      onChange={handleInputChange}
+                                  />
+                                  <div className="input-group-append">
+                                      <button 
+                                          className="btn btn-outline-secondary" 
+                                          type="button" 
+                                          onClick={handleAddParticipant}
+                                      >
+                                          Add Participant
+                                      </button>
+                                  </div>
+                              </div>}
+
             <div className="p-4 rounded-3 shadow bg-light scrollable-container">
                 {orgInfo.owner && Object.values(orgInfo.owner).map((name, index) => (
                     <div key={index} className="d-flex justify-content-between align-items-center py-2 border-bottom">
