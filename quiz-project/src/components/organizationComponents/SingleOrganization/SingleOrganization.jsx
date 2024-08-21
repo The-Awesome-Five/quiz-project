@@ -122,6 +122,45 @@ const SingleOrganization = ({ orgId }) => {
                     </div>
                 ))}
             </div>
+            <div className="p-4 rounded-3 shadow bg-light scrollable-container">
+                {orgInfo.quizzesId ? <div>{Object.entries(orgInfo.quizzesId).map(([quizId, quiz], index) => (
+                <div
+                key={index}
+                className="quiz-box d-flex flex-column align-items-center justify-content-center border m-3"
+                style={{
+                    width: "150px",
+                    height: "150px",
+                    border: "2px solid black",
+                    cursor: "pointer",
+                }}
+                onClick={() => console.log(`Quiz selected: ${quizId}`)}
+            >
+                <img
+                    src={quiz.quizAvatar}
+                    alt={`${quiz.name} logo`}
+                    style={{
+                        width: "80px",
+                        height: "80px",
+                        objectFit: "cover",
+                    }}
+                />
+                <p className="mt-2 text-center">{quiz.name}</p>
+            </div>
+            ))}</div> : <div> No Quizzes Have been made yet</div>}
+             <div
+                className="quiz-box d-flex align-items-center justify-content-center border m-3"
+                style={{
+                    width: "150px",
+                    height: "150px",
+                    border: "2px solid black",
+                    fontSize: "50px",
+                    cursor: "pointer",
+                }}
+                onClick={() => console.log('Navigate to create new quiz')} // TO BE IMPLEMENTED 
+            >
+                +
+            </div>
+            </div>
         </div>
         );
 
