@@ -1,7 +1,14 @@
 import React, { useEffect } from "react";
 import './Home.css';
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+
+    const navigate = useNavigate()
+
+    const handleCreateQuizOnClick = () => {
+        navigate('/create-quiz')
+    }
 
     return (
         <div className="home-container d-flex flex-column justify-content-center align-items-center mt-4">
@@ -15,7 +22,7 @@ const Home = () => {
                         <h3 className="text-center"><strong>Create a quiz</strong></h3>
                         <p>Play for free with</p>
                         <p>your friends</p>
-                        <button className="btn create-btn btn-success">Quiz editor</button>
+                        <button className="btn create-btn btn-success" onClick={handleCreateQuizOnClick}>Quiz creator</button>
                     </div>
                 </div>
 

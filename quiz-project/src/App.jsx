@@ -23,6 +23,7 @@ import Profile from './components/commonComponents/Profile/Profile.jsx';
 import EditProfile from './components/commonComponents/EditProfile/EditProfile.jsx';
 import SingleOrganizationView from './views/SingleOrganizationView/SingleOranizationView.jsx';
 import React from "react";
+import CreateQuiz from './components/commonComponents/CreateQuiz/CreateQuiz.jsx';
 import {
     AdminOrganisationView
 } from "./views/AdminMenu/AdminOrganisationMenu/AdminOrganisationView/AdminOrganisationView.jsx";
@@ -81,6 +82,7 @@ function App() {
                         <Route path='/profile/:uid' element={<Profile />} />
                         <Route path='/edit-profile' element={<EditProfile />} />
                         <Route path="/organization/:organizationId" element={< SingleOrganizationView/>} />
+                        <Route path='/create-quiz' element={<CreateQuiz/>} />
                     </Routes>
                 </div>
             </ButtonEffectsProvider>
