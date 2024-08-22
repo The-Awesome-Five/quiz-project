@@ -15,13 +15,12 @@ export const AdminOrganizationItem = ({
     //     educators: 'Educators',
     //     owner: 'Owner',
 
-    console.log('The organization educates are ');
-    console.log(organization.educators);
+    console.log(organization)
 
     return (
         <ListGroup.Item key={organization.id}>
             <Row style={{ alignItems: "center" }}>
-                <Col xs={2}>
+                <Col xs={1}>
                     {organization.id === 'header'
                         ? 'Organization Image'
                         : organization.imgUrl.includes('http')
@@ -29,7 +28,7 @@ export const AdminOrganizationItem = ({
                             : <Image src="https://img.freepik.com/premium-vector/school-logo-design_706452-12.jpg" alt='Organization Image' thumbnail />
                     }
                 </Col>
-                <Col xs={2}>
+                <Col xs={1}>
                     {editOrgId === organization.id
                         ? <Form.Control
                             type="text"
@@ -49,31 +48,50 @@ export const AdminOrganizationItem = ({
                         : organization.description
                     }
                 </Col>
-                <Col xs={2}>
+                <Col xs={1}>
                     {editOrgId === organization.id
                         ? <Form.Control
                             type="text"
                             value={organization.owner}
                             onChange={(e) => handleInputChange(e, organization.id, 'owner')}
                         />
-                        : organization.owner
+                        : Object.values(organization.owner)
                     }
                 </Col>
                 <Col xs={2}>
-                    {editOrgId === organization.id
+                    {organization.id === 'header' ? 'Educators'
+                    : editOrgId === organization.id
                         ? <Form.Control
                             type="text"
-                            value={organization.lastName}
+                            value={organization.educators}
                             onChange={(e) => handleInputChange(e, organization.id, 'educators')}
                         />
-                        : organization.educators ? Object.entries(organization.educators).map(([key, value]) => {
-                            return (
-                                <div key={key}>
-                                    {key}: {value}
-                                </div>
-                            )
-                        })
+                        : organization.educators && organization.id !== 'header' ? Object.entries(organization.educators).map(([key, value]) => {
+                                return (
+                                    <div key={key}>
+                                        {value}
+                                    </div>
+                                )
+                            })
                             : 'No Educators'
+                    }
+                </Col>
+                <Col xs={2}>
+                    {organization.id === 'header' ? 'Students' :
+                    editOrgId === organization.id
+                        ? <Form.Control
+                            type="text"
+                            value={organization.students}
+                            onChange={(e) => handleInputChange(e, organization.id, 'students')}
+                        />
+                        : organization.students ? Object.entries(organization.students).map(([key, value]) => {
+                                return (
+                                    <div key={key}>
+                                        {value}
+                                    </div>
+                                )
+                            })
+                            : 'No Students'
                     }
                 </Col>
                 <Col className="mx-auto" xs={1}>

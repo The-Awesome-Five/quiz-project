@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { AppContext } from "../../../appState/app.context";
 import { useNavigate } from "react-router-dom";
+import React from "react";
 
 const Organization = () => {
     const { userData } = useContext(AppContext);

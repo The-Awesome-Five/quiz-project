@@ -61,7 +61,7 @@ const HeaderBar = ({logout}) => {
                         </div>
                     </div>
                     <Nav.Link href="/leaderboard"><Button>Global Leaderboard</Button></Nav.Link>
-                    <Nav.Link href="/leaderboard"><Button>Gaming Modes</Button></Nav.Link>
+                    <Nav.Link href="/gaming-modes"><Button>Gaming Modes</Button></Nav.Link>
 
                     <div className="login-section d-flex align-items-center ms-3">
                     {userData ? (
