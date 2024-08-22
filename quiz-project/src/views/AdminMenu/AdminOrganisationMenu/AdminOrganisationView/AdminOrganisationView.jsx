@@ -17,10 +17,11 @@ export const AdminOrganisationView = () => {
         description: 'Description',
         email: 'Email',
         educators: 'Educators',
+        students: 'Students',
         owner: 'Owner',
     }]);
 
-    const [ editOrgId, setEditOrgId ] = useState(null); // State to track the user being edited
+    const [ editOrgId, setEditOrgId ] = useState(null);
 
     useEffect(() => {
         const fetchOrganizations = async () => {
@@ -31,7 +32,7 @@ export const AdminOrganisationView = () => {
     },[]);
 
     const handleEditClick = (orgId) => {
-        setEditOrgId(orgId); // Set the user to be edited
+        setEditOrgId(orgId);
     };
 
     const handleInputChange = (e, orgId, field) => {
@@ -41,14 +42,14 @@ export const AdminOrganisationView = () => {
             }
             return organization;
         });
-        setOrganizationData(newOrgData); // Update the user data state
+        setOrganizationData(newOrgData);
     };
 
     const handleSave = async (orgId) => {
 
         const organizationToBeEdited = organizationData.filter(organization => organization.uid === orgId)[0];
 
-        setEditOrgId(null); // Disable edit mode after saving
+        setEditOrgId(null);
 
         try {
             await editOrganizationById(orgId, organizationToBeEdited);

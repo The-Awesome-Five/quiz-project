@@ -27,6 +27,7 @@ import CreateQuiz from './components/commonComponents/CreateQuiz/CreateQuiz.jsx'
 import {
     AdminOrganisationView
 } from "./views/AdminMenu/AdminOrganisationMenu/AdminOrganisationView/AdminOrganisationView.jsx";
+import {AdminQuizMenuView} from "./views/AdminMenu/AdminQuizMenu/AdminQuizMenuView/AdminQuizMenuView.jsx";
 
 function App() {
     const [count, setCount] = useState(0);
@@ -73,6 +74,7 @@ function App() {
                         <Route path="/admin" element={<AdminMenuView />} />
                         <Route path="/user-management" element={<AdminUserMenuView />} />
                         <Route path="/organization-management" element={<AdminOrganisationView />} />
+                        <Route path="/quiz-management" element={<AdminQuizMenuView />} />
 
 
                         <Route path="/organizations" element={<Organization /> } />

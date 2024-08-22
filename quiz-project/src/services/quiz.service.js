@@ -1,4 +1,4 @@
-import { getDatabase, ref, set } from "firebase/database";
+import {get, getDatabase, ref, set} from "firebase/database";
 
 const db = getDatabase();
 
@@ -32,3 +32,15 @@ export const createQuizInFirebase = async (
     alert("Failed to create quiz. Please try again.");
   }
 };
+
+export const getAllQuizzes = async () => {
+
+  try {
+    const quizzes = await get(ref(db, 'quizzes'));
+
+    return Object.values(quizzes.val());
+  } catch (e) {
+    throw Error(e);
+  }
+
+}

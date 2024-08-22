@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, {useContext, useState} from "react";
 import "./CreateQuiz.css";
 import { createQuizInFirebase } from "../../../services/quiz.service";
+import {AppContext} from "../../../appState/app.context.js";
 
 const CreateQuiz = () => {
   const [quizTitle, setQuizTitle] = useState("");
@@ -24,6 +25,8 @@ const CreateQuiz = () => {
     maxAttempts: "",
     showCorrectAnswers: false,
   });
+
+  const { userData } = useContext(AppContext);
 
   const [questions, setQuestions] = useState([
     {
@@ -116,6 +119,10 @@ const CreateQuiz = () => {
           correctAnswerIndex: q.correctAnswerIndex,
         })),
         isPublic: isPublic,
+        creator: {
+            userId: userData.userId,
+            name: userData.username,
+        }
       };
 
       await createQuizInFirebase(
@@ -126,10 +133,10 @@ const CreateQuiz = () => {
         difficultyLevel
       );
 
-      alert("Quiz created successfully!");
+      toast.success("Quiz created successfully!");
     } catch (error) {
       console.error("Error creating quiz:", error);
-      alert("Failed to create quiz. Please try again.");
+      toast.error("Failed to create quiz. Please try again.");
     }
   };
 

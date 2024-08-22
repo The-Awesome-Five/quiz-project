@@ -15,8 +15,6 @@ export const AdminOrganizationItem = ({
     //     educators: 'Educators',
     //     owner: 'Owner',
 
-    console.log(organization)
-
     return (
         <ListGroup.Item key={organization.id}>
             <Row style={{ alignItems: "center" }}>
@@ -52,7 +50,7 @@ export const AdminOrganizationItem = ({
                     {editOrgId === organization.id
                         ? <Form.Control
                             type="text"
-                            value={organization.owner}
+                            value={Object.values(organization.owner)}
                             onChange={(e) => handleInputChange(e, organization.id, 'owner')}
                         />
                         : Object.values(organization.owner)
@@ -60,13 +58,7 @@ export const AdminOrganizationItem = ({
                 </Col>
                 <Col xs={2}>
                     {organization.id === 'header' ? 'Educators'
-                    : editOrgId === organization.id
-                        ? <Form.Control
-                            type="text"
-                            value={organization.educators}
-                            onChange={(e) => handleInputChange(e, organization.id, 'educators')}
-                        />
-                        : organization.educators && organization.id !== 'header' ? Object.entries(organization.educators).map(([key, value]) => {
+                    : organization.educators && organization.id !== 'header' ? Object.entries(organization.educators).map(([key, value]) => {
                                 return (
                                     <div key={key}>
                                         {value}
@@ -77,13 +69,8 @@ export const AdminOrganizationItem = ({
                     }
                 </Col>
                 <Col xs={2}>
-                    {organization.id === 'header' ? 'Students' :
-                    editOrgId === organization.id
-                        ? <Form.Control
-                            type="text"
-                            value={organization.students}
-                            onChange={(e) => handleInputChange(e, organization.id, 'students')}
-                        />
+                    {organization.id === 'header'
+                        ? 'Students'
                         : organization.students ? Object.entries(organization.students).map(([key, value]) => {
                                 return (
                                     <div key={key}>
