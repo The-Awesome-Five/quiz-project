@@ -143,6 +143,12 @@ const CreateQuiz = () => {
     }
   };
 
+  const handleAddToPublicBankChange = (questionIndex, checked) => {
+    const updatedQuestions = [...questions];
+    updatedQuestions[questionIndex].addToPublicBank = checked;
+    setQuestions(updatedQuestions);
+  };
+
   return (
     <div className="container create-quiz-wrapper">
       <div className="row">
@@ -398,6 +404,21 @@ const CreateQuiz = () => {
                   </div>
                 ))}
               </div>
+                    {/* Checkbox for adding to public question bank */}
+      <div className="form-check mt-3">
+        <input
+          className="form-check-input"
+          type="checkbox"
+          id={`addToPublicBank${questionIndex}`}
+          checked={question.addToPublicBank || false}
+          onChange={(e) =>
+            handleAddToPublicBankChange(questionIndex, e.target.checked)
+          }
+        />
+        <label className="form-check-label" htmlFor={`addToPublicBank${questionIndex}`}>
+          Add this question to the public bank
+        </label>
+      </div>
             </div>
           ))}
 
