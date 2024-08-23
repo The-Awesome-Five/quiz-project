@@ -7,6 +7,7 @@ import {getAllQuizzes} from "../../../../services/quiz.service.js";
 import {
     AdminQuizItem
 } from "../../../../components/adminComponents/AdminQuizManagement/AdminQuizItem/AdminQuizItem.jsx";
+import {AdminQuizHeader} from "../../../../components/adminComponents/AdminQuizManagement/AdminQuizHeader.jsx";
 
 export const AdminQuizMenuView = () => {
 
@@ -59,6 +60,7 @@ export const AdminQuizMenuView = () => {
     return (
         <Container>
             <ListGroup>
+                <AdminQuizHeader/>
                 {Object.entries(quizData).map(([accessKey, accessValue]) =>
                     Object.entries(accessValue).map(([categoryKey, category]) =>
                         Object.entries(category).map(([diffKey, diff]) =>

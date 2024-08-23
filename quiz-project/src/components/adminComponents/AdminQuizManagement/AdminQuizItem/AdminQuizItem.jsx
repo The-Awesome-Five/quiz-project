@@ -1,5 +1,6 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {Button, Col, Row, ListGroup, Form} from "react-bootstrap";
+import {AdminQuestionItem} from "./AdminQuestionItem/AdminQuestionItem.jsx";
 
 export const AdminQuizItem = ({ quiz,
                                   editQuizId,
@@ -8,6 +9,10 @@ export const AdminQuizItem = ({ quiz,
                                   handleEditClick,
                                   categoryKey,
                                   diffKey }) => {
+
+    const [isVisible, setIsVislble ] = useState(false);
+
+    console.log(quiz.questions)
 
     return (
         <ListGroup.Item>
@@ -53,17 +58,10 @@ export const AdminQuizItem = ({ quiz,
                     }
                 </Col>
                 <Col xs={2}>
-                    {/*{editQuizId === quiz.id
-                        ? <Form.Control
-                            type="text"
-                            value={quiz.questions}
-                            onChange={(e) => handleInputChange(e, quiz.id, 'questions')}
-                        />
-                        : quiz.questions
-                    }*/}
+                    <button onClick={() => setIsVislble(!isVisible)}>{isVisible ? "Hide" : "Show"}</button>
                 </Col>
                 <Col className="mx-auto" xs={1}>
-                    {editQuizId === quiz.id
+                {editQuizId === quiz.id
                         ? <Button variant="success" onClick={() => handleSave(quiz.id)}>Save</Button>
                         : <Button
                             variant="success"
@@ -73,6 +71,13 @@ export const AdminQuizItem = ({ quiz,
                         </Button>
                     }
                 </Col>
+            </Row>
+            <Row>
+                {isVisible && quiz.questions.map(question => {
+                    return (
+                        <AdminQuestionItem key={question.answers[0]} question={question}/>
+                    )
+                })}
             </Row>
         </ListGroup.Item>
     )
