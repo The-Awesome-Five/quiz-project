@@ -20,6 +20,7 @@ export const AdminQuizMenuView = () => {
         const fetchQuizzes = async () => {
             const quizzes = await getAllQuizzes();
             setQuizData(prevState => [...prevState, ...quizzes]);
+            console.log(quizData);
         }
 
         try {
