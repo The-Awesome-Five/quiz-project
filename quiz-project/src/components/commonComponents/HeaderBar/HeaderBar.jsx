@@ -39,10 +39,10 @@ const HeaderBar = ({ logout }) => {
                     <Nav className="me-auto">
                         <NavDropdown title={<span className="fs-1">≡</span>} id="basic-nav-dropdown">
                             <NavDropdown.Item>
-                                <Link to="/all-quizzes">All Quizzes</Link>
+                                <Link to="/all-quizzes"><button>All Quizzes</button></Link>
                             </NavDropdown.Item>
                             <NavDropdown.Item>
-                                <Link to="/about">About</Link>
+                                <Link to="/about"><button>About</button></Link>
                             </NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
@@ -79,19 +79,19 @@ const HeaderBar = ({ logout }) => {
                         >
                             <NavDropdown.Item onClick={handleOnClickProfile}>Profile</NavDropdown.Item>
                             <NavDropdown.Item>
-                                <Link to="/organizations">My Organizations</Link>
+                                <Link to="/organizations"><button>My Organizations</button></Link>
                             </NavDropdown.Item>
                             <NavDropdown.Item>
-                                <Link to="/my-quizzes">My Quizzes</Link>
+                                <Link to="/my-quizzes"><button>My Quizzes</button></Link>
                             </NavDropdown.Item>
                             <NavDropdown.Item >
-                                <Link to="/admin">Admin</Link>
+                                <Link to="/admin"><button>Admin</button></Link>
                             </NavDropdown.Item>
-                            <NavDropdown.Item onClick={logout}>Log Out</NavDropdown.Item>
+                            <NavDropdown.Item onClick={logout}><button>Log Out</button></NavDropdown.Item>
                         </NavDropdown>
                     ) : (
                             <Link to="/signin" className='btn btn-primary d-flex align-items-center'>
-                                Sign in
+                                <button>Sign in</button>
                             </Link>
                     )}
                 </div>
