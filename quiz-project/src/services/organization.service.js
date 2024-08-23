@@ -24,7 +24,7 @@ export const  createOrganizationInDB = async (org) => {
     const pathForUserUpdate=`users/${Object.keys(org.owner)[0]}/organizations/${id}`;
     const dataRef = ref(db, pathForUserUpdate);
 
-    const data= {organizationID: id, organizationName: org.name, organizationImage: org.imgUrl}
+    const data= {organizationID: id, organizationName: org.name, organizationImage: org.imgUrl, role: 'owner'}
     await update(dataRef, data);
 
     return id;

@@ -33,14 +33,16 @@ const SingleOrganization = ({ orgId }) => {
             if (role === '1') {
                 await updateOrganizationParticipants({ [id]: username }, 'students', orgInfo.id);
                 updatedOrgInfo.students = { ...updatedOrgInfo.students, [id]: username };
+                await updateOrganizationUserInfo(id, orgInfo.id, orgInfo.name, orgInfo.imgUrl, 'student');
             } else if (role === '2') {
                 await updateOrganizationParticipants({ [id]: username }, 'educators', orgInfo.id);
                 updatedOrgInfo.educators = { ...updatedOrgInfo.educators, [id]: username };
+                await updateOrganizationUserInfo(id, orgInfo.id, orgInfo.name, orgInfo.imgUrl, 'educator');
             } else if (role === '3') {
                 await updateOrganizationParticipants({ [id]: username }, 'owner', orgInfo.id);
                 updatedOrgInfo.owner = { ...updatedOrgInfo.owner, [id]: username };
+                await updateOrganizationUserInfo(id, orgInfo.id, orgInfo.name, orgInfo.imgUrl, 'owner');
             }
-            await updateOrganizationUserInfo(id, orgInfo.id, orgInfo.name, orgInfo.imgUrl);
             setOrgInfo(updatedOrgInfo);
             setParticipantInfo({ role: '', username: '' });
     

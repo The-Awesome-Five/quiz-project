@@ -47,14 +47,15 @@ export const editUserByUserId = async (userId, editedUser) => {
 }
 
 
-export const updateOrganizationUserInfo = async (uid, organizationId,organizationName, organizationImageUrl) => {
+export const updateOrganizationUserInfo = async (uid, organizationId,organizationName, organizationImageUrl, role) => {
     try {
         const updatePath = `users/${uid}/organizations`;
 
         const data = { [organizationId]: {
             organizationID: organizationId,
             organizationName: organizationName,
-            organizationImage: organizationImageUrl
+            organizationImage: organizationImageUrl,
+            role: role
         } };
     
         const dataRef = ref(db, updatePath);
