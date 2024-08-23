@@ -26,10 +26,8 @@ export const createQuizInFirebase = async (
 
     await set(quizRef, quizData);
 
-    alert("Quiz created successfully!");
   } catch (error) {
-    console.error("Error creating quiz:", error);
-    alert("Failed to create quiz. Please try again.");
+    throw new Error(error);
   }
 };
 

@@ -2,6 +2,7 @@ import React, {useContext, useState} from "react";
 import "./CreateQuiz.css";
 import { createQuizInFirebase } from "../../../services/quiz.service";
 import {AppContext} from "../../../appState/app.context.js";
+import {toast} from "react-toastify";
 
 const CreateQuiz = () => {
   const [quizTitle, setQuizTitle] = useState("");
@@ -35,6 +36,8 @@ const CreateQuiz = () => {
       correctAnswerIndex: 0,
     },
   ]);
+
+  console.log(userData)
 
   const addTag = () => {
     if (tagInput.trim() !== "") {
@@ -120,7 +123,7 @@ const CreateQuiz = () => {
         })),
         isPublic: isPublic,
         creator: {
-            userId: userData.userId,
+            userId: userData.uid,
             name: userData.username,
         }
       };
