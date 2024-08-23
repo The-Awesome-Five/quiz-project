@@ -26,7 +26,7 @@ export const AdminOrganisationView = () => {
     useEffect(() => {
         const fetchOrganizations = async () => {
             const organizations = await getAllOrganizations();
-            setOrganizationData(prevState => [...prevState, ...organizations]);
+            organizations && setOrganizationData(prevState => [...prevState, ...organizations]);
         }
         fetchOrganizations();
     },[]);
@@ -61,7 +61,9 @@ export const AdminOrganisationView = () => {
     return (
         <Container>
             <ListGroup>
-                {organizationData.map((organization) => (
+                {organizationData.length < 2 ?
+                    <h1>No Organizations</h1>
+                    : organizationData.map((organization) => (
                     <AdminOrganizationItem key={organization.uid}
                                            organization={organization}
                                            editOrgId={editOrgId}

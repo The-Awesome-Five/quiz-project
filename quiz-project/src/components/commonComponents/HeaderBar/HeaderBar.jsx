@@ -1,24 +1,28 @@
 import { useContext, useState, useEffect } from 'react';
 import './HeaderBar.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import { Container, Navbar, Nav, NavDropdown, Button, Spinner } from "react-bootstrap";
 import { AppContext } from '../../../appState/app.context';
+import {useAuthState} from "react-firebase-hooks/auth";
+import {auth} from "../../../firebase/config.js";
+import React from "react";
 
 const HeaderBar = ({ logout }) => {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const { userData } = useContext(AppContext);
+    const [user] = useAuthState(auth)
 
     useEffect(() => {
         if (userData === null) {
-        
+
             setLoading(true);
             setTimeout(() => {
                 setLoading(false);
-            }, 1000); 
+            }, 1000);
         } else {
-            setLoading(false); 
+            setLoading(false);
         }
     }, [userData]);
 
@@ -29,16 +33,16 @@ const HeaderBar = ({ logout }) => {
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
             <Container>
-                <Navbar.Brand href="/"><img src="../../../../public/img/quizhub-logo.png" alt="Logo" className="logo" /></Navbar.Brand>
+                <Link to="/"><img src="../../../../public/img/quizhub-logo.png" alt="Logo" className="logo" /></Link>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <NavDropdown title={<span className="fs-1">≡</span>} id="basic-nav-dropdown">
-                            <NavDropdown.Item href="/all-quizes">
-                                All Quizzes
+                            <NavDropdown.Item>
+                                <Link to="/all-quizzes">All Quizzes</Link>
                             </NavDropdown.Item>
-                            <NavDropdown.Item href="/abouts">
-                                About
+                            <NavDropdown.Item>
+                                <Link to="/about">About</Link>
                             </NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
@@ -56,15 +60,11 @@ const HeaderBar = ({ logout }) => {
                         </div>
                     </div>
                 </div>
-                <Nav.Link href="/leaderboard"><Button>Global Leaderboard</Button></Nav.Link>
-                <Nav.Link href="/gaming-modes"><Button>Gaming Modes</Button></Nav.Link>
+                <Link to="/leaderboard"><Button>Global Leaderboard</Button></Link>
+                <Link to="/gaming-modes"><Button>Gaming Modes</Button></Link>
 
                 <div className="login-section d-flex align-items-center ms-3">
-                    {loading ? (
-                        <Spinner animation="border" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </Spinner>
-                    ) : userData ? (
+                    {user && userData && userData.avatarUrl ? (
                         <NavDropdown
                             title={
                                 <img
@@ -78,21 +78,21 @@ const HeaderBar = ({ logout }) => {
                             align="end"
                         >
                             <NavDropdown.Item onClick={handleOnClickProfile}>Profile</NavDropdown.Item>
-                            <NavDropdown.Item href="/organizations">
-                                My Organizations
+                            <NavDropdown.Item>
+                                <Link to="/organizations">My Organizations</Link>
                             </NavDropdown.Item>
-                            <NavDropdown.Item href="/my-quizes">
-                                My Quizzes
+                            <NavDropdown.Item>
+                                <Link to="/my-quizzes">My Quizzes</Link>
                             </NavDropdown.Item>
-                            <NavDropdown.Item href="/admin">Admin Menu</NavDropdown.Item>
+                            <NavDropdown.Item >
+                                <Link to="/admin">Admin</Link>
+                            </NavDropdown.Item>
                             <NavDropdown.Item onClick={logout}>Log Out</NavDropdown.Item>
                         </NavDropdown>
                     ) : (
-                        !loading && (
-                            <a href="/signin" className='btn btn-primary d-flex align-items-center'>
+                            <Link to="/signin" className='btn btn-primary d-flex align-items-center'>
                                 Sign in
-                            </a>
-                        )
+                            </Link>
                     )}
                 </div>
             </Container>

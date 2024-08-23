@@ -22,7 +22,7 @@ export const AdminQuizItem = ({ quiz,
                 <Col xs={1}>
                     {quiz.avatar.includes('http')
                         ? <Image src={quiz.avatar} alt='Organization Image' thumbnail />
-                        : <Image src="https://img.freepik.com/premium-vector/school-logo-design_706452-12.jpg" alt='Organization Image' thumbnail />}
+                        : <Image src="https://img.freepik.com/premium-vector/quiz-logo-with-speech-bubble-icon_149152-811.jpg" alt='Organization Image' thumbnail />}
                 </Col>
                 <Col xs={2}>
                     {editQuizId === quiz.id

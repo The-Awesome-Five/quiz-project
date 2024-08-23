@@ -53,6 +53,7 @@ function App() {
                 const userData = data[Object.keys(data)[0]];
                 setAppState(prevState => ({ ...prevState, userData }));
             });
+
     }, [user]);
 
     const logout = async () => {
