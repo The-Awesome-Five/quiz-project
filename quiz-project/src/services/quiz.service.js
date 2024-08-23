@@ -36,7 +36,7 @@ export const getAllQuizzes = async () => {
   try {
     const quizzes = await get(ref(db, 'quizzes'));
     console.log('Raw Data');
-    console.log(quizzes);
+    console.log(quizzes.val());
     return Object.values(quizzes.val());
   } catch (e) {
     throw Error(e);
@@ -48,7 +48,7 @@ export const fetchQuizByPath = async (path) => {
 
   try {
     const quiz = await get(ref(db, path));
-    return Object.values(quiz.val());
+    return quiz.val();
   } catch (e) {
     throw Error(e);
   }
