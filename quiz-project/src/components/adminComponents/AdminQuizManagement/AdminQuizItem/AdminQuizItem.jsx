@@ -1,6 +1,8 @@
 import React, {useState} from 'react'
-import {Button, Col, Row, ListGroup, Form} from "react-bootstrap";
+import {Button, Col, Row, ListGroup, Form, Image} from "react-bootstrap";
 import {AdminQuestionItem} from "./AdminQuestionItem/AdminQuestionItem.jsx";
+
+// Avatar, Delete button, Creator / Organization
 
 export const AdminQuizItem = ({ quiz,
                                   editQuizId,
@@ -16,7 +18,12 @@ export const AdminQuizItem = ({ quiz,
 
     return (
         <ListGroup.Item>
-            <Row>
+            <Row style={{alignItems: "center"}}>
+                <Col xs={1}>
+                    {quiz.avatar.includes('http')
+                        ? <Image src={quiz.avatar} alt='Organization Image' thumbnail />
+                        : <Image src="https://img.freepik.com/premium-vector/school-logo-design_706452-12.jpg" alt='Organization Image' thumbnail />}
+                </Col>
                 <Col xs={2}>
                     {editQuizId === quiz.id
                         ? <Form.Control
@@ -70,6 +77,7 @@ export const AdminQuizItem = ({ quiz,
                             Edit
                         </Button>
                     }
+                    <Button variant="danger">Delete</Button>
                 </Col>
             </Row>
             <Row>
