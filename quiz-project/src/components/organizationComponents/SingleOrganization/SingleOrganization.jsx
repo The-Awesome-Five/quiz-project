@@ -4,6 +4,7 @@ import { AppContext } from "../../../appState/app.context";
 import "./SingleOrganization.css"
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getUserDataByUsername, updateOrganizationUserInfo } from "../../../services/user.service";
+import { Link } from "react-router-dom";
 const SingleOrganization = ({ orgId }) => {
     const [orgInfo, setOrgInfo] = useState(null);  
     const { userData } = useContext(AppContext);
@@ -103,21 +104,21 @@ const SingleOrganization = ({ orgId }) => {
                               </div>}
 
             <div className="p-4 rounded-3 shadow bg-light scrollable-container">
-                {orgInfo.owner && Object.values(orgInfo.owner).map((name, index) => (
+                {orgInfo.owner && Object.entries(orgInfo.owner).map(([id, name], index) => (
                     <div key={index} className="d-flex justify-content-between align-items-center py-2 border-bottom">
-                        <h3 className="mb-0">{name}</h3>
+                        <Link to={`/profile/${id}`}  className="mb-0" >{name} </Link>
                         <h5 className="mb-0 text-muted">Owner</h5>
                     </div>
                 ))}
-                {orgInfo.educators && Object.values(orgInfo.educators).map((name, index) => (
+                {orgInfo.educators && Object.entries(orgInfo.educators).map(([id, name], index) => (
                     <div key={index} className="d-flex justify-content-between align-items-center py-2 border-bottom">
-                        <h3 className="mb-0">{name}</h3>
+                         <Link to={`/profile/${id}`}  className="mb-0" >{name} </Link>
                         <h5 className="mb-0 text-muted">Educator</h5>
                     </div>
                 ))}
-                {orgInfo.students && Object.values(orgInfo.students).map((name, index) => (
+                {orgInfo.students && Object.entries(orgInfo.students).map(([id, name], index) => (
                     <div key={index} className="d-flex justify-content-between align-items-center py-2">
-                        <h3 className="mb-0">{name}</h3>
+                         <Link to={`/profile/${id}`}  className="mb-0" >{name} </Link>
                         <h5 className="mb-0 text-muted">Student</h5>
                     </div>
                 ))}
