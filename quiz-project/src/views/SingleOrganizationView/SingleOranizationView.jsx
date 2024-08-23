@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import SingleOrganization from "../../components/organizationComponents/SingleOrganization/SingleOrganization";
-
+import React from "react";
 const SingleOrganizationView =() =>{
 
     const organizationId= useParams();

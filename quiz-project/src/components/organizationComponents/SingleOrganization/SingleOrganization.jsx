@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { getSingleOrganization, updateOrganizationParticipants } from "../../../services/organization.service";
 import { AppContext } from "../../../appState/app.context";
 import "./SingleOrganization.css"

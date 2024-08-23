@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import React, { useContext, useState } from "react"
 import {AppContext} from "../../../appState/app.context";
 import { toast } from "react-toastify";
 import { createOrganizationInDB } from "../../../services/organization.service";
