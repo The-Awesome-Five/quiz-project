@@ -1,5 +1,5 @@
 import React from "react";
-import {Card, ListGroup} from "react-bootstrap";
+import {Button, Card, ListGroup} from "react-bootstrap";
 import {Link} from "react-router-dom";
 
 export const QuizItem = ({
@@ -11,12 +11,20 @@ export const QuizItem = ({
     const access = quiz.organizationID ? 'organizations' : 'public';
 
     return (
-        <Card border="primary" style={{ width: '18rem' }}>
-            <Card.Img variant="top" src={quiz.avatar} />
+        <Card border="success" bg="primary" >
+            <Card.Img variant="top" src={quiz.avatar.includes('http') ?
+                quiz.avatar :
+                'https://img.freepik.com/premium-vector/quiz-logo-with-speech-bubble-icon_149152-811.jpg'}
+                      className="w-100"
+                      style={{ height: '150px', objectFit: 'fill' }}/>
             <Card.Body>
                 <Card.Title>{quiz.name}</Card.Title>
                 <Card.Text>
-                    {quiz.description}
+                    {quiz.description
+                        ? quiz.description.length > 100
+                            ? quiz.description.slice(0,100)
+                            : quiz.description
+                        : 'No description available'}
                 </Card.Text>
             </Card.Body>
             <Card.Body>
@@ -26,7 +34,7 @@ export const QuizItem = ({
                         path: `/quizzes/${access}/${categoryKey}/${diffKey}/${quiz.quizId}`
                     }}
                 >
-                    Start Quiz
+                    <button>Start Quiz</button>
                 </Link>
             </Card.Body>
         </Card>
