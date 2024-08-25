@@ -1,18 +1,22 @@
 import React from 'react';
+import {Card, Col, Row} from "react-bootstrap";
 
-export const Question = ({ question }) => {
+export const Question = ({ question, quizTitle }) => {
 
     return (
-        <div>
-            <h1>{question.question}</h1>
-            <ul>
+        <Card className="text-center align-items-center">
+            <Card.Title>{quizTitle}</Card.Title>
+            <Row className="text-center">
+                {question.question}
+            </Row>
+            <Row>
                 {question.answers.map((answer, index) => {
                     return (
-                        <li key={index}>{String.fromCharCode(65 + index)}) {answer}</li>
+                        <Col key={index}>{String.fromCharCode(65 + index)}) {answer}</Col>
                     )
                 })}
-            </ul>
-        </div>
+            </Row>
+        </Card>
     )
 
 }

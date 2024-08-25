@@ -3,6 +3,7 @@ import {useLocation} from "react-router-dom";
 import {fetchQuizByPath} from "../../services/quiz.service";
 import {toast} from "react-toastify";
 import {Question} from "./Question.jsx";
+import {Card, Container} from "react-bootstrap";
 
 export const Quiz = () => {
 
@@ -46,13 +47,20 @@ export const Quiz = () => {
 
     return (
 
-        <div>
+        <Container className="d-flex justify-content-center">
             {!isStarted
-                ? <button onClick={() => setIsStarted(true)}>Start</button>
+                ? <Card className="w-50 text-center align-items-center">
+                    <Card.Img variant="top" src={quiz.avatar && quiz.avatar.includes('http') ?
+                        quiz.avatar :
+                        'https://img.freepik.com/premium-vector/quiz-logo-with-speech-bubble-icon_149152-811.jpg'}
+                              className="w-50 h-50 object-fill m-1"/>
+                    <Card.Title>{quiz.name}</Card.Title>
+                    <Card.Text className="text-center">{quiz.description}</Card.Text>
+                    <button onClick={() => setIsStarted(true)}>Start</button>
+                </Card>
                 : (
                     <div>
-                        <h1>{quiz.title}</h1>
-                        <Question question={quiz.questions[indexOfQuestion]}/>
+                    <Question question={quiz.questions[indexOfQuestion]} quizTitle={quiz.name}/>
                         {
                             indexOfQuestion === quiz.questions.length - 1
                                 ? <button onClick={submit}>Submit Quiz</button>
@@ -63,7 +71,7 @@ export const Quiz = () => {
                         <button onClick={backwards} disabled={indexOfQuestion === 0}>Back</button>
                     </div>
                 )}
-        </div>
+        </Container>
 
 
     )
