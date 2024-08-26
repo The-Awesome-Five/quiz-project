@@ -58,10 +58,17 @@ export const fetchQuizByPath = async (path) => {
 export const submitQuizByUser = async (info, path, uid) =>{
   try{
     const pathForUpdate= path+`/submission/${uid}`
-    const dataRef = ref(db, pathForUpdate);
 
-    await update(dataRef, info);
+    const oldScore= await get(ref(db, `${pathForUpdate}/score`)) || 0;
 
+    const scoreToCheck = oldScore.val() || 0;
+
+    if (!scoreToCheck || scoreToCheck < info.score) {
+
+      const dataRef = ref(db, pathForUpdate);
+
+      await update(dataRef, info);
+    }
 
   }
   catch(e){
@@ -74,17 +81,9 @@ export const saveQuizToUser = async (quizId, uid, score) =>{
   try{
     const pathForUpdate= `users/${uid}/completed/${quizId}`;
 
-    console.log(pathForUpdate);
-
     const oldScore= await get(ref(db, pathForUpdate)) || 0;
 
-    console.log(oldScore);
-
-    console.log(oldScore.val())
-
     const scoreToCheck = oldScore.val() || 0;
-
-    console.log(scoreToCheck);
 
     if (!scoreToCheck || scoreToCheck < score){
 
