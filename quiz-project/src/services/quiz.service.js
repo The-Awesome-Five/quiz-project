@@ -1,4 +1,4 @@
-import {get, getDatabase, ref, set} from "firebase/database";
+import {get, getDatabase, ref, set, update} from "firebase/database";
 
 const db = getDatabase();
 
@@ -53,4 +53,45 @@ export const fetchQuizByPath = async (path) => {
     throw Error(e);
   }
 
+}
+
+export const submitQuizByUser = async (info, path, uid) =>{
+  try{
+    const pathForUpdate= path+`/submission/${uid}`
+
+    const oldScore= await get(ref(db, `${pathForUpdate}/score`)) || 0;
+
+    const scoreToCheck = oldScore.val() || 0;
+
+    if (!scoreToCheck || scoreToCheck < info.score) {
+
+      const dataRef = ref(db, pathForUpdate);
+
+      await update(dataRef, info);
+    }
+
+  }
+  catch(e){
+    throw new Error(e);
+  }
+
+}
+
+export const saveQuizToUser = async (quizId, uid, score) =>{
+  try{
+    const pathForUpdate= `users/${uid}/completed/${quizId}`;
+
+    const oldScore= await get(ref(db, pathForUpdate)) || 0;
+
+    const scoreToCheck = oldScore.val() || 0;
+
+    if (!scoreToCheck || scoreToCheck < score){
+
+      await update(ref(db), {
+        [`users/${uid}/completed/${quizId}`]: score,
+      })}
+  }
+  catch(e){
+    throw new Error(e);
+  }
 }

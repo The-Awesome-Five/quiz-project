@@ -20,7 +20,7 @@ export const AdminQuizItem = ({ quiz,
         <ListGroup.Item>
             <Row style={{alignItems: "center"}}>
                 <Col xs={1}>
-                    {quiz.avatar.includes('http')
+                    {quiz.avatar && quiz.avatar.includes('http')
                         ? <Image src={quiz.avatar} alt='Organization Image' thumbnail />
                         : <Image src="https://img.freepik.com/premium-vector/quiz-logo-with-speech-bubble-icon_149152-811.jpg" alt='Organization Image' thumbnail />}
                 </Col>
