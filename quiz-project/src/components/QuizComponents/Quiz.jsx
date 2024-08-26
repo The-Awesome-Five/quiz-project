@@ -12,6 +12,7 @@ export const Quiz = () => {
     const [indexOfQuestion, setIndexOfQuestion] = useState(0);
     const [isStarted, setIsStarted] = useState(false);
     const [score, setScore] = useState(0);
+
     const location = useLocation();
     const path = location.state?.path;
 
@@ -78,6 +79,7 @@ export const Quiz = () => {
                             question={quiz.questions[indexOfQuestion]}
                             quizTitle={quiz.name}
                             handleAnswer={handleAnswer}/>
+
                         {
                             indexOfQuestion === quiz.questions.length - 1
                                 ? <button onClick={submit}>Submit Quiz</button>

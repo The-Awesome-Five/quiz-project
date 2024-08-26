@@ -1,15 +1,13 @@
 import React, {useState} from 'react';
 import {Card, Col, Row} from "react-bootstrap";
-import backdrop from "bootstrap/js/src/util/backdrop.js";
 
 export const Question = ({question, quizTitle, handleAnswer}) => {
 
-    const [selectedAnswer, setSelectedAnswer] = useState(null);
+    const [resetState, setResetState] = useState(true);
 
     const changeAnswer = (index) => {
-        setSelectedAnswer(index);
-
         handleAnswer(index);
+        setResetState(!resetState);
     }
 
     return (
@@ -21,7 +19,7 @@ export const Question = ({question, quizTitle, handleAnswer}) => {
             <Row className="d-flex flex-column">
                 {question.answers.map((answer, index) => {
                     return (
-                        <Col key={index} style={selectedAnswer === index
+                        <Col key={index} style={question.selectedAnswer === index
                             ? {background: "blue"}
                             : {background: "green"}}>
                              {String.fromCharCode(65 + index)}) {
