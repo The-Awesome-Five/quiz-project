@@ -1,9 +1,9 @@
-import React, {useContext, useState} from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "./CreateQuiz.css";
 import { createQuizInFirebase } from "../../../services/quiz.service";
-import {AppContext} from "../../../appState/app.context.js";
-import {toast} from "react-toastify";
-import { addQuestionToPublicBank, addQuestionToOrgBank} from "../../../services/quizBank.service.js";
+import { AppContext } from "../../../appState/app.context.js";
+import { toast } from "react-toastify";
+import { addQuestionToPublicBank, addQuestionToOrgBank, getAllQuestionFromBank } from "../../../services/quizBank.service.js";
 
 const CreateQuiz = () => {
   const [quizTitle, setQuizTitle] = useState("");
@@ -28,17 +28,27 @@ const CreateQuiz = () => {
     showCorrectAnswers: false,
   });
 
+  const Console = prop => (
+    console[Object.keys(prop)[0]](...Object.values(prop))
+    ,null // ➜ React components must return something
+  )
+
   const { userData } = useContext(AppContext);
+  const [questions, setQuestions] = useState([{ questionText: "", answers: ["", "", "", ""], correctAnswerIndex: 0 }]);
+  const [publicQuestions, setPublicQuestions] = useState([]);
 
-  const [questions, setQuestions] = useState([
-    {
-      questionText: "",
-      answers: ["", "", "", ""],
-      correctAnswerIndex: 0,
-    },
-  ]);
-
-  console.log(userData)
+  // Fetch public questions from the question bank on component mount
+  useEffect(() => {
+    const fetchPublicQuestions = async () => {
+      try {
+        const fetchedQuestions = await getAllQuestionFromBank();
+        setPublicQuestions(fetchedQuestions);
+      } catch (error) {
+        console.error("Error fetching public questions:", error);
+      }
+    };
+    fetchPublicQuestions();
+  }, []);
 
   const addTag = () => {
     if (tagInput.trim() !== "") {
@@ -80,10 +90,7 @@ const CreateQuiz = () => {
   };
 
   const addQuestion = () => {
-    setQuestions([
-      ...questions,
-      { questionText: "", answers: ["", "", "", ""], correctAnswerIndex: 0 },
-    ]);
+    setQuestions([...questions, { questionText: "", answers: ["", "", "", ""], correctAnswerIndex: 0 }]);
   };
 
   const handleCorrectAnswerChange = (questionIndex, answerIndex) => {
@@ -99,22 +106,16 @@ const CreateQuiz = () => {
   const handleCreateQuiz = async () => {
     try {
       const quizData = {
-        quizId: `quiz_${Date.now()}`,  
+        quizId: `quiz_${Date.now()}`,
         name: quizTitle,
         avatar: pictureUrl,
         description: description,
         numberOfQuestions: questions.length,
         tags: tags.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}),
         ruleSet: {
-          timeLimitPerQuiz: timeOptions.isTimeLimitPerQuizActive
-            ? gameRules.timeLimitPerQuiz
-            : null,
-          timeLimitPerQuestion: timeOptions.isTimeLimitPerQuestionActive
-            ? gameRules.timeLimitPerQuestion
-            : null,
-          openDuration: timeOptions.isOpenDurationActive
-            ? gameRules.openDuration
-            : null,
+          timeLimitPerQuiz: timeOptions.isTimeLimitPerQuizActive ? gameRules.timeLimitPerQuiz : null,
+          timeLimitPerQuestion: timeOptions.isTimeLimitPerQuestionActive ? gameRules.timeLimitPerQuestion : null,
+          openDuration: timeOptions.isOpenDurationActive ? gameRules.openDuration : null,
           showCorrectAnswers: gameRules.showCorrectAnswers,
         },
         questions: questions.map((q) => ({
@@ -128,46 +129,34 @@ const CreateQuiz = () => {
           name: userData.username,
         },
       };
-  
-     
-      await createQuizInFirebase(
-        quizData,
-        !isPublic,
-        organisationId,
-        category,
-        difficultyLevel
-      );
-  
-      
+
+      await createQuizInFirebase(quizData, !isPublic, organisationId, category, difficultyLevel);
+
       const promises = questions.map(async (question) => {
         const questionData = {
-          questionId: `question_${Date.now()}`, 
+          questionId: `question_${Date.now()}`,
           question: question.questionText,
           answers: question.answers.reduce((acc, answer, index) => ({
             ...acc,
-            [`answer${String.fromCharCode(65 + index)}`]: index === question.correctAnswerIndex
+            [`answer${String.fromCharCode(65 + index)}`]: index === question.correctAnswerIndex,
           }), {}),
           tags: tags.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}),
         };
-  
-        
+
         if (question.addToPublicBank) {
           return addQuestionToPublicBank(questionData, category, difficultyLevel);
         } else {
           return addQuestionToOrgBank(questionData, organisationId, category, difficultyLevel);
         }
       });
-  
-  
+
       await Promise.all(promises);
-  
       toast.success("Quiz and questions successfully created!");
     } catch (error) {
       console.error("Error creating quiz or adding questions:", error);
       toast.error("Failed to create quiz. Please try again.");
     }
   };
-
 
   const handleAddToPublicBankChange = (questionIndex, checked) => {
     const updatedQuestions = [...questions];
@@ -178,6 +167,7 @@ const CreateQuiz = () => {
   return (
     <div className="container create-quiz-wrapper">
       <div className="row">
+        {/* Left Panel: Quiz Creation Form */}
         <div className="col-md-8 form-panel">
           <div className="quiz-form">
             <label htmlFor="quizTitle" className="form-label">
@@ -220,7 +210,6 @@ const CreateQuiz = () => {
               <option value="science">Science</option>
               <option value="history">History</option>
               <option value="math">Math</option>
-              {/* Add more categories as needed */}
             </select>
 
             <label htmlFor="pictureUrl" className="form-label">
@@ -357,112 +346,129 @@ const CreateQuiz = () => {
           </div>
         </div>
 
+        {/* Right Panel: Public Questions */}
         <div className="col-md-4 question-bank-panel ms-4">
-          <div className="search-category">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Search a category"
-            />
+  <div className="search-category">
+    <input
+      type="text"
+      className="form-control"
+      placeholder="Search a category"
+    />
+  </div>
+  <div className="question-bank">
+    {publicQuestions.length === 0 ? (
+      <p>No public questions available.</p>
+    ) : (
+      publicQuestions.map((question, index) => {
+
+        return (
+          <div key={index} className="question-item">
+            <h6>{question?.question || "No question text"}</h6>
+            <ul>
+              {question?.answers && Object.entries(question.answers).map(([answer, isCorrect]) => (
+                <li key={answer} style={{ color: isCorrect ? "green" : "black" }}>
+                  {answer}
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className="question-bank"></div>
-        </div>
-      </div>
-
-      <hr />
-
-      <div className="row mt-4">
-      <div className="col-md-12">
-  <h4>Create Questions</h4>
-  {questions.map((question, questionIndex) => (
-    <div key={questionIndex} className="mb-4 question-box">
-      <div className="d-flex justify-content-between align-items-center mb-2">
-        <label className="form-label">
-          Question {questionIndex + 1}
-        </label>
-        <button
-          className="btn btn-danger btn-sm"
-          onClick={() => removeQuestion(questionIndex)}
-        >
-          Remove Question
-        </button>
-      </div>
-      <input
-        type="text"
-        className="form-control"
-        placeholder="Enter your question"
-        value={question.questionText}
-        onChange={(e) =>
-          handleQuestionChange(questionIndex, e.target.value)
-        }
-      />
-
-      <div className="row mt-3">
-        {question.answers.map((answer, answerIndex) => (
-          <div className="col-md-6 mb-3" key={answerIndex}>
-            <input
-              type="text"
-              className="form-control"
-              placeholder={`Answer ${answerIndex + 1}`}
-              value={answer}
-              onChange={(e) =>
-                handleAnswerChange(
-                  questionIndex,
-                  answerIndex,
-                  e.target.value
-                )
-              }
-            />
-            <div className="form-check mt-2">
-              <input
-                className="form-check-input"
-                type="radio"
-                name={`correctAnswer${questionIndex}`}
-                checked={question.correctAnswerIndex === answerIndex}
-                onChange={() =>
-                  handleCorrectAnswerChange(questionIndex, answerIndex)
-                }
-              />
-              <label className="form-check-label">
-                Mark as Correct Answer
-              </label>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Checkbox for adding to public question bank */}
-      <div className="form-check mt-3">
-        <input
-          className="form-check-input"
-          type="checkbox"
-          id={`addToPublicBank${questionIndex}`}
-          checked={question.addToPublicBank || false}
-          onChange={(e) =>
-            handleAddToPublicBankChange(questionIndex, e.target.checked)
-          }
-        />
-        <label className="form-check-label" htmlFor={`addToPublicBank${questionIndex}`}>
-          Add this question to the public bank
-        </label>
-      </div>
-    </div>
-  ))}
-
-  <button className="btn btn-secondary" onClick={addQuestion}>
-    Add Another Question
-  </button>
+        );
+      })
+    )}
+  </div>
 </div>
 
       </div>
 
+      <hr />
+
+      {/* Create Questions Section */}
+      <div className="row mt-4">
+        <div className="col-md-12">
+          <h4>Create Questions</h4>
+          {questions.map((question, questionIndex) => (
+            <div key={questionIndex} className="mb-4 question-box">
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <label className="form-label">
+                  Question {questionIndex + 1}
+                </label>
+                <button
+                  className="btn btn-danger btn-sm"
+                  onClick={() => removeQuestion(questionIndex)}
+                >
+                  Remove Question
+                </button>
+              </div>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Enter your question"
+                value={question.questionText}
+                onChange={(e) =>
+                  handleQuestionChange(questionIndex, e.target.value)
+                }
+              />
+
+              <div className="row mt-3">
+                {question.answers.map((answer, answerIndex) => (
+                  <div className="col-md-6 mb-3" key={answerIndex}>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder={`Answer ${answerIndex + 1}`}
+                      value={answer}
+                      onChange={(e) =>
+                        handleAnswerChange(
+                          questionIndex,
+                          answerIndex,
+                          e.target.value
+                        )
+                      }
+                    />
+                    <div className="form-check mt-2">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name={`correctAnswer${questionIndex}`}
+                        checked={question.correctAnswerIndex === answerIndex}
+                        onChange={() =>
+                          handleCorrectAnswerChange(questionIndex, answerIndex)
+                        }
+                      />
+                      <label className="form-check-label">
+                        Mark as Correct Answer
+                      </label>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="form-check mt-3">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id={`addToPublicBank${questionIndex}`}
+                  checked={question.addToPublicBank || false}
+                  onChange={(e) =>
+                    handleAddToPublicBankChange(questionIndex, e.target.checked)
+                  }
+                />
+                <label className="form-check-label" htmlFor={`addToPublicBank${questionIndex}`}>
+                  Add this question to the public bank
+                </label>
+              </div>
+            </div>
+          ))}
+
+          <button className="btn btn-secondary" onClick={addQuestion}>
+            Add Another Question
+          </button>
+        </div>
+      </div>
+
       <div className="row d-grid mt-4">
         <div className="col-md-12 text-center">
-          <button
-            type="button"
-            className="btn btn-primary btn-create"
-            onClick={handleCreateQuiz}
-          >
+          <button type="button" className="btn btn-primary btn-create" onClick={handleCreateQuiz}>
             Create Quiz
           </button>
         </div>

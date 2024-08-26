@@ -35,13 +35,21 @@ export const getQuestionFromBank = async (path) => {
 export const getAllQuestionFromBank = async () => {
     try {
         const path1 = 'questionBank/public'; 
-        const path2 = 'questionBank/organization'; 
         const snapshot1 = await get(ref(db, `${path1}`));  
-        const snapshot2 = await get(ref(db, `${path2}`));  
         const data1 = snapshot1.exists() ? snapshot1.val() : {};
-        const data2 = snapshot2.exists() ? snapshot2.val() : {};
-        const combinedData = { ...data1, ...data2 };
-        return Object.values(combinedData);
+        let question = {}
+        Object.values(data1).forEach(element => {
+            Object.values(element).forEach(q => {
+                Object.values(q).forEach(qu => {
+                    question[qu.questionId] = {
+                        question:qu.question
+                    }
+                })
+                
+            })
+        });
+
+        return Object.values(question);
     } catch (error) {
         console.error("Error fetching data:", error);
         return [];
