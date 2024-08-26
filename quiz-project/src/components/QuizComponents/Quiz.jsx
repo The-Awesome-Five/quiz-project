@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from "react";
-import {useLocation} from "react-router-dom";
-import {fetchQuizByPath} from "../../services/quiz.service";
+import React, {useContext, useEffect, useState} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
+import {fetchQuizByPath, saveQuizToUser, submitQuizByUser} from "../../services/quiz.service";
 import {toast} from "react-toastify";
 import {Question} from "./Question.jsx";
 import {Card, Container} from "react-bootstrap";
+import {AppContext} from "../../appState/app.context.js";
 
 export const Quiz = () => {
 
@@ -12,9 +13,11 @@ export const Quiz = () => {
     const [indexOfQuestion, setIndexOfQuestion] = useState(0);
     const [isStarted, setIsStarted] = useState(false);
     const [score, setScore] = useState(0);
+    const { userData } = useContext(AppContext)
 
     const location = useLocation();
     const path = location.state?.path;
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -55,9 +58,29 @@ export const Quiz = () => {
     }
 
 
-    const submit = () => {
-        console.log('answers');
-        console.log(answers);
+    const submit = async () => {
+
+        const score = quiz.questions.reduce((accScore, currQuestion, currIndex) => {
+
+            if (currQuestion.correctAnswerIndex === answers[currIndex]) {
+                accScore+=1;
+            }
+
+            return accScore;
+        },0);
+
+        try {
+            await submitQuizByUser({answers, score}, path, userData.uid);
+
+            await saveQuizToUser(quiz.quizId, userData.uid, score);
+
+            toast.success('Quiz has been submitted!')
+
+            navigate('/');
+        } catch (e) {
+            toast.error(e)
+        }
+
     }
 
     return (
