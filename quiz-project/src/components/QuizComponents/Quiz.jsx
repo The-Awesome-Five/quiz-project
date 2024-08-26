@@ -8,8 +8,10 @@ import {Card, Container} from "react-bootstrap";
 export const Quiz = () => {
 
     const [quiz, setQuiz] = useState([])
+    const [answers, setAnswers] = useState([]);
     const [indexOfQuestion, setIndexOfQuestion] = useState(0);
     const [isStarted, setIsStarted] = useState(false);
+    const [score, setScore] = useState(0);
     const location = useLocation();
     const path = location.state?.path;
 
@@ -20,9 +22,6 @@ export const Quiz = () => {
 
             try {
                 const quiz = await fetchQuizByPath(path);
-
-                console.log('quiz')
-                console.log(quiz)
 
                 setQuiz(quiz);
 
@@ -41,8 +40,23 @@ export const Quiz = () => {
     const backwards = () => {
         setIndexOfQuestion(indexOfQuestion - 1);
     }
+
+    const handleAnswer = (selectedIndex) => {
+
+        quiz.questions[indexOfQuestion].selectedAnswer = selectedIndex;
+
+        setAnswers((prevAnswers) => {
+            prevAnswers[indexOfQuestion] = selectedIndex;
+
+            return prevAnswers;
+        });
+
+    }
+
+
     const submit = () => {
-        console.log('submit')
+        console.log('answers');
+        console.log(answers);
     }
 
     return (
@@ -60,7 +74,10 @@ export const Quiz = () => {
                 </Card>
                 : (
                     <div>
-                    <Question question={quiz.questions[indexOfQuestion]} quizTitle={quiz.name}/>
+                        <Question
+                            question={quiz.questions[indexOfQuestion]}
+                            quizTitle={quiz.name}
+                            handleAnswer={handleAnswer}/>
                         {
                             indexOfQuestion === quiz.questions.length - 1
                                 ? <button onClick={submit}>Submit Quiz</button>

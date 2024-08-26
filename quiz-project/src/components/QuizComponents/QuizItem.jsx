@@ -41,20 +41,3 @@ export const QuizItem = ({
     )
 
 }
-
-/*  <Card style={{ width: '18rem' }}>
-            <Card.Body>
-                <Card.Title>{quiz.name}</Card.Title>
-                <Card.Text>
-                    {quiz.description}
-                </Card.Text>
-                <Link
-                    to={`/quizzes/${quiz.quizId}`}
-                    state={{
-                        path: `/quizzes/${access}/${categoryKey}/${diffKey}/${quiz.quizId}`
-                    }}
-                >
-                    Start Quiz
-                </Link>
-            </Card.Body>
-        </Card>*/
