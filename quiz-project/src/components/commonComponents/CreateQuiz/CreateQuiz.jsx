@@ -3,8 +3,7 @@ import "./CreateQuiz.css";
 import { createQuizInFirebase } from "../../../services/quiz.service";
 import { AppContext } from "../../../appState/app.context.js";
 import { toast } from "react-toastify";
-import { addQuestionToPublicBank, addQuestionToOrgBank, getAllQuestionFromBank } from "../../../services/quizBank.service.js";
-
+import { addQuestionToPublicBank, addQuestionToOrgBank, getAllQuestionFromBank, getAllQuestionFromSearch } from "../../../services/quizBank.service.js";
 const CreateQuiz = () => {
   const [quizTitle, setQuizTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -28,16 +27,11 @@ const CreateQuiz = () => {
     showCorrectAnswers: false,
   });
 
-  const Console = prop => (
-    console[Object.keys(prop)[0]](...Object.values(prop))
-    ,null // ➜ React components must return something
-  )
-
   const { userData } = useContext(AppContext);
   const [questions, setQuestions] = useState([{ questionText: "", answers: ["", "", "", ""], correctAnswerIndex: 0 }]);
   const [publicQuestions, setPublicQuestions] = useState([]);
 
-  // Fetch public questions from the question bank on component mount
+  
   useEffect(() => {
     const fetchPublicQuestions = async () => {
       try {
@@ -163,6 +157,23 @@ const CreateQuiz = () => {
     updatedQuestions[questionIndex].addToPublicBank = checked;
     setQuestions(updatedQuestions);
   };
+
+ 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredQuestions, setFilteredQuestions] = useState([]);
+
+  const handleSearch = async (event) => {
+      const searchValue = event.target.value;  
+      setSearchTerm(searchValue);  
+
+      if (searchValue.trim() !== "") {
+          const questions = await getAllQuestionFromSearch(searchValue);
+          setFilteredQuestions(questions);
+      } else {
+          setFilteredQuestions([]);  
+      }
+  };
+  
 
   return (
     <div className="container create-quiz-wrapper">
@@ -348,34 +359,34 @@ const CreateQuiz = () => {
 
         {/* Right Panel: Public Questions */}
         <div className="col-md-4 question-bank-panel ms-4">
-  <div className="search-category">
-    <input
-      type="text"
-      className="form-control"
-      placeholder="Search a category"
-    />
-  </div>
-  <div className="question-bank">
-    {publicQuestions.length === 0 ? (
-      <p>No public questions available.</p>
-    ) : (
-      publicQuestions.map((question, index) => {
+        <div className="search-category">
+            <input
+                type="text"
+                className="form-control"
+                placeholder="Search a category"
+                onChange={handleSearch}  
+                value={searchTerm}  
+            />
+            <div className="question-bank">
+  {filteredQuestions.length === 0 && publicQuestions.length === 0 ? (
+    <p>No questions available</p>
+  ) : filteredQuestions.length === 0 && publicQuestions.length !== 0 ? (
+    publicQuestions.map((question, index) => (
+      <div key={index} className="question-item">
+        <h6>{question?.question || "No question text"}</h6>
+        
+      </div>
+    ))
+  ) : (
+    filteredQuestions.map((question, index) => (
+      <div key={index} className="question-item">
+        <h6>{question?.question || "No question text"}</h6>
+      </div>
+    ))
+  )}
+</div>
 
-        return (
-          <div key={index} className="question-item">
-            <h6>{question?.question || "No question text"}</h6>
-            <ul>
-              {question?.answers && Object.entries(question.answers).map(([answer, isCorrect]) => (
-                <li key={answer} style={{ color: isCorrect ? "green" : "black" }}>
-                  {answer}
-                </li>
-              ))}
-            </ul>
-          </div>
-        );
-      })
-    )}
-  </div>
+        </div>
 </div>
 
       </div>
