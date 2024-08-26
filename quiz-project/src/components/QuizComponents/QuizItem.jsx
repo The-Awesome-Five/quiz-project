@@ -13,7 +13,7 @@ export const QuizItem = ({
 
     return (
         <Card bg="success" className="shadow-lg p-3 mb-5 bg-white rounded align-items-center text-center" style={{border:"2px solid green"}}>
-            <Card.Img variant="top" src={quiz.avatar.includes('http') ?
+            <Card.Img variant="top" src={quiz.avatar && quiz.avatar.includes('http') ?
                 quiz.avatar :
                 'https://img.freepik.com/premium-vector/quiz-logo-with-speech-bubble-icon_149152-811.jpg'}
                       className="w-75 h-75 object-fill m-1"/>
