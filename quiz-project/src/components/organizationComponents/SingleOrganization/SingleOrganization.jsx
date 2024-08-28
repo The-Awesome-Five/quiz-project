@@ -14,7 +14,7 @@ const SingleOrganization = ({ orgId }) => {
         role: '',
         username: ''
     });
-
+    let flag= false;
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -40,6 +40,19 @@ const SingleOrganization = ({ orgId }) => {
             userData: updatedUserData,
         }));
         navigate('/');
+    }
+
+    const removeFromOrg = async (orgId, uid, role) =>{
+
+        const pathForUser= `users/${uid}/organizations/${orgId}`
+        const pathForOrg= `organizations/${orgId}/${role}/${uid}`
+        await leaveOrganizationUser(pathForUser,pathForOrg );
+        const updatedOrgInfo = { ...orgInfo };
+
+  
+        delete updatedOrgInfo[role][uid]
+        setOrgInfo(updatedOrgInfo)
+    
     }
     const handleAddParticipant = async () => {
         const { role, username } = participantInfo;
@@ -128,20 +141,23 @@ const SingleOrganization = ({ orgId }) => {
                     <div key={index} className="d-flex justify-content-between align-items-center py-2 border-bottom">
                         <Link to={`/profile/${id}`}  className="mb-0" >{name} </Link>
                         <h5 className="mb-0 text-muted">Owner</h5>
+                        {userData.uid===id? flag=true: <></>}
                     </div>
                 ))}
                 {orgInfo.educators && Object.entries(orgInfo.educators).map(([id, name], index) => (
                     <div key={index} className="d-flex justify-content-between align-items-center py-2 border-bottom">
                          <Link to={`/profile/${id}`}  className="mb-0" >{name} </Link>
                         <h5 className="mb-0 text-muted">Educator</h5>
-                        {userData.uid=== id ? <Button variant="danger" onClick={() =>leaveOrganization(orgInfo.id, userData.uid, 'educators')}>Delete</Button>: <></>}
+                        {userData.uid=== id ? <Button variant="danger" onClick={() =>leaveOrganization(orgInfo.id, userData.uid, 'educators')}>Leave</Button>: <></>}
+                        {flag ? <Button variant="danger" onClick={() =>removeFromOrg(orgInfo.id, id, 'educators')}>Remove</Button>: <></>}
                     </div>
                 ))}
                 {orgInfo.students && Object.entries(orgInfo.students).map(([id, name], index) => (
                     <div key={index} className="d-flex justify-content-between align-items-center py-2">
                          <Link to={`/profile/${id}`}  className="mb-0" >{name} </Link>
                         <h5 className="mb-0 text-muted">Student</h5>
-                        {userData.uid=== id ? <Button variant="danger" onClick={ () =>leaveOrganization(orgInfo.id, userData.uid, 'students')}>Delete</Button>: <></>}
+                        {userData.uid=== id ? <Button variant="danger" onClick={ () =>leaveOrganization(orgInfo.id, userData.uid, 'students')}>Leave</Button>: <></>}
+                        {flag ? <Button variant="danger" onClick={() =>removeFromOrg(orgInfo.id, id, 'students')}>Remove</Button>: <></>}
                     </div>
                 ))}
             </div>
