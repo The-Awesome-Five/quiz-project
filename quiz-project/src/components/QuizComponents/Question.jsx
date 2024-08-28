@@ -19,11 +19,11 @@ export const Question = ({question, quizTitle, handleAnswer}) => {
             <Row className="d-flex flex-column">
                 {question.answers.map((answer, index) => {
                     return (
-                        <Col key={index} style={question.selectedAnswer === index
-                            ? {background: "blue"}
-                            : {background: "green"}}>
+                        <Col key={index}>
                              {String.fromCharCode(65 + index)}) {
-                            <button onClick={() => changeAnswer(index)}>{answer}</button>
+                            <button style={question.selectedAnswer === index
+                                ? {background: "blue"}
+                                : {background: "green"}} onClick={() => changeAnswer(index)}>{answer}</button>
                         }</Col>
                     )
                 })}
