@@ -60,6 +60,11 @@ export const Quiz = () => {
 
     const submit = async () => {
 
+        if (answers.filter(x => !!x || x === 0).length !== quiz.questions.length) {
+            return toast.error('Not all questions have been filled!');
+
+        }
+
         const score = quiz.questions.reduce((accScore, currQuestion, currIndex) => {
 
             if (currQuestion.correctAnswerIndex === answers[currIndex]) {
