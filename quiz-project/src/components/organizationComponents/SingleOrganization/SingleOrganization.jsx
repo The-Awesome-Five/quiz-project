@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
-import { getSingleOrganization, updateOrganizationParticipants } from "../../../services/organization.service";
+import { getSingleOrganization, leaveOrganizationUser, updateOrganizationParticipants } from "../../../services/organization.service";
 import { AppContext } from "../../../appState/app.context";
 import "./SingleOrganization.css"
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getUserDataByUsername, updateOrganizationUserInfo } from "../../../services/user.service";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "react-bootstrap";
 const SingleOrganization = ({ orgId }) => {
     const [orgInfo, setOrgInfo] = useState(null);  
-    const { userData } = useContext(AppContext);
-
+    const { userData , setAppState} = useContext(AppContext);
+    const navigate= useNavigate()
     const [participantInfo, setParticipantInfo] = useState({
         role: '',
         username: ''
@@ -23,6 +24,23 @@ const SingleOrganization = ({ orgId }) => {
         });
     };
 
+    const leaveOrganization = async (orgId, uid, role) =>{
+
+        const pathForUser= `users/${uid}/organizations/${orgId}`
+        const pathForOrg= `organizations/${orgId}/${role}/${uid}`
+        await leaveOrganizationUser(pathForUser,pathForOrg );
+
+        const updatedUserData = { ...userData };
+
+        if (updatedUserData.organizations && updatedUserData.organizations[orgId]) {
+            delete updatedUserData.organizations[orgId];
+        };
+        setAppState((prevState) => ({
+            ...prevState,
+            userData: updatedUserData,
+        }));
+        navigate('/');
+    }
     const handleAddParticipant = async () => {
         const { role, username } = participantInfo;
         if (!username.trim() || !role) return;
@@ -116,12 +134,14 @@ const SingleOrganization = ({ orgId }) => {
                     <div key={index} className="d-flex justify-content-between align-items-center py-2 border-bottom">
                          <Link to={`/profile/${id}`}  className="mb-0" >{name} </Link>
                         <h5 className="mb-0 text-muted">Educator</h5>
+                        {userData.uid=== id ? <Button variant="danger" onClick={() =>leaveOrganization(orgInfo.id, userData.uid, 'educators')}>Delete</Button>: <></>}
                     </div>
                 ))}
                 {orgInfo.students && Object.entries(orgInfo.students).map(([id, name], index) => (
                     <div key={index} className="d-flex justify-content-between align-items-center py-2">
                          <Link to={`/profile/${id}`}  className="mb-0" >{name} </Link>
                         <h5 className="mb-0 text-muted">Student</h5>
+                        {userData.uid=== id ? <Button variant="danger" onClick={ () =>leaveOrganization(orgInfo.id, userData.uid, 'students')}>Delete</Button>: <></>}
                     </div>
                 ))}
             </div>

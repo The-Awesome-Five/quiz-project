@@ -73,3 +73,12 @@ export const getAllOrganizations = async () => {
         console.log(e);
     }
 }
+
+export const leaveOrganizationUser = async (pathForUser, pathForOrg) =>{
+    await update(ref(db), {
+        [`${pathForUser}`]: null,
+    });
+    await update(ref(db), {
+        [`${pathForOrg}`]: null,
+    });
+}
