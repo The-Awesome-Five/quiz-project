@@ -13,7 +13,7 @@ const CreateQuiz = () => {
   const [tagInput, setTagInput] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
   const [organisationId, setOrganisationId] = useState("12345");
-  const [difficultyLevel, setDifficultyLevel] = useState("easy");
+  const [difficultyLevel, setDifficultyLevel] = useState("");
   const [timeOptions, setTimeOptions] = useState({
     isTimeLimitPerQuizActive: false,
     isTimeLimitPerQuestionActive: false,
@@ -99,6 +99,39 @@ const CreateQuiz = () => {
 
   const handleCreateQuiz = async () => {
     try {
+      if(!quizTitle){
+        return toast.error('Please add a name for your quiz!');
+      }
+      
+      if(!description){
+        return toast.error('Please add a description for your quiz!');
+      }
+
+      if(!category){
+        return toast.error('Please select a category for your quiz!');
+      }
+
+      if(!difficultyLevel){
+        return toast.error('Please select a difficulty level to your quiz!');
+      }
+      
+      if(!pictureUrl){
+        return toast.error('Please add a picture url to your quiz!');
+      }
+      
+      if(questions.length == 0){
+        return toast.error('Please add at least a single question to your quiz!');
+      } else {
+        for (let question of questions) {
+            if (!question.questionText) {
+              return toast.error('Please add a name to your question!');
+            }
+            if(!question.answers.some(Boolean)) {
+              return toast.error('Please add at least a single answer to your question!');
+            }
+        }
+      }
+
       const quizData = {
         quizId: `quiz_${Date.now()}`,
         name: quizTitle,
@@ -217,10 +250,26 @@ const CreateQuiz = () => {
               value={category}
               onChange={(e) => setCategory(e.target.value)}
             >
-              <option value="">Select Category</option>
+              <option value="" selected disabled>Select Category</option>
               <option value="science">Science</option>
               <option value="history">History</option>
               <option value="math">Math</option>
+            </select>
+            
+            <label htmlFor="difficulty" className="form-label">
+              Difficulty
+            </label>
+            <select
+              name="difficulty"
+              id="difficulty"
+              className="form-select"
+              value={difficultyLevel}
+              onChange={(e) => setDifficultyLevel(e.target.value)}
+            >
+              <option value="" disabled selected>Select Difficulty</option>
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
             </select>
 
             <label htmlFor="pictureUrl" className="form-label">
