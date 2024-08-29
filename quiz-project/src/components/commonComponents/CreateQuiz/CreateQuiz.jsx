@@ -11,7 +11,7 @@ const CreateQuiz = () => {
   const [pictureUrl, setPictureUrl] = useState("");
   const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState("");
-  const [isPublic, setIsPublic] = useState(true);
+  const [isPrivate, setIsPrivate] = useState(false);
   const [organisationId, setOrganisationId] = useState("12345");
   const [difficultyLevel, setDifficultyLevel] = useState("easy");
   const [timeOptions, setTimeOptions] = useState({
@@ -117,14 +117,14 @@ const CreateQuiz = () => {
           answers: q.answers,
           correctAnswerIndex: q.correctAnswerIndex,
         })),
-        isPublic: isPublic,
+        isPublic: isPrivate,
         creator: {
           userId: userData.uid,
           name: userData.username,
         },
       };
 
-      await createQuizInFirebase(quizData, !isPublic, organisationId, category, difficultyLevel);
+      await createQuizInFirebase(quizData, isPrivate, organisationId, category, difficultyLevel);
 
       const promises = questions.map(async (question) => {
         const questionData = {
@@ -347,11 +347,11 @@ const CreateQuiz = () => {
                 type="checkbox"
                 className="form-check-input"
                 id="isPublic"
-                checked={isPublic}
-                onChange={() => setIsPublic(!isPublic)}
+                checked={isPrivate}
+                onChange={() => setIsPrivate(!isPrivate)}
               />
               <label className="form-check-label" htmlFor="isPublic">
-                Public Quiz (Uncheck for Private)
+                Private Quiz (Uncheck for Public)
               </label>
             </div>
           </div>
