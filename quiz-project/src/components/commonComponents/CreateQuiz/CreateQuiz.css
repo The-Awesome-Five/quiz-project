@@ -60,3 +60,12 @@
     color: black;
     border: 1px solid black;
 }
+
+
+#isPrivate:checked ~ .organizationsTab {
+    display: block !important;
+}
+
+.organizationsTab {
+    display: none !important;
+}

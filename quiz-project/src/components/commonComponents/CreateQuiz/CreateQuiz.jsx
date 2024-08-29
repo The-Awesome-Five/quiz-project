@@ -4,6 +4,7 @@ import { createQuizInFirebase } from "../../../services/quiz.service";
 import { AppContext } from "../../../appState/app.context.js";
 import { toast } from "react-toastify";
 import { addQuestionToPublicBank, addQuestionToOrgBank, getAllQuestionFromBank, getAllQuestionFromSearch } from "../../../services/quizBank.service.js";
+import { getUserOrganizations } from "../../../services/organization.service.js";
 const CreateQuiz = () => {
   const [quizTitle, setQuizTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -12,7 +13,7 @@ const CreateQuiz = () => {
   const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
-  const [organisationId, setOrganisationId] = useState("12345");
+  const [organisationId, setOrganisationId] = useState("");
   const [difficultyLevel, setDifficultyLevel] = useState("");
   const [timeOptions, setTimeOptions] = useState({
     isTimeLimitPerQuizActive: false,
@@ -118,6 +119,22 @@ const CreateQuiz = () => {
       if(!pictureUrl){
         return toast.error('Please add a picture url to your quiz!');
       }
+
+      if(timeOptions.isTimeLimitPerQuizActive && !gameRules.timeLimitPerQuiz){
+        return toast.error('Please enter a total time limit for your quiz!');
+      }
+
+      if(timeOptions.isTimeLimitPerQuestionActive && !gameRules.timeLimitPerQuestion){
+        return toast.error('Please enter a time limit per question!');
+      }
+
+      if(timeOptions.isOpenDurationActive && !gameRules.openDuration){
+        return toast.error('Please enter a duration of the quiz!');
+      }
+
+      if(isPrivate && !organisationId) {
+        return toast.error('You are not part of any organizations!');
+      }
       
       if(questions.length == 0){
         return toast.error('Please add at least a single question to your quiz!');
@@ -205,6 +222,21 @@ const CreateQuiz = () => {
       } else {
           setFilteredQuestions([]);  
       }
+  };
+
+  const [organizations, setOrganizations] = useState("");
+
+  const handleShowOrganizations = async () => {
+    setIsPrivate(!isPrivate);
+  
+    const userOrganizations = await getUserOrganizations(userData.uid);
+    let organizationsArray = [];
+    Object.values(userOrganizations).forEach((org, index) => {
+      organizationsArray[index] = org;
+      index++
+    });
+
+    setOrganizations(organizationsArray);
   };
   
 
@@ -394,21 +426,42 @@ const CreateQuiz = () => {
             <div className="form-check mb-3">
               <input
                 type="checkbox"
-                className="form-check-input"
-                id="isPublic"
+                className="form-check-input isPrivate"
+                id="isPrivate"
                 checked={isPrivate}
-                onChange={() => setIsPrivate(!isPrivate)}
+                onChange={handleShowOrganizations}
               />
-              <label className="form-check-label" htmlFor="isPublic">
+              <label className="form-check-label" htmlFor="isPrivate">
                 Private Quiz (Uncheck for Public)
               </label>
+
+              <div className="mb-3 mt-3 organizationsTab">
+                <label htmlFor="organization" className="form-label">
+                  Organization
+                </label>
+                <select
+                  name="organization"
+                  id="organization"
+                  className="form-select"
+                  value={organisationId}
+                  onChange={(e) => setOrganisationId(e.target.value)}
+                >
+                  <option value="" selected disabled>Please select an organization!</option>
+                  {organizations.length === 0 ? (
+                    <option value="">You are not a part of any organizations!</option>
+                  ) : ( organizations.map((organization, index) => (
+                    <option key={index} value={organization.organizationID}>{organization.organizationName}</option>
+                   ))
+                  )}
+                </select>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Right Panel: Public Questions */}
         <div className="col-md-4 question-bank-panel ms-4">
-        <div className="search-category">
+          <div className="search-category">
             <input
                 type="text"
                 className="form-control"
@@ -417,26 +470,25 @@ const CreateQuiz = () => {
                 value={searchTerm}  
             />
             <div className="question-bank">
-  {filteredQuestions.length === 0 && publicQuestions.length === 0 ? (
-    <p>No questions available</p>
-  ) : filteredQuestions.length === 0 && publicQuestions.length !== 0 ? (
-    publicQuestions.map((question, index) => (
-      <div key={index} className="question-item">
-        <h6>{question?.question || "No question text"}</h6>
-        
-      </div>
-    ))
-  ) : (
-    filteredQuestions.map((question, index) => (
-      <div key={index} className="question-item">
-        <h6>{question?.question || "No question text"}</h6>
-      </div>
-    ))
-  )}
-</div>
+              {filteredQuestions.length === 0 && publicQuestions.length === 0 ? (
+                <p>No questions available</p>
+              ) : filteredQuestions.length === 0 && publicQuestions.length !== 0 ? (
+                publicQuestions.map((question, index) => (
+                  <div key={index} className="question-item">
+                    <h6>{question?.question || "No question text"}</h6>
 
+                  </div>
+                ))
+              ) : (
+                filteredQuestions.map((question, index) => (
+                  <div key={index} className="question-item">
+                    <h6>{question?.question || "No question text"}</h6>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
         </div>
-</div>
 
       </div>
 
