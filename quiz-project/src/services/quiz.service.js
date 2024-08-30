@@ -48,9 +48,10 @@ export const fetchQuizByPath = async (path) => {
 
   try {
     const quiz = await get(ref(db, path));
+    console.log(path);
     return quiz.val();
   } catch (e) {
-    throw Error(e);
+    console.log(e)
   }
 
 }
