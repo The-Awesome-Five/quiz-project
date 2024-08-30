@@ -82,3 +82,10 @@ export const leaveOrganizationUser = async (pathForUser, pathForOrg) =>{
         [`${pathForOrg}`]: null,
     });
 }
+
+export const getAllOrganizationQuizzes= async(orgId) =>{
+    const path = `quizzes/organisation/${orgId}`;
+    const snapshot = await get(ref(db, `${path}`));
+    const info =Object.values(snapshot.val());
+   return info;
+}

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { getSingleOrganization, leaveOrganizationUser, updateOrganizationParticipants } from "../../../services/organization.service";
+import { getAllOrganizationQuizzes, getSingleOrganization, leaveOrganizationUser, updateOrganizationParticipants } from "../../../services/organization.service";
 import { AppContext } from "../../../appState/app.context";
 import "./SingleOrganization.css"
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 const SingleOrganization = ({ orgId }) => {
     const [orgInfo, setOrgInfo] = useState(null);  
+    const [orgQuizzes, setOrgQuizzes]= useState(null);
     const { userData , setAppState} = useContext(AppContext);
     const navigate= useNavigate()
     const [participantInfo, setParticipantInfo] = useState({
@@ -15,7 +16,6 @@ const SingleOrganization = ({ orgId }) => {
         username: ''
     });
     let flag= false;
-
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setParticipantInfo({
@@ -86,6 +86,8 @@ const SingleOrganization = ({ orgId }) => {
             try {
                 const data = await getSingleOrganization(orgId);
                 setOrgInfo(data);
+                const quizzes= await getAllOrganizationQuizzes(orgId);
+                setOrgQuizzes(quizzes);
             } catch (err) {
                 console.error("Error fetching organization:", err);
             }
@@ -94,8 +96,11 @@ const SingleOrganization = ({ orgId }) => {
         fetchOrganization();
     }, [orgId]);
 
+    const handleEditClick = (quiz) => {
+        navigate(`/edit-quiz/${quiz.quizId}`, { state: { quizData: quiz } });
+    };
 
-    if (!orgInfo) {
+    if (!orgInfo|| !userData ) {
         return <div>Loading...</div>; 
     }
 
@@ -162,44 +167,61 @@ const SingleOrganization = ({ orgId }) => {
                 ))}
             </div>
             <div className="p-4 rounded-3 shadow bg-light scrollable-container">
-                {orgInfo.quizzesId ? <div>{Object.entries(orgInfo.quizzesId).map(([quizId, quiz], index) => (
-                <div
-                key={index}
-                className="quiz-box d-flex flex-column align-items-center justify-content-center border m-3"
-                style={{
-                    width: "150px",
-                    height: "150px",
-                    border: "2px solid black",
-                    cursor: "pointer",
-                }}
-                onClick={() => console.log(`Quiz selected: ${quizId}`)}
-            >
-                <img
-                    src={quiz.quizAvatar}
-                    alt={`${quiz.name} logo`}
-                    style={{
-                        width: "80px",
-                        height: "80px",
-                        objectFit: "cover",
-                    }}
-                />
-                <p className="mt-2 text-center">{quiz.name}</p>
-            </div>
-            ))}</div> : <div> No Quizzes Have been made yet</div>}
-             <div
-                className="quiz-box d-flex align-items-center justify-content-center border m-3"
-                style={{
-                    width: "150px",
-                    height: "150px",
-                    border: "2px solid black",
-                    fontSize: "50px",
-                    cursor: "pointer",
-                }}
-                onClick={() => console.log('Navigate to create new quiz')} // TO BE IMPLEMENTED 
-            >
-                +
-            </div>
-            </div>
+    {orgQuizzes ? (
+        <div>
+            {orgQuizzes.map((quizObj, index) => {
+                const quizKey = Object.keys(quizObj)[0];
+                const quiz = quizObj[quizKey];
+
+                return (
+                    <div
+                        key={index}
+                        className="quiz-box d-flex flex-column align-items-center justify-content-center border m-3"
+                        style={{
+                            width: "250px",
+                            height: "250px",
+                            border: "2px solid black",
+                            cursor: "pointer",
+                        }}
+                        onClick={() => console.log(`Quiz selected: ${quiz.name}`)}
+                    >
+                        <img
+                            src={quiz.avatar}
+                            alt={`${quiz.name} logo`}
+                            style={{
+                                width: "80px",
+                                height: "80px",
+                                objectFit: "cover",
+                            }}
+                        />
+                        <p className="mt-2 text-center">{quiz.name}</p>
+                        <div>
+                        <button>StartQuiz</button>
+                        {(userData.organizations[orgId].role==='educator' || userData.organizations[orgId].role==='owner') ?
+                        <button onClick={() => handleEditClick(quiz)}>Edit</button> : <></> }
+                        </div>
+                      
+                    </div>
+                );
+            })}
+        </div>
+    ) : (
+        <div>No Quizzes Have been made yet</div>
+    )}
+    <span
+        className="quiz-box d-flex align-items-center justify-content-center border m-3"
+        style={{
+            width: "150px",
+            height: "150px",
+            border: "2px solid black",
+            fontSize: "50px",
+            cursor: "pointer",
+        }}
+        onClick={() => navigate('/create-quiz')}
+    >
+        +
+    </span>
+</div>
         </div>
         );
 

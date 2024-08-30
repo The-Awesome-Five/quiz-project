@@ -30,9 +30,7 @@ import {
 import {AdminQuizMenuView} from "./views/AdminMenu/AdminQuizMenu/AdminQuizMenuView/AdminQuizMenuView.jsx";
 import {AllQuizzes} from "./views/AllQuizzes/AllQuizzes.jsx";
 import {Quiz} from "./components/QuizComponents/Quiz.jsx";
-import {
-    AdminQuestionBankView
-} from "./views/AdminMenu/AdminQuestionBankMenu/AdminQuestionBankView/AdminQuestionBankView.jsx";
+import EditQuizForm from './components/QuizComponents/QuizEdit/QuizEdit.jsx';
 
 function App() {
     const [count, setCount] = useState(0);
@@ -81,8 +79,6 @@ function App() {
                         <Route path="/user-management" element={<AdminUserMenuView />} />
                         <Route path="/organization-management" element={<AdminOrganisationView />} />
                         <Route path="/quiz-management" element={<AdminQuizMenuView />} />
-                        <Route path="/qbank-management" element={<AdminQuestionBankView />} />
-
 
                         <Route path="/all-quizes" element={<AllQuizzes />} />
                         <Route path="/quizzes/:quizId" element={<Quiz />} />
@@ -95,6 +91,7 @@ function App() {
                         <Route path='/edit-profile' element={<EditProfile />} />
                         <Route path="/organization/:organizationId" element={< SingleOrganizationView/>} />
                         <Route path='/create-quiz' element={<CreateQuiz/>} />
+                        <Route path='/edit-quiz/:quizId' element={<EditQuizForm/>}/>
                     </Routes>
                 </div>
             </ButtonEffectsProvider>
