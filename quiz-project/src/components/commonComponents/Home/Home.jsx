@@ -28,7 +28,7 @@ const Home = () => {
 
         const fetchQuizzes = async () => {
             const quizzes = await getAllQuizzes();
-            setQuizData(prevState => [...prevState, ...quizzes]);
+            setQuizData(quizzes);
         }
 
         try {

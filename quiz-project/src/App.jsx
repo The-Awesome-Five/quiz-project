@@ -34,7 +34,7 @@ import EditQuizForm from './components/QuizComponents/QuizEdit/QuizEdit.jsx';
 import {
     AdminQuestionBankView
 } from "./views/AdminMenu/AdminQuestionBankMenu/AdminQuestionBankView/AdminQuestionBankView.jsx";
-import {TestAI} from "./views/TestAI.jsx";
+// import {TestAI} from "./views/TestAI.jsx";
 
 function App() {
     const [count, setCount] = useState(0);
@@ -99,7 +99,7 @@ function App() {
                         <Route path='/create-quiz' element={<CreateQuiz/>} />
                         <Route path='/edit-quiz/:quizId' element={<EditQuizForm/>}/>
 
-                        <Route path="/testAI" element={<TestAI />} />
+                        {/* <Route path="/testAI" element={<TestAI />} /> */}
                     </Routes>
                 </div>
             </ButtonEffectsProvider>
