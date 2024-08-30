@@ -96,6 +96,9 @@ const SingleOrganization = ({ orgId }) => {
         fetchOrganization();
     }, [orgId]);
 
+    const handleEditClick = (quiz) => {
+        navigate(`/edit-quiz/${quiz.quizId}`, { state: { quizData: quiz } });
+    };
 
     if (!orgInfo|| !userData ) {
         return <div>Loading...</div>; 
@@ -194,7 +197,8 @@ const SingleOrganization = ({ orgId }) => {
                         <p className="mt-2 text-center">{quiz.name}</p>
                         <div>
                         <button>StartQuiz</button>
-                        {(userData.organizations[orgId].role==='educator' || userData.organizations[orgId].role==='owner') ?<button>Edit Quiz</button> : <></> }
+                        {(userData.organizations[orgId].role==='educator' || userData.organizations[orgId].role==='owner') ?
+                        <button onClick={() => handleEditClick(quiz)}>Edit</button> : <></> }
                         </div>
                       
                     </div>

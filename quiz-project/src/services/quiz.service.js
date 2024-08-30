@@ -1,4 +1,4 @@
-import {get, getDatabase, ref, set, update} from "firebase/database";
+import {child, get, getDatabase, ref, set, update} from "firebase/database";
 
 const db = getDatabase();
 
@@ -96,3 +96,42 @@ export const saveQuizToUser = async (quizId, uid, score) =>{
     throw new Error(e);
   }
 }
+
+
+export const updateQuiz = async (organizationID, quizID, updatedQuizData) => {
+
+  const db = getDatabase();
+  const orgRef = ref(db, `quizzes/organisation/${organizationID}`);
+  try {
+    console.log('Fetching data from:', orgRef.toString()); 
+    const snapshot = await get(orgRef);
+    if (snapshot.exists()) {
+      console.log('Snapshot Data:', snapshot.val());
+      let quizFound = false;
+      snapshot.forEach(async (subjectSnapshot) => {
+        const subjectQuizzes = subjectSnapshot.val();
+        console.log('Subject Quizzes:', subjectQuizzes);
+        if (subjectQuizzes && subjectQuizzes[quizID]) {
+          quizFound = true;
+          const quizRef = child(subjectSnapshot.ref, quizID);
+          try {
+            await update(quizRef, updatedQuizData);
+            console.log("Quiz updated successfully!");
+          } catch (updateError) {
+            console.error("Error updating quiz:", updateError);
+          }
+          return;
+        }
+      });
+
+      if (!quizFound) {
+        console.error("Quiz not found.");
+      }
+    } else {
+      console.error("No data available for the organization.");
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};

@@ -30,6 +30,7 @@ import {
 import {AdminQuizMenuView} from "./views/AdminMenu/AdminQuizMenu/AdminQuizMenuView/AdminQuizMenuView.jsx";
 import {AllQuizzes} from "./views/AllQuizzes/AllQuizzes.jsx";
 import {Quiz} from "./components/QuizComponents/Quiz.jsx";
+import EditQuizForm from './components/QuizComponents/QuizEdit/QuizEdit.jsx';
 
 function App() {
     const [count, setCount] = useState(0);
@@ -90,6 +91,7 @@ function App() {
                         <Route path='/edit-profile' element={<EditProfile />} />
                         <Route path="/organization/:organizationId" element={< SingleOrganizationView/>} />
                         <Route path='/create-quiz' element={<CreateQuiz/>} />
+                        <Route path='/edit-quiz/:quizId' element={<EditQuizForm/>}/>
                     </Routes>
                 </div>
             </ButtonEffectsProvider>
