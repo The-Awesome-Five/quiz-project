@@ -238,6 +238,19 @@ const CreateQuiz = () => {
 
     setOrganizations(organizationsArray);
   };
+
+  const handleQuestionClick = (question) => {
+    setQuestions([
+      ...questions,
+      {
+        questionText: question.question,
+        answers: Object.keys(question.answers),
+        correctAnswerIndex: Object.values(question.answers).findIndex(
+          (isCorrect) => isCorrect
+        ),
+      },
+    ]);
+  };
   
 
   return (
@@ -245,7 +258,7 @@ const CreateQuiz = () => {
       <div className="row">
         {/* Left Panel: Quiz Creation Form */}
         <div className="col-md-8 form-panel">
-          <div className="quiz-form">
+          <div className="p0pform">
             <label htmlFor="quizTitle" className="form-label">
               Quiz Title
             </label>
@@ -461,34 +474,44 @@ const CreateQuiz = () => {
 
         {/* Right Panel: Public Questions */}
         <div className="col-md-4 question-bank-panel ms-4">
-          <div className="search-category">
-            <input
-                type="text"
-                className="form-control"
-                placeholder="Search a category"
-                onChange={handleSearch}  
-                value={searchTerm}  
-            />
-            <div className="question-bank">
-              {filteredQuestions.length === 0 && publicQuestions.length === 0 ? (
-                <p>No questions available</p>
-              ) : filteredQuestions.length === 0 && publicQuestions.length !== 0 ? (
-                publicQuestions.map((question, index) => (
-                  <div key={index} className="question-item">
-                    <h6>{question?.question || "No question text"}</h6>
-
-                  </div>
-                ))
-              ) : (
-                filteredQuestions.map((question, index) => (
-                  <div key={index} className="question-item">
-                    <h6>{question?.question || "No question text"}</h6>
-                  </div>
-                ))
-              )}
-            </div>
+  <div className="search-category">
+    <input
+      type="text"
+      className="form-control"
+      placeholder="Search a category"
+      onChange={handleSearch}
+      value={searchTerm}
+    />
+    <div className="question-bank">
+      {filteredQuestions.length === 0 && publicQuestions.length === 0 ? (
+        <p>No questions available</p>
+      ) : filteredQuestions.length === 0 && publicQuestions.length !== 0 ? (
+        publicQuestions.map((question, index) => (
+          <div
+            key={index}
+            className="question-item"
+            onClick={() => handleQuestionClick(question)}
+            style={{ cursor: "pointer" }}
+          >
+            <h6>{question?.question || "No question text"}</h6>
           </div>
-        </div>
+        ))
+      ) : (
+        filteredQuestions.map((question, index) => (
+          <div
+            key={index}
+            className="question-item"
+            onClick={() => handleQuestionClick(question)}
+            style={{ cursor: "pointer" }}
+          >
+            <h6>{question?.question || "No question text"}</h6>
+          </div>
+        ))
+      )}
+    </div>
+  </div>
+</div>
+
 
       </div>
 
