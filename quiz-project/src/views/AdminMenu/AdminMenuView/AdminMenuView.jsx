@@ -34,7 +34,7 @@ export const AdminMenuView = () => {
                     </Col>
                     <Col>
                         <Card className="text-center">
-                            <Link to="/questionbank-management">
+                            <Link to="/qbank-management">
                                 <Button variant="primary">Question Bank Menu</Button>
                             </Link>
                         </Card>
