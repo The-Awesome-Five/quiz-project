@@ -107,7 +107,7 @@ export const getAllQuestionBanks = async () => {
 
     const questionBanks = await get(ref(db, 'questionBank'));
 
-    return Object.entries(questionBanks.val());
+    return Object.values(questionBanks.val());
 
   } catch {
     throw new Error('Could not fetch the question banks!');
