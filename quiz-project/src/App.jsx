@@ -31,6 +31,9 @@ import {AdminQuizMenuView} from "./views/AdminMenu/AdminQuizMenu/AdminQuizMenuVi
 import {AllQuizzes} from "./views/AllQuizzes/AllQuizzes.jsx";
 import {Quiz} from "./components/QuizComponents/Quiz.jsx";
 import EditQuizForm from './components/QuizComponents/QuizEdit/QuizEdit.jsx';
+import {
+    AdminQuestionBankView
+} from "./views/AdminMenu/AdminQuestionBankMenu/AdminQuestionBankView/AdminQuestionBankView.jsx";
 
 function App() {
     const [count, setCount] = useState(0);
@@ -79,6 +82,8 @@ function App() {
                         <Route path="/user-management" element={<AdminUserMenuView />} />
                         <Route path="/organization-management" element={<AdminOrganisationView />} />
                         <Route path="/quiz-management" element={<AdminQuizMenuView />} />
+                        <Route path="/qbank-management" element={<AdminQuestionBankView />} />
+
 
                         <Route path="/all-quizes" element={<AllQuizzes />} />
                         <Route path="/quizzes/:quizId" element={<Quiz />} />
