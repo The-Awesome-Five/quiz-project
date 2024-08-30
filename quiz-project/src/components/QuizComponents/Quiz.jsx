@@ -87,6 +87,9 @@ export const Quiz = () => {
         }
 
     }
+    if(!quiz){
+        return (<h2>...loading</h2>)
+    }
 
     return (
 
