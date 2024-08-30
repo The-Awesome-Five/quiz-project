@@ -9,7 +9,7 @@ export const QuizItem = ({
                                 diffKey
                          }) => {
 
-    const access = quiz.organizationID ? 'organizations' : 'public';
+    const access = quiz.organizationID ? 'organisation' : 'public';
 
     return (
         <Card bg="success" className="shadow-lg p-3 mb-5 bg-white rounded align-items-center text-center" style={{border:"2px solid green"}}>
