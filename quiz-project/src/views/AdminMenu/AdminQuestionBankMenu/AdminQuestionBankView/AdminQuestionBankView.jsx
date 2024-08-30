@@ -40,29 +40,34 @@ export const AdminQuestionBankView = () => {
                         return (
                             <Row key={accessId}>
                                 <h1>{accessId}</h1>
-                                { accessId === 'organization' ?
-                                    Object.entries(access).map(([orgId, organization]) =>
-                                    Object.entries(organization).map(([categoryId, category]) =>
-                                    Object.entries(category).map(([diffId, difficulty]) =>
-                                    Object.entries(difficulty).map(([questionId, question]) => {
-                                        return <AdminQuestionItem
-                                            question={question}
-                                            orgId={orgId}
-                                            categoryId={categoryId}
-                                            diffId={diffId}
-                                        />
-                                        }
-                                    ))))
+                                {accessId === 'organization' ?
+                                    Object.entries(access).map(([orgId, organization]) => {
+
+                                        return (<div>
+                                            <h2>{orgId}</h2>
+
+                                            {Object.entries(organization).map(([categoryId, category]) =>
+                                                Object.entries(category).map(([diffId, difficulty]) =>
+                                                    Object.entries(difficulty).map(([questionId, question]) => {
+                                                        return <AdminQuestionItem
+                                                            question={question}
+                                                            orgId={orgId}
+                                                            categoryId={categoryId}
+                                                            diffId={diffId}
+                                                        />
+                                                    })))
+                                            }</div>)
+                                    })
                                     : Object.entries(access).map(([categoryId, category]) =>
-                                    Object.entries(category).map(([diffId, difficulty]) =>
-                                        Object.entries(difficulty).map(([questionId, question]) => {
-                                                return <AdminQuestionItem
-                                                    question={question}
-                                                    categoryId={categoryId}
-                                                    diffId={diffId}
-                                                />
-                                            }
-                                        )))}
+                                        Object.entries(category).map(([diffId, difficulty]) =>
+                                            Object.entries(difficulty).map(([questionId, question]) => {
+                                                    return <AdminQuestionItem
+                                                        question={question}
+                                                        categoryId={categoryId}
+                                                        diffId={diffId}
+                                                    />
+                                                }
+                                            )))}
                             </Row>
                         )
                     })
