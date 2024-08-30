@@ -50,8 +50,8 @@ const EditQuizForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const { organizationID, quizId } = quiz;
-            await updateQuiz(organizationID, quizId, quiz);
+            const { id, organizationID } = quiz;
+            await updateQuiz(id, quiz);
             toast.success("Quiz updated successfully!");
             navigate(`/organization/${organizationID}`);
             
