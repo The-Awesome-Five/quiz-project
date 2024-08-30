@@ -1,6 +1,5 @@
 import {child, get, getDatabase, push, ref, set, update} from "firebase/database";
-
-const db = getDatabase();
+import { db } from "../firebase/config";
 
 export const createQuizInFirebase = async (quizData) => {
   try {

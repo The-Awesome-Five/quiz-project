@@ -150,6 +150,7 @@ const CreateQuiz = () => {
 
       let quizData;
       if(organisationId){
+        const x= organisationId.split('////');
       quizData = {
         
         createdOn: new Date(),
@@ -176,7 +177,10 @@ const CreateQuiz = () => {
           userId: userData.uid,
           name: userData.username,
         },
-        organizationID: organisationId,
+        organizationID: {
+          orgID:x[0],
+          orgName:x[1],
+        }
       };
     }
     else {
@@ -527,7 +531,7 @@ const CreateQuiz = () => {
                   {organizations.length === 0 ? (
                     <option value="">You are not a part of any organizations!</option>
                   ) : ( organizations.map((organization, index) => (
-                    <option key={index} value={organization.organizationID}>{organization.organizationName}</option>
+                    <option key={index} value={`${organization.organizationID}////${organization.organizationName}`}>{organization.organizationName}</option>
                    ))
                   )}
                 </select>
