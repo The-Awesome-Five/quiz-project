@@ -36,7 +36,6 @@ const Home = () => {
         } catch (e) {
           toast.error(e);
         }
-        console.log(quizData)
     }, []);
 
     return (
@@ -78,7 +77,6 @@ const Home = () => {
         }} className="mySwiper">
                  {Object.entries(quizData).map(([id, info]) =>
                     {
-                        {console.log(info)}
                                 return (
                                     <SwiperSlide key={id}>
                                     <QuizItem

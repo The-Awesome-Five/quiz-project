@@ -6,15 +6,11 @@ import { toast } from "react-toastify";
 import { getQuestionsByOrgIds, getAllQuestionFromSearch, addQuestionToQuestionBank } from "../../../services/quizBank.service.js";
 import { getUserOrganizations } from "../../../services/organization.service.js";
 const CreateQuiz = () => {
-  const [quizTitle, setQuizTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
-  const [pictureUrl, setPictureUrl] = useState("");
+  const [quiz, setQuiz] = useState({});
   const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
   const [organisationId, setOrganisationId] = useState("");
-  const [difficultyLevel, setDifficultyLevel] = useState("");
   const [timeOptions, setTimeOptions] = useState({
     isTimeLimitPerQuizActive: false,
     isTimeLimitPerQuestionActive: false,
@@ -28,6 +24,19 @@ const CreateQuiz = () => {
     showCorrectAnswers: false,
   });
 
+  const handleChange = (e) => {
+    let updatedValue = {};
+    const { name, value } = e.target
+
+    updatedValue = {
+      [name]: value
+    };
+    setQuiz(quiz => ({
+         ...quiz,
+         ...updatedValue
+    }));
+  }
+  
   const { userData } = useContext(AppContext);
   const [questions, setQuestions] = useState([{ questionText: "", answers: ["", "", "", ""], correctAnswerIndex: 0 }]);
   const [publicQuestions, setPublicQuestions] = useState([]);
@@ -103,25 +112,12 @@ const CreateQuiz = () => {
 
   const handleCreateQuiz = async () => {
     try {
-      if(!quizTitle){
-        return toast.error('Please add a name for your quiz!');
-      }
       
-      if(!description){
-        return toast.error('Please add a description for your quiz!');
-      }
-
-      if(!category){
-        return toast.error('Please select a category for your quiz!');
-      }
-
-      if(!difficultyLevel){
-        return toast.error('Please select a difficulty level to your quiz!');
-      }
-      
-      if(!pictureUrl){
-        return toast.error('Please add a picture url to your quiz!');
-      }
+      Object.entries(quiz).map(([key, val]) => {
+        if (!val) {
+          return toast.error(`Please add a ${key} for your quiz!`);
+        }
+      });
 
       if(timeOptions.isTimeLimitPerQuizActive && !gameRules.timeLimitPerQuiz){
         return toast.error('Please enter a total time limit for your quiz!');
@@ -157,12 +153,12 @@ const CreateQuiz = () => {
       quizData = {
         
         createdOn: new Date(),
-        name: quizTitle,
-        avatar: pictureUrl,
-        description: description,
+        name: quiz.quizTitle,
+        avatar: quiz.pictureUrl,
+        description: quiz.description,
         numberOfQuestions: questions.length,
-        difficultyLevel:difficultyLevel,
-        category:category,
+        difficultyLevel: quiz.difficulty,
+        category: quiz.category,
         tags: tags.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}),
         ruleSet: {
           timeLimitPerQuiz: timeOptions.isTimeLimitPerQuizActive ? gameRules.timeLimitPerQuiz : null,
@@ -187,12 +183,12 @@ const CreateQuiz = () => {
       quizData = {
           
         createdOn: new Date(),
-        name: quizTitle,
-        avatar: pictureUrl,
-        description: description,
+        name: quiz.quizTitle,
+        avatar: quiz.pictureUrl,
+        description: quiz.description,
         numberOfQuestions: questions.length,
-        difficultyLevel:difficultyLevel,
-        category:category,
+        difficultyLevel: quiz.difficulty,
+        category: quiz.category,
         tags: tags.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}),
         ruleSet: {
           timeLimitPerQuiz: timeOptions.isTimeLimitPerQuizActive ? gameRules.timeLimitPerQuiz : null,
@@ -213,7 +209,7 @@ const CreateQuiz = () => {
       }
     }
       await createQuizInFirebase(quizData);
-    console.log(questions);
+    
       const promises = questions.map(async (question) => {
 
        
@@ -334,8 +330,8 @@ const CreateQuiz = () => {
               id="quizTitle"
               className="form-control"
               placeholder="Enter quiz title"
-              value={quizTitle}
-              onChange={(e) => setQuizTitle(e.target.value)}
+              defaultValue={quiz.quizTitle}
+              onChange={(e) => handleChange(e)}
             />
 
             <label htmlFor="description" className="form-label">
@@ -347,8 +343,8 @@ const CreateQuiz = () => {
               id="description"
               className="form-control"
               placeholder="Enter description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              defaultValue={quiz.description}
+              onChange={(e) => handleChange(e)}
             />
 
             <label htmlFor="category" className="form-label">
@@ -358,8 +354,8 @@ const CreateQuiz = () => {
               name="category"
               id="category"
               className="form-select"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              defaultValue={quiz.category}
+              onChange={(e) => handleChange(e)}
             >
               <option value="" selected disabled>Select Category</option>
               <option value="science">Science</option>
@@ -374,8 +370,8 @@ const CreateQuiz = () => {
               name="difficulty"
               id="difficulty"
               className="form-select"
-              value={difficultyLevel}
-              onChange={(e) => setDifficultyLevel(e.target.value)}
+              defaultValue={quiz.difficulty}
+              onChange={(e) => handleChange(e)}
             >
               <option value="" disabled selected>Select Difficulty</option>
               <option value="easy">Easy</option>
@@ -392,8 +388,8 @@ const CreateQuiz = () => {
               id="pictureUrl"
               className="form-control"
               placeholder="Enter picture URL"
-              value={pictureUrl}
-              onChange={(e) => setPictureUrl(e.target.value)}
+              defaultValue={quiz.pictureUrl}
+              onChange={(e) => handleChange(e)}
             />
 
             {/* Time Limit for Quiz */}
@@ -476,8 +472,9 @@ const CreateQuiz = () => {
                 type="text"
                 className="form-control"
                 placeholder="Enter a tag"
-                value={tagInput}
-                onChange={(e) => setTagInput(e.target.value)}
+                name="tagInput"
+                defaultValue={quiz.tagInput}
+                onChange={(e) => handleChange(e)}
               />
               <button
                 className="btn btn-outline-secondary"
@@ -507,7 +504,8 @@ const CreateQuiz = () => {
                 type="checkbox"
                 className="form-check-input isPrivate"
                 id="isPrivate"
-                checked={isPrivate}
+                name="isPrivate"
+                defaultChecked={isPrivate}
                 onChange={handleShowOrganizations}
               />
               <label className="form-check-label" htmlFor="isPrivate">

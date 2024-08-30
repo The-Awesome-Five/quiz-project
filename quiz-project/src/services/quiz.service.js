@@ -8,7 +8,7 @@ export const createQuizInFirebase = async (quizData) => {
     try {
     const result = await push(ref(db, 'quizzes'), quizData);
     id = result.key;
-    console.log(id);
+  
    await update(ref(db), {
         [`quizzes/${id}/id`]: id,
     })}
@@ -38,7 +38,7 @@ export const fetchQuizByPath = async (path) => {
 
   try {
     const quiz = await get(ref(db, path));
-    console.log(path);
+    
     return quiz.val();
   } catch (e) {
     console.log(e)
