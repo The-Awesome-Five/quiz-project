@@ -24,7 +24,7 @@ export const getOpenAIResponse = async (prompt) => {
         messages: [
             {
                 role: "system",
-                content: "You create questions. I need 4 answers, one of them correct. JSON format"
+                content: "You create unique questions. I need 4 answers, one of them correct. JSON format"
             },
             {
                 role: "user",
