@@ -62,26 +62,10 @@ export const AdminQuizMenuView = () => {
         <Container>
             <ListGroup>
                 <AdminQuizHeader/>
-                {Object.entries(quizData).map(([accessKey, accessValue]) =>
-                    Object.entries(accessValue).map(([categoryKey, category]) =>
-                        Object.entries(category).map(([diffKey, diff]) =>
-                            Object.entries(diff).map(([quizKey, quiz]) => {
-                                return (
-                                    <AdminQuizItem
-                                        key={quizKey}
-                                        quiz={quiz}
-                                        categoryKey={categoryKey}
-                                        diffKey={diffKey}
-                                        editQuizId={editQuizId}
-                                        handleInputChange={handleInputChange}
-                                        handleSave={() => handleSave(quizKey)}
-                                        handleEditClick={() => handleEditClick(quizKey)}
-                                    />
-                                );
-                            })
-                        )
-                    )
-                )}
+                {quizData.map((quiz) => (
+                    <AdminQuizItem key={quiz.id} quiz={quiz} editQuizId={editQuizId} handleInputChange={handleInputChange}
+                                   handleSave={handleSave} handleEditClick={handleEditClick}/>
+                ))}
             </ListGroup>
         </Container>
     )
