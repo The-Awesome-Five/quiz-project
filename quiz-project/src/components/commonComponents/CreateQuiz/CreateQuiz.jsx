@@ -149,7 +149,10 @@ const CreateQuiz = () => {
         }
       }
 
-      const quizData = {
+      let quizData;
+      if(organisationId){
+      quizData = {
+        
         quizId: `quiz_${Date.now()}`,
         name: quizTitle,
         avatar: pictureUrl,
@@ -172,8 +175,36 @@ const CreateQuiz = () => {
           userId: userData.uid,
           name: userData.username,
         },
+        organizationID: organisationId,
       };
-
+    }
+    else {
+      quizData = {
+        
+        quizId: `quiz_${Date.now()}`,
+        name: quizTitle,
+        avatar: pictureUrl,
+        description: description,
+        numberOfQuestions: questions.length,
+        tags: tags.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}),
+        ruleSet: {
+          timeLimitPerQuiz: timeOptions.isTimeLimitPerQuizActive ? gameRules.timeLimitPerQuiz : null,
+          timeLimitPerQuestion: timeOptions.isTimeLimitPerQuestionActive ? gameRules.timeLimitPerQuestion : null,
+          openDuration: timeOptions.isOpenDurationActive ? gameRules.openDuration : null,
+          showCorrectAnswers: gameRules.showCorrectAnswers,
+        },
+        questions: questions.map((q) => ({
+          question: q.questionText,
+          answers: q.answers,
+          correctAnswerIndex: q.correctAnswerIndex,
+        })),
+        isPublic: isPrivate,
+        creator: {
+          userId: userData.uid,
+          name: userData.username,
+        },
+      }
+    }
       await createQuizInFirebase(quizData, isPrivate, organisationId, category, difficultyLevel);
 
       const promises = questions.map(async (question) => {
@@ -182,11 +213,11 @@ const CreateQuiz = () => {
           question: question.questionText,
           answers: question.answers.reduce((acc, answer, index) => ({
             ...acc,
-            [`answer${String.fromCharCode(65 + index)}`]: index === question.correctAnswerIndex,
+            [`${answer}`]: index === question.correctAnswerIndex,
           }), {}),
           tags: tags.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}),
         };
-
+        console.log(questionData);
         if (question.addToPublicBank) {
           return addQuestionToPublicBank(questionData, category, difficultyLevel);
         } else {
