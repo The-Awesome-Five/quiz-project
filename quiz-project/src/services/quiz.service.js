@@ -27,7 +27,7 @@ export const getAllQuizzes = async () => {
   try {
     const quizzes = await get(ref(db, 'quizzes'));
   
-    return quizzes.val();
+    return Object.values(quizzes.val());
   } catch (e) {
     throw Error(e);
   }

@@ -14,7 +14,7 @@ export const AdminQuizItem = ({ quiz,
 
     const [isVisible, setIsVislble ] = useState(false);
 
-    console.log(quiz.questions)
+    console.log(quiz);
 
     return (
         <ListGroup.Item>
@@ -48,20 +48,20 @@ export const AdminQuizItem = ({ quiz,
                     {editQuizId === quiz.id
                         ? <Form.Control
                             type="text"
-                            value={categoryKey}
+                            value={quiz.category}
                             onChange={(e) => handleInputChange(e, quiz.id, 'category')}
                         />
-                        : categoryKey
+                        : quiz.category
                     }
                 </Col>
                 <Col xs={2}>
                     {editQuizId === quiz.id
                         ? <Form.Control
                             type="text"
-                            value={diffKey}
+                            value={quiz.difficultyLevel}
                             onChange={(e) => handleInputChange(e, quiz.id, 'difficulty')}
                         />
-                        : diffKey
+                        : quiz.difficultyLevel
                     }
                 </Col>
                 <Col xs={2}>
