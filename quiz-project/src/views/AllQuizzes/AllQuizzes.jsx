@@ -32,12 +32,13 @@ export const AllQuizzes = () => {
             <Row xs={4} md={4} className="g-1">
                 {Object.entries(quizData).map(([id, info]) =>
                     {
+                        {console.log(info)}
                                 return (
                                     <Col key={id}>
                                     <QuizItem
                                         key={id}
                                         quiz={info}
-                                        id={id}
+                                        id={info.id}
                                     />
                                     </Col>
                                 );
