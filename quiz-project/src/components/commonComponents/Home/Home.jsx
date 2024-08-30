@@ -1,6 +1,15 @@
-import React, { useEffect } from "react";
-import './Home.css';
+import React, {useEffect, useState} from 'react';
+import { getAllQuizzes } from '../../../services/quiz.service.js';
+import { QuizItem } from "../../QuizComponents/QuizItem.jsx";
+import {toast} from "react-toastify";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from 'swiper/modules';
 import { useNavigate } from "react-router-dom";
+// Import Swiper styles
+import './Home.css';
+import "swiper/css";
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 const Home = () => {
 
@@ -13,6 +22,22 @@ const Home = () => {
     const handleCreateOrganizationOnClick = () => {
         navigate('/create-organization')
     }
+    const [quizData, setQuizData] = useState([]);
+
+    useEffect(() => {
+
+        const fetchQuizzes = async () => {
+            const quizzes = await getAllQuizzes();
+            setQuizData(prevState => [...prevState, ...quizzes]);
+        }
+
+        try {
+          fetchQuizzes();
+        } catch (e) {
+          toast.error(e);
+        }
+        console.log(quizData)
+    }, []);
 
     return (
         <div className="home-container d-flex flex-column justify-content-center align-items-center mt-4">
@@ -47,34 +72,26 @@ const Home = () => {
 
             <div className="game-modes-container row mt-4 text-start">
                 <h4>Game modes</h4>
-                <div className="quiz-list d-flex">
-                    <div className="quiz-item">
-                        <img src="https://via.placeholder.com/150" alt="Quiz" />
-                        <p>Countries</p>
-                    </div>
-                    <div className="quiz-item">
-                        <img src="https://via.placeholder.com/150" alt="Quiz" />
-                        <p>Astrology</p>
-                    </div>
-                    <div className="quiz-item">
-                        <img src="https://via.placeholder.com/150" alt="Quiz" />
-                        <p>Astrology</p>
-                    </div>
-                    <div className="quiz-item">
-                        <img src="https://via.placeholder.com/150" alt="Quiz" />
-                        <p>Astrology</p>
-                    </div>
-                    <div className="quiz-item">
-                        <img src="https://via.placeholder.com/150" alt="Quiz" />
-                        <p>Astrology</p>
-                    </div>
-                    <div className="quiz-item">
-                        <img src="https://via.placeholder.com/150" alt="Quiz" />
-                        <p>Astrology</p>
-                    </div>
-
-
-                </div>
+                <Swiper navigation={true} modules={[Navigation]} slidesPerView={6} spaceBetween={10}
+        pagination={{
+          clickable: true,
+        }} className="mySwiper">
+                 {Object.entries(quizData).map(([id, info]) =>
+                    {
+                        {console.log(info)}
+                                return (
+                                    <SwiperSlide key={id}>
+                                    <QuizItem
+                                        key={id}
+                                        quiz={info}
+                                        id={info.id}
+                                    />
+                                    </SwiperSlide>
+                                );
+                            })
+                }   
+      </Swiper>
+            
             </div>
         </div>
     );
