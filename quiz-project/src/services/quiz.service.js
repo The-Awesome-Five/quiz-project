@@ -26,9 +26,8 @@ export const getAllQuizzes = async () => {
 
   try {
     const quizzes = await get(ref(db, 'quizzes'));
-    console.log('Raw Data');
-    console.log(quizzes.val());
-    return Object.values(quizzes.val());
+  
+    return quizzes.val();
   } catch (e) {
     throw Error(e);
   }

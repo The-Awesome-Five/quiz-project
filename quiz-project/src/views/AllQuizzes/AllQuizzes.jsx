@@ -7,13 +7,13 @@ import {QuizItem} from "../../components/QuizComponents/QuizItem.jsx";
 
 export const AllQuizzes = () => {
 
-    const [quizData, setQuizData] = useState([]);
+    const [quizData, setQuizData] = useState(null);
 
     useEffect(() => {
 
         const fetchQuizzes = async () => {
             const quizzes = await getAllQuizzes();
-            setQuizData(prevState => [...prevState, ...quizzes]);
+            setQuizData(quizzes);
         }
 
         try {
@@ -23,29 +23,27 @@ export const AllQuizzes = () => {
         }
 
     }, []);
-
+    if (!quizData) {
+        return <div>Loading...</div>; 
+    }
 
     return (
         <Container>
             <Row xs={4} md={4} className="g-1">
-                {Object.entries(quizData).map(([accessKey, accessValue]) =>
-                    Object.entries(accessValue).map(([categoryKey, category]) =>
-                        Object.entries(category).map(([diffKey, diff]) =>
-                            Object.entries(diff).map(([quizKey, quiz]) => {
+                {Object.entries(quizData).map(([id, info]) =>
+                    {
                                 return (
-                                    <Col key={quizKey}>
+                                    <Col key={id}>
                                     <QuizItem
-                                        key={quizKey}
-                                        quiz={quiz}
-                                        categoryKey={categoryKey}
-                                        diffKey={diffKey}
+                                        key={id}
+                                        quiz={info}
+                                        id={id}
                                     />
                                     </Col>
                                 );
                             })
-                        )
-                    )
-                )}
+                }   
+                 
                 </Row>
         </Container>
     )

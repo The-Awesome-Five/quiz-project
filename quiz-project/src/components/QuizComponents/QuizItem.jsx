@@ -5,8 +5,7 @@ import {Link} from "react-router-dom";
 
 export const QuizItem = ({
                                 quiz,
-                                categoryKey,
-                                diffKey
+                                id,
                          }) => {
 
     const access = quiz.organizationID ? 'organisation' : 'public';
@@ -31,7 +30,7 @@ export const QuizItem = ({
                 <Link
                     to={`/quizzes/${quiz.quizId}`}
                     state={{
-                        path: `/quizzes/${access}/${categoryKey}/${diffKey}/${quiz.quizId}`
+                        path: `/quizzes/${id}`
                     }}
                 >
                     <button>Start Quiz</button>
