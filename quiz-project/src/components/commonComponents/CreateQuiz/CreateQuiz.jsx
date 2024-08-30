@@ -46,7 +46,7 @@ const CreateQuiz = () => {
       }
     };
     fetchPublicQuestions();
-  }, []);
+  }, [userData]);
 
   const addTag = () => {
     if (tagInput.trim() !== "") {
