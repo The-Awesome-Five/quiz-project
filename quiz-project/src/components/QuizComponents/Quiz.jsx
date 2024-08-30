@@ -5,6 +5,7 @@ import {toast} from "react-toastify";
 import {Question} from "./Question.jsx";
 import {Card, Container} from "react-bootstrap";
 import {AppContext} from "../../appState/app.context.js";
+import TimeCounter from "../../utills/TimeCounter.jsx";
 
 export const Quiz = () => {
 
@@ -58,14 +59,15 @@ export const Quiz = () => {
     }
 
 
-    const submit = async () => {
+    const submit = async (isTimeOver) => {
 
-        if (answers.filter(x => !!x || x === 0).length !== quiz.questions.length) {
+        if (!isTimeOver && answers.filter(x => !!x || x === 0).length !== quiz.questions.length) {
             return toast.error('Not all questions have been answered!');
 
         }
 
-        const score = quiz.questions.reduce((accScore, currQuestion, currIndex) => {
+
+        const score = isTimeOver ? 0 : quiz.questions.reduce((accScore, currQuestion, currIndex) => {
 
             if (currQuestion.correctAnswerIndex === answers[currIndex]) {
                 accScore+=1;
@@ -87,6 +89,13 @@ export const Quiz = () => {
         }
 
     }
+
+    const finish = () => {
+
+        submit(true);
+
+    }
+
     if(!quiz){
         return (<h2>...loading</h2>)
     }
@@ -100,12 +109,23 @@ export const Quiz = () => {
                         quiz.avatar :
                         'https://img.freepik.com/premium-vector/quiz-logo-with-speech-bubble-icon_149152-811.jpg'}
                               className="w-50 h-50 object-fill m-1"/>
-                    <Card.Title>{quiz.name}</Card.Title>
-                    <Card.Text className="text-center">{quiz.description}</Card.Text>
+                    <hr/>
+                    <Card.Title as="h1">{quiz.name}</Card.Title>
+                    <Card.Text as="p" className="text-center">{quiz.description}</Card.Text>
+                    {
+                        quiz.ruleSet && quiz.ruleSet.timeLimitPerQuiz && <Card.Text as="p" className="text-center">Time to Solve: {quiz.ruleSet.timeLimitPerQuiz}</Card.Text>
+                    }
+                    {
+                        quiz.ruleSet && quiz.ruleSet.timeLimitPerQuestion && <Card.Text as="p" className="text-center">Time per question: {quiz.ruleSet.timeLimitPerQuestion}</Card.Text>
+                    }
                     <button onClick={() => setIsStarted(true)}>Start</button>
                 </Card>
                 : (
                     <div>
+                        {
+                            quiz.ruleSet && quiz.ruleSet.timeLimitPerQuiz && <TimeCounter initialSeconds={quiz.ruleSet.timeLimitPerQuiz} finish={finish} />
+
+                        }
                         <Question
                             question={quiz.questions[indexOfQuestion]}
                             quizTitle={quiz.name}
