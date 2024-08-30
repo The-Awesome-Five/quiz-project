@@ -1,6 +1,6 @@
 import {React, useEffect, useState} from "react";
 import {toast} from "react-toastify";
-import {getAllQuestionBanks, getAllQuestionFromBank} from "../../../../services/quizBank.service.js";
+// import {getAllQuestionBanks, getAllQuestionFromBank} from "../../../../services/quizBank.service.js";
 import {Col, Container, Row} from "react-bootstrap";
 import {loginUser} from "../../../../services/auth.service.js";
 import {
@@ -12,23 +12,23 @@ export const AdminQuestionBankView = () => {
 
     const [questions, setQuestions] = useState([]);
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        const fetchAllQuestionFromBank = async () => {
-            try {
+    //     const fetchAllQuestionFromBank = async () => {
+    //         try {
 
-                const questionBank = await getAllQuestionBanks();
+    //             const questionBank = await getAllQuestionBanks();
 
-                setQuestions(questionBank);
+    //             setQuestions(questionBank);
 
-            } catch (e) {
-                toast.error(e);
-            }
-        }
+    //         } catch (e) {
+    //             toast.error(e);
+    //         }
+    //     }
 
-        fetchAllQuestionFromBank();
+    //     fetchAllQuestionFromBank();
 
-    }, []);
+    // }, []);
 
     console.log(questions)
 

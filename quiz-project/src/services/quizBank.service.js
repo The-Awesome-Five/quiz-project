@@ -1,4 +1,4 @@
-import { getDatabase, ref, push, get } from "firebase/database";
+import { getDatabase, ref, push, get, query, orderByChild, equalTo, update } from "firebase/database";
 
 const db = getDatabase();
 
@@ -18,13 +18,22 @@ export const addQuestionToOrgBank = async (
   }
 };
 
-export const addQuestionToPublicBank = async (info, category, difficulty) => {
-  const path = `questionBank/public/${category}/${difficulty}`;
+export const addQuestionToQuestionBank = async (info) => {
   try {
-    await push(ref(db, path), info);
-    return;
-  } catch (e) {
-    console.log(e);
+    let id;
+    try {
+    const result = await push(ref(db, 'questionBank'), info);
+    id = result.key;
+   await update(ref(db), {
+        [`questionBank/${id}/id`]: id,
+    })}
+    catch(e){
+      console.log(e);
+    }
+
+
+  } catch (error) {
+    throw new Error(error);
   }
 };
 
@@ -36,23 +45,32 @@ export const getQuestionFromBank = async (path) => {
     console.log(e);
   }
 };
+export const getQuestionsByOrgIds = async (orgIds) => {
 
-export const getAllQuestionFromBank = async () => {
+  const path = 'questionBank';
+  let allQuestions = [];
+
   try {
-    const path1 = "questionBank/public";
-    const snapshot1 = await get(ref(db, `${path1}`));
-    const data1 = snapshot1.exists() ? snapshot1.val() : {};
-    let allQuestions = [];
+    const queries = [
+      query(ref(db, path), orderByChild('orgID'), equalTo('public')),
+      ...orgIds.map(orgId => query(ref(db, path), orderByChild('orgID'), equalTo(orgId)))
+    ];
+    const snapshots = await Promise.all(queries.map(q => get(q)));
+    snapshots.forEach(snapshot => {
+      if (snapshot && snapshot.val) {
 
-    Object.entries(data1).forEach(([category, questionsByDifficulty]) => {
-      Object.values(questionsByDifficulty).forEach((questions) => {
-        allQuestions = [...allQuestions, ...Object.values(questions)];
-      });
+        if (snapshot.exists()) {
+          const questions = snapshot.val();
+          allQuestions = [...allQuestions, ...Object.values(questions)];
+        }
+      } else {
+       
+      }
     });
 
     return allQuestions;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error("Error fetching questions:", error);
     return [];
   }
 };
