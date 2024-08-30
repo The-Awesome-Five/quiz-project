@@ -37,7 +37,7 @@ const CreateQuiz = () => {
     const fetchPublicQuestions = async () => {
       try {
         console.log(userData);
-        const orgIds=Object.keys(userData.organizations);
+        const orgIds= userData.organizations? Object.keys(userData.organizations): [];
         console.log(orgIds);
         const fetchedQuestions = await getQuestionsByOrgIds( orgIds);
         setPublicQuestions(fetchedQuestions);

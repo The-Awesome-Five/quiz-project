@@ -173,7 +173,7 @@ const SingleOrganization = ({ orgId }) => {
             {orgQuizzes.map((quizObj, index) => {
                 const quizKey = Object.keys(quizObj)[1];
                 const quiz = quizObj[quizKey];
-
+              
                 return (
                     <div
                         key={index}
@@ -184,7 +184,11 @@ const SingleOrganization = ({ orgId }) => {
                             border: "2px solid black",
                             cursor: "pointer",
                         }}
-                        onClick={() => console.log(`Quiz selected: ${quiz.name}`)}
+                        onClick={() =>     navigate(`/quizzes/${quizObj[0]}`, {
+                            state: {
+                                path: `/quizzes/${quizObj[0]}`
+                            }
+                        })}
                     >
                         <img
                             src={quiz.avatar && quiz.avatar.includes('http') ?
