@@ -1,30 +1,21 @@
-import {child, get, getDatabase, ref, set, update} from "firebase/database";
+import {child, get, getDatabase, push, ref, set, update} from "firebase/database";
 
 const db = getDatabase();
 
-export const createQuizInFirebase = async (
-  quizData,
-  isOrganisation = true,
-  organisationId,
-  categoryTagName,
-  difficultyTagLevel = null
-) => {
+export const createQuizInFirebase = async (quizData) => {
   try {
-    let quizRef;
-
-    if (isOrganisation) {
-      quizRef = ref(
-        db,
-        `quizzes/organisation/${organisationId}/${categoryTagName}/${quizData.quizId}`
-      );
-    } else {
-      quizRef = ref(
-        db,
-        `quizzes/public/${categoryTagName}/${difficultyTagLevel}/${quizData.quizId}`
-      );
+    let id;
+    try {
+    const result = await push(ref(db, 'quizzes'), quizData);
+    id = result.key;
+    console.log(id);
+   await update(ref(db), {
+        [`quizzes/${id}/id`]: id,
+    })}
+    catch(e){
+      console.log(e);
     }
 
-    await set(quizRef, quizData);
 
   } catch (error) {
     throw new Error(error);

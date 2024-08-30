@@ -3,7 +3,7 @@ import "./CreateQuiz.css";
 import { createQuizInFirebase } from "../../../services/quiz.service";
 import { AppContext } from "../../../appState/app.context.js";
 import { toast } from "react-toastify";
-import { addQuestionToPublicBank, addQuestionToOrgBank, getAllQuestionFromBank, getAllQuestionFromSearch } from "../../../services/quizBank.service.js";
+import { getQuestionsByOrgIds, getAllQuestionFromSearch, addQuestionToQuestionBank } from "../../../services/quizBank.service.js";
 import { getUserOrganizations } from "../../../services/organization.service.js";
 const CreateQuiz = () => {
   const [quizTitle, setQuizTitle] = useState("");
@@ -36,7 +36,10 @@ const CreateQuiz = () => {
   useEffect(() => {
     const fetchPublicQuestions = async () => {
       try {
-        const fetchedQuestions = await getAllQuestionFromBank();
+        console.log(userData);
+        const orgIds=Object.keys(userData.organizations);
+        console.log(orgIds);
+        const fetchedQuestions = await getQuestionsByOrgIds( orgIds);
         setPublicQuestions(fetchedQuestions);
       } catch (error) {
         console.error("Error fetching public questions:", error);
@@ -153,11 +156,13 @@ const CreateQuiz = () => {
       if(organisationId){
       quizData = {
         
-        quizId: `quiz_${Date.now()}`,
+        createdOn: new Date(),
         name: quizTitle,
         avatar: pictureUrl,
         description: description,
         numberOfQuestions: questions.length,
+        difficultyLevel:difficultyLevel,
+        category:category,
         tags: tags.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}),
         ruleSet: {
           timeLimitPerQuiz: timeOptions.isTimeLimitPerQuizActive ? gameRules.timeLimitPerQuiz : null,
@@ -180,12 +185,14 @@ const CreateQuiz = () => {
     }
     else {
       quizData = {
-        
-        quizId: `quiz_${Date.now()}`,
+          
+        createdOn: new Date(),
         name: quizTitle,
         avatar: pictureUrl,
         description: description,
         numberOfQuestions: questions.length,
+        difficultyLevel:difficultyLevel,
+        category:category,
         tags: tags.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}),
         ruleSet: {
           timeLimitPerQuiz: timeOptions.isTimeLimitPerQuizActive ? gameRules.timeLimitPerQuiz : null,
@@ -205,23 +212,37 @@ const CreateQuiz = () => {
         },
       }
     }
-      await createQuizInFirebase(quizData, isPrivate, organisationId, category, difficultyLevel);
-
+      await createQuizInFirebase(quizData);
+    console.log(questions);
       const promises = questions.map(async (question) => {
-        const questionData = {
-          questionId: `question_${Date.now()}`,
-          question: question.questionText,
-          answers: question.answers.reduce((acc, answer, index) => ({
-            ...acc,
-            [`${answer}`]: index === question.correctAnswerIndex,
-          }), {}),
-          tags: tags.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}),
-        };
-        console.log(questionData);
+
+       
         if (question.addToPublicBank) {
-          return addQuestionToPublicBank(questionData, category, difficultyLevel);
-        } else {
-          return addQuestionToOrgBank(questionData, organisationId, category, difficultyLevel);
+          const questionData = {
+            question: question.questionText,
+            category: category,
+            difficultyLevel: difficultyLevel,
+            orgID:'public',
+            answers: question.answers.reduce((acc, answer, index) => ({
+              ...acc,
+              [`${answer}`]: index === question.correctAnswerIndex,
+            }), {}),
+            tags: tags.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}),
+          };
+          return addQuestionToQuestionBank(questionData);
+        } else if (question.addPrivate){
+          const questionData = {
+            question: question.questionText,
+            category: category,
+            difficultyLevel: difficultyLevel,
+            orgID:organisationId,
+            answers: question.answers.reduce((acc, answer, index) => ({
+              ...acc,
+              [`${answer}`]: index === question.correctAnswerIndex,
+            }), {}),
+            tags: tags.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}),
+          };
+          return addQuestionToQuestionBank(questionData);
         }
       });
 
@@ -239,6 +260,11 @@ const CreateQuiz = () => {
     setQuestions(updatedQuestions);
   };
 
+  const handleAddToBankChange = (questionIndex, checked) => {
+    const updatedQuestions = [...questions];
+    updatedQuestions[questionIndex].addPrivate = checked;
+    setQuestions(updatedQuestions);
+  };
  
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredQuestions, setFilteredQuestions] = useState([]);
@@ -283,7 +309,9 @@ const CreateQuiz = () => {
     ]);
   };
   
-
+  if (!userData ) {
+    return <div>Loading...</div>; 
+}
   return (
     <div className="container create-quiz-wrapper">
       <div className="row">
@@ -622,7 +650,24 @@ const CreateQuiz = () => {
                 <label className="form-check-label" htmlFor={`addToPublicBank${questionIndex}`}>
                   Add this question to the public bank
                 </label>
-              </div>
+                
+           </div>
+           { organisationId? 
+              <div className="form-check mt-3">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id={`addToPrivateBank${questionIndex}`}
+                  checked={question.addPrivate || false}
+                  onChange={(e) =>
+                    handleAddToBankChange(questionIndex, e.target.checked)
+                  }
+                />
+                <label className="form-check-label" htmlFor={`addToPrivateBank${questionIndex}`}>
+                  Add this question to the private question bank
+                </label>
+                
+              </div> : <></>}
             </div>
           ))}
 
