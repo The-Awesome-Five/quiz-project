@@ -87,6 +87,7 @@ const SingleOrganization = ({ orgId }) => {
                 const data = await getSingleOrganization(orgId);
                 setOrgInfo(data);
                 const quizzes= await getAllOrganizationQuizzes(orgId);
+                console.log(quizzes)
                 setOrgQuizzes(quizzes);
             } catch (err) {
                 console.error("Error fetching organization:", err);
@@ -170,7 +171,7 @@ const SingleOrganization = ({ orgId }) => {
     {orgQuizzes ? (
         <div>
             {orgQuizzes.map((quizObj, index) => {
-                const quizKey = Object.keys(quizObj)[0];
+                const quizKey = Object.keys(quizObj)[1];
                 const quiz = quizObj[quizKey];
 
                 return (
@@ -186,7 +187,9 @@ const SingleOrganization = ({ orgId }) => {
                         onClick={() => console.log(`Quiz selected: ${quiz.name}`)}
                     >
                         <img
-                            src={quiz.avatar}
+                            src={quiz.avatar && quiz.avatar.includes('http') ?
+                                quiz.avatar :
+                                'https://img.freepik.com/premium-vector/quiz-logo-with-speech-bubble-icon_149152-811.jpg'}
                             alt={`${quiz.name} logo`}
                             style={{
                                 width: "80px",

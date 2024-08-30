@@ -1,4 +1,4 @@
-import { get, push, ref, update } from "firebase/database";
+import { equalTo, get, orderByChild, push, query, ref, update } from "firebase/database";
 import { db } from "../firebase/config";
 
 export const getUserOrganizations = async (uid) =>{
@@ -84,8 +84,6 @@ export const leaveOrganizationUser = async (pathForUser, pathForOrg) =>{
 }
 
 export const getAllOrganizationQuizzes= async(orgId) =>{
-    const path = `quizzes/organisation/${orgId}`;
-    const snapshot = await get(ref(db, `${path}`));
-    const info =Object.values(snapshot.val());
-   return info;
+    const snapshot = await get(query(ref(db, 'quizzes'), orderByChild('organizationID'), equalTo(orgId)));
+    return Object.entries(snapshot.val())
 }
