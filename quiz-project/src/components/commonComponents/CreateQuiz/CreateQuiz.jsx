@@ -274,7 +274,14 @@ const CreateQuiz = () => {
       setSearchTerm(searchValue);  
 
       if (searchValue.trim() !== "") {
-          const questions = await getAllQuestionFromSearch(searchValue);
+          const orgIds= userData.organizations? Object.keys(userData.organizations): [];
+          let questions = await getAllQuestionFromSearch(searchValue, orgIds);
+  
+          if (questions.length == 0) {
+            questions = [{
+              'question': 'No questions available'
+            }];
+          }
           setFilteredQuestions(questions);
       } else {
           setFilteredQuestions([]);  
@@ -543,7 +550,9 @@ const CreateQuiz = () => {
     />
     <div className="question-bank">
       {filteredQuestions.length === 0 && publicQuestions.length === 0 ? (
-        <p>No questions available</p>
+        <div className="question-item">
+          <h6>No questions available</h6>
+        </div>
       ) : filteredQuestions.length === 0 && publicQuestions.length !== 0 ? (
         publicQuestions.map((question, index) => (
           <div

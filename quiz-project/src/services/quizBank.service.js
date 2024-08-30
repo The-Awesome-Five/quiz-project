@@ -75,25 +75,21 @@ export const getQuestionsByOrgIds = async (orgIds) => {
   }
 };
 
-export const getAllQuestionFromSearch = async (search) => {
+export const getAllQuestionFromSearch = async (search, orgId) => {
   try {
-    const path1 = "questionBank/public";
+    const path1 = "questionBank";
     const snapshot1 = await get(ref(db, `${path1}`));
     const data1 = snapshot1.exists() ? snapshot1.val() : {};
 
     let filteredQuestions = [];
 
-    Object.entries(data1).forEach(([category, questionsByDifficulty]) => {
-      if (category.includes(search)) {
-        Object.values(questionsByDifficulty).forEach((questions) => {
-          filteredQuestions = [
-            ...filteredQuestions,
-            ...Object.values(questions),
-          ];
-        });
-      }
+    Object.values(data1).forEach( (q, index) => {
+        if((q.orgID === 'public' || orgId.indexOf(q.orgID) !== -1) && q.category.includes(search)) {
+            filteredQuestions[index] = q;
+            index++;
+        }
     });
-
+    
     return filteredQuestions;
   } catch (error) {
     console.error("Error fetching data:", error);
