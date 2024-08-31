@@ -164,7 +164,7 @@ const CreateQuiz = () => {
         numberOfQuestions: questions.length,
         difficultyLevel: quiz.difficulty,
         category: quiz.category,
-        tags: quiz.tags?.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}),
+        tags:quiz.tags ? quiz.tags?.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}) : [],
         ruleSet: {
           timeLimitPerQuiz: quiz.timeOptions?.isTimeLimitPerQuizActive ? quiz.gameRules?.timeLimitPerQuiz : null,
           timeLimitPerQuestion: quiz.timeOptions?.isTimeLimitPerQuestionActive ? quiz.gameRules?.timeLimitPerQuestion : null,
@@ -197,7 +197,7 @@ const CreateQuiz = () => {
         numberOfQuestions: questions.length,
         difficultyLevel: quiz.difficulty,
         category: quiz.category,
-        tags: quiz.tags?.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}),
+        tags:quiz.tags ? quiz.tags?.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}) : [],
         ruleSet: {
           timeLimitPerQuiz: quiz.timeOptions?.isTimeLimitPerQuizActive ? quiz.gameRules?.timeLimitPerQuiz : null,
           timeLimitPerQuestion: quiz.timeOptions?.isTimeLimitPerQuestionActive ? quiz.gameRules?.timeLimitPerQuestion : null,
@@ -209,7 +209,7 @@ const CreateQuiz = () => {
           answers: q.answers,
           correctAnswerIndex: q.correctAnswerIndex,
         })),
-        isPublic: quiz.isPrivate,
+        isPublic: true,
         creator: {
           userId: userData.uid,
           name: userData.username,
@@ -226,26 +226,26 @@ const CreateQuiz = () => {
           const questionData = {
             question: question.questionText,
             category: quiz.category,
-            difficultyLevel: quiz.difficultyLevel,
+            difficultyLevel: quiz.difficulty,
             orgID:'public',
             answers: question.answers.reduce((acc, answer, index) => ({
               ...acc,
               [`${answer}`]: index === question.correctAnswerIndex,
             }), {}),
-            tags: quiz.tags.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}),
+            tags: quiz.tags ? quiz.tags.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}) : [],
           };
           return addQuestionToQuestionBank(questionData);
         } else if (question.addPrivate){
           const questionData = {
             question: question.questionText,
             category: quiz.category,
-            difficultyLevel: quiz.difficultyLevel,
+            difficultyLevel: quiz.difficulty,
             orgID:quiz.organisationId,
             answers: question.answers.reduce((acc, answer, index) => ({
               ...acc,
               [`${answer}`]: index === question.correctAnswerIndex,
             }), {}),
-            tags: quiz.tags.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}),
+            tags: quiz.tags ? quiz.tags.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}) : [],
           };
           return addQuestionToQuestionBank(questionData);
         }
