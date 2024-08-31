@@ -33,6 +33,25 @@ export const getAllQuizzes = async () => {
 
 }
 
+export const getQuizzesByCat = async (cat) => {
+
+  try {
+    const quizzes = await get(ref(db, 'quizzes'));
+    let fillteredQuizzes = {}
+    Object.values(quizzes.val()).map( (el) => {
+      if(el.category === cat) {
+        fillteredQuizzes[el.id] = el
+      }
+    })
+  
+    return Object.values(fillteredQuizzes);
+  } catch (e) {
+    throw Error(e);
+  }
+
+}
+
+
 export const fetchQuizByPath = async (path) => {
 
   try {

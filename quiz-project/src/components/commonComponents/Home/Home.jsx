@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { getAllQuizzes } from '../../../services/quiz.service.js';
+import { getAllQuizzes, getQuizzesByCat } from '../../../services/quiz.service.js';
 import { QuizItem } from "../../QuizComponents/QuizItem.jsx";
 import {toast} from "react-toastify";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -23,11 +23,14 @@ const Home = () => {
         navigate('/create-organization')
     }
     const [quizData, setQuizData] = useState([]);
+    const [historyQuizData, setHistoryQuizData] = useState([])
 
     useEffect(() => {
 
         const fetchQuizzes = async () => {
             const quizzes = await getAllQuizzes();
+            const historyQuizzes = await getQuizzesByCat('history');
+            setHistoryQuizData(historyQuizzes)
             setQuizData(quizzes);
         }
 
@@ -70,12 +73,32 @@ const Home = () => {
 
 
             <div className="game-modes-container row mt-4 text-start">
-                <h4>Game modes</h4>
+                <h4>All quizzes</h4>
                 <Swiper navigation={true} modules={[Navigation]} slidesPerView={6} spaceBetween={10}
         pagination={{
           clickable: true,
         }} className="mySwiper">
                  {Object.entries(quizData).map(([id, info]) =>
+                    {
+                                return (
+                                    <SwiperSlide key={id}>
+                                    <QuizItem
+                                        key={id}
+                                        quiz={info}
+                                        id={info.id}
+                                    />
+                                    </SwiperSlide>
+                                );
+                            })
+                }   
+      </Swiper>
+
+      <h4>History quizzes</h4>
+                <Swiper navigation={true} modules={[Navigation]} slidesPerView={6} spaceBetween={10}
+        pagination={{
+          clickable: true,
+        }} className="mySwiper">
+                 {Object.entries(historyQuizData).map(([id, info]) =>
                     {
                                 return (
                                     <SwiperSlide key={id}>
