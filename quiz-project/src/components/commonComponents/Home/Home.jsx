@@ -23,13 +23,16 @@ const Home = () => {
         navigate('/create-organization')
     }
     const [quizData, setQuizData] = useState([]);
-    const [historyQuizData, setHistoryQuizData] = useState([])
+    const [historyQuizData, setHistoryQuizData] = useState([]);
+    const [mathQuizData, setMathQuizData] = useState([]);
 
     useEffect(() => {
 
         const fetchQuizzes = async () => {
             const quizzes = await getAllQuizzes();
             const historyQuizzes = await getQuizzesByCat('history');
+            const mathQuizzes = await getQuizzesByCat('math')
+            setMathQuizData(mathQuizzes)
             setHistoryQuizData(historyQuizzes)
             setQuizData(quizzes);
         }
@@ -99,6 +102,26 @@ const Home = () => {
           clickable: true,
         }} className="mySwiper">
                  {Object.entries(historyQuizData).map(([id, info]) =>
+                    {
+                                return (
+                                    <SwiperSlide key={id}>
+                                    <QuizItem
+                                        key={id}
+                                        quiz={info}
+                                        id={info.id}
+                                    />
+                                    </SwiperSlide>
+                                );
+                            })
+                }   
+      </Swiper>
+
+      <h4>Math quizzes</h4>
+                <Swiper navigation={true} modules={[Navigation]} slidesPerView={6} spaceBetween={10}
+        pagination={{
+          clickable: true,
+        }} className="mySwiper">
+                 {Object.entries(mathQuizData).map(([id, info]) =>
                     {
                                 return (
                                     <SwiperSlide key={id}>
