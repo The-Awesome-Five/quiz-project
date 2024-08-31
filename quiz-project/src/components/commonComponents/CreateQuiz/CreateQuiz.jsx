@@ -7,26 +7,56 @@ import { getQuestionsByOrgIds, getAllQuestionFromSearch, addQuestionToQuestionBa
 import { getUserOrganizations } from "../../../services/organization.service.js";
 const CreateQuiz = () => {
   const [quiz, setQuiz] = useState({});
-  const [tags, setTags] = useState([]);
-  const [tagInput, setTagInput] = useState("");
-  const [isPrivate, setIsPrivate] = useState(false);
-  const [organisationId, setOrganisationId] = useState("");
-  const [timeOptions, setTimeOptions] = useState({
-    isTimeLimitPerQuizActive: false,
-    isTimeLimitPerQuestionActive: false,
-    isOpenDurationActive: false,
-  });
-  const [gameRules, setGameRules] = useState({
-    timeLimitPerQuiz: "",
-    timeLimitPerQuestion: "",
-    openDuration: "",
-    maxAttempts: "",
-    showCorrectAnswers: false,
-  });
 
-  const handleChange = (e) => {
+  const handleChange = (e, type) => {
     let updatedValue = {};
-    const { name, value } = e.target
+    let { name, value } = e.target ? e.target : e;
+    let quizName = "";
+    let quizValue = "";
+    switch(type) {
+      case 'tags':
+        quizName = 'tags';
+        
+        let tagsArr = quiz.tags !== undefined ? quiz.tags : [];
+        tagsArr.push(e);
+      
+        quizValue = tagsArr;
+        break;
+      case 'removeTags':
+        quizName = 'tags';
+
+        quizValue = e;
+        break;
+      case 'gameRules':
+        quizName = 'gameRules';
+
+        const { name, value, type, checked } = e.target;
+        let gameRulesObj = quiz.gameRules !== undefined ? quiz.gameRules : {};
+        gameRulesObj[name] = type === "checkbox" ? checked : value;
+   
+        quizValue = gameRulesObj
+        break;
+      case 'timeOptions':
+        quizName = 'timeOptions';
+
+        let checkbox = e.target;
+        let timeOptionsObj = quiz.timeOptions !== undefined ? quiz.timeOptions : {};
+        timeOptionsObj[checkbox.name] = checkbox.checked;
+
+        quizValue = timeOptionsObj;
+        break;
+      case 'isPrivate':
+        quizName = 'isPrivate';
+
+        let isPrivateVal = quiz.isPrivate !== undefined ? quiz.isPrivate : false;
+        isPrivateVal = e;
+
+        quizValue = isPrivateVal;
+        break;
+    }
+    
+    name = quizName ? quizName : name;
+    value = quizValue ? quizValue : value;
 
     updatedValue = {
       [name]: value
@@ -36,11 +66,10 @@ const CreateQuiz = () => {
          ...updatedValue
     }));
   }
-  
+ 
   const { userData } = useContext(AppContext);
   const [questions, setQuestions] = useState([{ questionText: "", answers: ["", "", "", ""], correctAnswerIndex: 0 }]);
   const [publicQuestions, setPublicQuestions] = useState([]);
-
   
   useEffect(() => {
     const fetchPublicQuestions = async () => {
@@ -58,30 +87,21 @@ const CreateQuiz = () => {
   }, [userData]);
 
   const addTag = () => {
-    if (tagInput.trim() !== "") {
-      setTags([...tags, tagInput.trim()]);
-      setTagInput("");
+    if (quiz.tagInput.trim() !== "") {
+      handleChange(quiz.tagInput.trim(), 'tags');
     }
   };
 
   const removeTag = (indexToRemove) => {
-    setTags(tags.filter((_, index) => index !== indexToRemove));
+    handleChange(quiz.tags.filter((_, index) => index !== indexToRemove), 'removeTags');
   };
 
   const handleGameRulesChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setGameRules({
-      ...gameRules,
-      [name]: type === "checkbox" ? checked : value,
-    });
+    handleChange(e, 'gameRules')
   };
 
   const handleTimeOptionsChange = (e) => {
-    const { name, checked } = e.target;
-    setTimeOptions({
-      ...timeOptions,
-      [name]: checked,
-    });
+    handleChange(e, 'timeOptions')
   };
 
   const handleQuestionChange = (index, value) => {
@@ -118,22 +138,6 @@ const CreateQuiz = () => {
           return toast.error(`Please add a ${key} for your quiz!`);
         }
       });
-
-      if(timeOptions.isTimeLimitPerQuizActive && !gameRules.timeLimitPerQuiz){
-        return toast.error('Please enter a total time limit for your quiz!');
-      }
-
-      if(timeOptions.isTimeLimitPerQuestionActive && !gameRules.timeLimitPerQuestion){
-        return toast.error('Please enter a time limit per question!');
-      }
-
-      if(timeOptions.isOpenDurationActive && !gameRules.openDuration){
-        return toast.error('Please enter a duration of the quiz!');
-      }
-
-      if(isPrivate && !organisationId) {
-        return toast.error('You are not part of any organizations!');
-      }
       
       if(questions.length == 0){
         return toast.error('Please add at least a single question to your quiz!');
@@ -149,8 +153,8 @@ const CreateQuiz = () => {
       }
 
       let quizData;
-      if(organisationId){
-        const x= organisationId.split('////');
+      if(quiz.organisationId){
+        const x= quiz.organisationId.split('////');
       quizData = {
         
         createdOn: new Date(),
@@ -160,19 +164,19 @@ const CreateQuiz = () => {
         numberOfQuestions: questions.length,
         difficultyLevel: quiz.difficulty,
         category: quiz.category,
-        tags: tags.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}),
+        tags: quiz.tags?.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}),
         ruleSet: {
-          timeLimitPerQuiz: timeOptions.isTimeLimitPerQuizActive ? gameRules.timeLimitPerQuiz : null,
-          timeLimitPerQuestion: timeOptions.isTimeLimitPerQuestionActive ? gameRules.timeLimitPerQuestion : null,
-          openDuration: timeOptions.isOpenDurationActive ? gameRules.openDuration : null,
-          showCorrectAnswers: gameRules.showCorrectAnswers,
+          timeLimitPerQuiz: quiz.timeOptions?.isTimeLimitPerQuizActive ? quiz.gameRules?.timeLimitPerQuiz : null,
+          timeLimitPerQuestion: quiz.timeOptions?.isTimeLimitPerQuestionActive ? quiz.gameRules?.timeLimitPerQuestion : null,
+          openDuration: quiz.timeOptions?.isOpenDurationActive ? quiz.gameRules?.openDuration : null,
+          showCorrectAnswers: quiz.gameRules?.showCorrectAnswers ? quiz.gameRules?.showCorrectAnswers : null,
         },
         questions: questions.map((q) => ({
           question: q.questionText,
           answers: q.answers,
           correctAnswerIndex: q.correctAnswerIndex,
         })),
-        isPublic: isPrivate,
+        isPublic: quiz.isPrivate,
         creator: {
           userId: userData.uid,
           name: userData.username,
@@ -193,25 +197,26 @@ const CreateQuiz = () => {
         numberOfQuestions: questions.length,
         difficultyLevel: quiz.difficulty,
         category: quiz.category,
-        tags: tags.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}),
+        tags: quiz.tags?.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}),
         ruleSet: {
-          timeLimitPerQuiz: timeOptions.isTimeLimitPerQuizActive ? gameRules.timeLimitPerQuiz : null,
-          timeLimitPerQuestion: timeOptions.isTimeLimitPerQuestionActive ? gameRules.timeLimitPerQuestion : null,
-          openDuration: timeOptions.isOpenDurationActive ? gameRules.openDuration : null,
-          showCorrectAnswers: gameRules.showCorrectAnswers,
+          timeLimitPerQuiz: quiz.timeOptions?.isTimeLimitPerQuizActive ? quiz.gameRules?.timeLimitPerQuiz : null,
+          timeLimitPerQuestion: quiz.timeOptions?.isTimeLimitPerQuestionActive ? quiz.gameRules?.timeLimitPerQuestion : null,
+          openDuration: quiz.timeOptions?.isOpenDurationActive ? quiz.gameRules?.openDuration : null,
+          showCorrectAnswers: quiz.gameRules?.showCorrectAnswers ? quiz.gameRules?.showCorrectAnswers : null,
         },
         questions: questions.map((q) => ({
           question: q.questionText,
           answers: q.answers,
           correctAnswerIndex: q.correctAnswerIndex,
         })),
-        isPublic: isPrivate,
+        isPublic: quiz.isPrivate,
         creator: {
           userId: userData.uid,
           name: userData.username,
         },
       }
     }
+    console.log(quizData)
       await createQuizInFirebase(quizData);
     
       const promises = questions.map(async (question) => {
@@ -220,27 +225,27 @@ const CreateQuiz = () => {
         if (question.addToPublicBank) {
           const questionData = {
             question: question.questionText,
-            category: category,
-            difficultyLevel: difficultyLevel,
+            category: quiz.category,
+            difficultyLevel: quiz.difficultyLevel,
             orgID:'public',
             answers: question.answers.reduce((acc, answer, index) => ({
               ...acc,
               [`${answer}`]: index === question.correctAnswerIndex,
             }), {}),
-            tags: tags.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}),
+            tags: quiz.tags.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}),
           };
           return addQuestionToQuestionBank(questionData);
         } else if (question.addPrivate){
           const questionData = {
             question: question.questionText,
-            category: category,
-            difficultyLevel: difficultyLevel,
-            orgID:organisationId,
+            category: quiz.category,
+            difficultyLevel: quiz.difficultyLevel,
+            orgID:quiz.organisationId,
             answers: question.answers.reduce((acc, answer, index) => ({
               ...acc,
               [`${answer}`]: index === question.correctAnswerIndex,
             }), {}),
-            tags: tags.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}),
+            tags: quiz.tags.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}),
           };
           return addQuestionToQuestionBank(questionData);
         }
@@ -291,7 +296,7 @@ const CreateQuiz = () => {
   const [organizations, setOrganizations] = useState("");
 
   const handleShowOrganizations = async () => {
-    setIsPrivate(!isPrivate);
+    handleChange(!quiz.isPrivate, 'isPrivate');
   
     const userOrganizations = await getUserOrganizations(userData.uid);
     let organizationsArray = [];
@@ -402,7 +407,7 @@ const CreateQuiz = () => {
                 type="checkbox"
                 name="isTimeLimitPerQuizActive"
                 id="isTimeLimitPerQuizActive"
-                checked={timeOptions.isTimeLimitPerQuizActive}
+                checked={quiz.timeOptions?.isTimeLimitPerQuizActive}
                 onChange={handleTimeOptionsChange}
               />
               <label htmlFor="isTimeLimitPerQuizActive" className="ms-2">
@@ -414,9 +419,9 @@ const CreateQuiz = () => {
                 id="timeLimitPerQuiz"
                 className="form-control mt-2"
                 placeholder="Enter total time limit for the quiz (minutes)"
-                value={gameRules.timeLimitPerQuiz}
+                value={quiz.gameRules?.timeLimitPerQuiz}
                 onChange={handleGameRulesChange}
-                disabled={!timeOptions.isTimeLimitPerQuizActive}
+                disabled={!quiz.timeOptions?.isTimeLimitPerQuizActive}
               />
             </div>
 
@@ -426,7 +431,7 @@ const CreateQuiz = () => {
                 type="checkbox"
                 name="isTimeLimitPerQuestionActive"
                 id="isTimeLimitPerQuestionActive"
-                checked={timeOptions.isTimeLimitPerQuestionActive}
+                checked={quiz.timeOptions?.isTimeLimitPerQuestionActive}
                 onChange={handleTimeOptionsChange}
               />
               <label htmlFor="isTimeLimitPerQuestionActive" className="ms-2">
@@ -438,9 +443,9 @@ const CreateQuiz = () => {
                 id="timeLimitPerQuestion"
                 className="form-control mt-2"
                 placeholder="Enter time limit per question (minutes)"
-                value={gameRules.timeLimitPerQuestion}
+                value={quiz.gameRules?.timeLimitPerQuestion}
                 onChange={handleGameRulesChange}
-                disabled={!timeOptions.isTimeLimitPerQuestionActive}
+                disabled={!quiz.timeOptions?.isTimeLimitPerQuestionActive}
               />
             </div>
 
@@ -450,7 +455,7 @@ const CreateQuiz = () => {
                 type="checkbox"
                 name="isOpenDurationActive"
                 id="isOpenDurationActive"
-                checked={timeOptions.isOpenDurationActive}
+                checked={quiz.timeOptions?.isOpenDurationActive}
                 onChange={handleTimeOptionsChange}
               />
               <label htmlFor="isOpenDurationActive" className="ms-2">
@@ -462,9 +467,9 @@ const CreateQuiz = () => {
                 id="openDuration"
                 className="form-control mt-2"
                 placeholder="Enter how long the quiz will be open (hours)"
-                value={gameRules.openDuration}
+                value={quiz.gameRules?.openDuration}
                 onChange={handleGameRulesChange}
-                disabled={!timeOptions.isOpenDurationActive}
+                disabled={!quiz.timeOptions?.isOpenDurationActive}
               />
             </div>
 
@@ -490,7 +495,7 @@ const CreateQuiz = () => {
             </div>
 
             <div className="tag-list">
-              {tags.map((tag, index) => (
+              {quiz.tags?.map((tag, index) => (
                 <span key={index} className="badge bg-secondary me-2">
                   {tag}
                   <button
@@ -509,7 +514,7 @@ const CreateQuiz = () => {
                 className="form-check-input isPrivate"
                 id="isPrivate"
                 name="isPrivate"
-                defaultChecked={isPrivate}
+                defaultChecked={quiz.isPrivate}
                 onChange={handleShowOrganizations}
               />
               <label className="form-check-label" htmlFor="isPrivate">
@@ -521,11 +526,11 @@ const CreateQuiz = () => {
                   Organization
                 </label>
                 <select
-                  name="organization"
-                  id="organization"
+                  name="organisationId"
+                  id="organisationId"
                   className="form-select"
-                  value={organisationId}
-                  onChange={(e) => setOrganisationId(e.target.value)}
+                  value={quiz.organisationId}
+                  onChange={(e) => handleChange(e)}
                 >
                   <option value="" selected disabled>Please select an organization!</option>
                   {organizations.length === 0 ? (
@@ -663,7 +668,7 @@ const CreateQuiz = () => {
                 </label>
                 
            </div>
-           { organisationId? 
+           { quiz.organisationId? 
               <div className="form-check mt-3">
                 <input
                   className="form-check-input"
