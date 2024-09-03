@@ -5,7 +5,7 @@ import {getOpenAIResponse} from "../../../../services/chatgpt.service.js";
 import {toast} from "react-toastify";
 
 export const QuestionsAIForm = ({
-                                    category, setQuestions,difficulty
+                                    questions,category, setQuestions,difficulty
                                 }) => {
 
     const [ numberOfQuestions, setNumberOfQuestions ] = useState(0);
@@ -19,9 +19,13 @@ export const QuestionsAIForm = ({
         const response = await getOpenAIResponse(`Generate ${numberOfQuestions} questions related to ${category} that have ${difficulty} difficulty`);
         const data = await JSON.parse(response.choices[0].message.content);
 
-        setQuestions(prevQuestions => {
+
+        questions[0].question ?
+            setQuestions(prevQuestions => {
             return [...prevQuestions, ...Object.values(data)[0]]
-        });
+        })
+            :
+            setQuestions(Object.values(data)[0]);
 
     }
 
