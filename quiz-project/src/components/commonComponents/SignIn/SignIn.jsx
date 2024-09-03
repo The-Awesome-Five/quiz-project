@@ -50,7 +50,12 @@ const SignIn = () => {
   };
 
   return (
-    <div className="signin-container d-flex justify-content-center align-items-center">
+    
+    <div className="login-container">
+    <div className="square d-flex justify-content-center align-items-center">
+      <i style={{ "--clr": "#00ff0a" }}></i>
+      <i style={{ "--clr": "#ff0057" }}></i>
+      <i style={{ "--clr": "#fffd44" }}></i>
       <div className="signin-card p-4 mt-4">
         <h2 className="text-center">Sign in</h2>
 
@@ -102,6 +107,7 @@ const SignIn = () => {
           <a href="/forgot-password" className="text-muted highlighted"><strong>Forgot password?</strong></a>
         </div>
       </div>
+    </div>
     </div>
   );
 };

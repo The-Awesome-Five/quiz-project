@@ -43,19 +43,19 @@
   
   a {
     font-size: 0.9rem;
-    text-decoration: none; /* Премахваме подчертаването за целия линк */
+    text-decoration: none; 
   }
   
   a:hover {
-    text-decoration: none; /* Премахваме подчертаването при hover */
+    text-decoration: none; 
   }
   
   .highlighted {
-    text-decoration: underline; /* Подчертаваме само "Create here" */
+    text-decoration: underline; 
   }
   
   .highlighted:hover {
-    text-decoration: underline; /* Подчертаването остава при hover */
+    text-decoration: underline; 
   }
 
 .sign-in-btn {
@@ -66,3 +66,71 @@
     cursor: pointer;
     border: 2px solid #fff;
   }
+
+  .square
+{
+	position: relative;
+	width: 530px;
+	height: 530px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.square i
+{
+	position: absolute;
+	inset: 0;
+	border: 2px solid #9c9c9c;
+	transition: 0.5s;
+  z-index: -1;
+}
+.square i:nth-child(1)
+{
+	border-radius: 36% 62% 63% 37% / 41% 44% 56% 59%;
+	animation: animate 6s linear infinite;
+}
+.square i:nth-child(2)
+{
+	border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+	animation: animate 4s linear infinite;
+}
+.square i:nth-child(3)
+{
+	border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+	animation: animate2 10s linear infinite;
+}
+.square:hover i
+{
+	border: 6px solid var(--clr);
+	filter: drop-shadow(0 0 20px var(--clr));
+}
+@keyframes animate
+{
+	0%
+	{
+		transform: rotate(0deg);
+	}
+	100%
+	{
+		transform: rotate(360deg);
+	}
+}
+@keyframes animate2
+{
+	0%
+	{
+		transform: rotate(360deg);
+	}
+	100%
+	{
+		transform: rotate(0deg);
+	}
+}
+
+.login-container
+{
+	display: flex;
+	justify-content: center;
+  margin-top: 100px;
+	min-height: 100vh;
+}
