@@ -11,6 +11,8 @@ import {
 import {getUserOrganizations} from "../../../services/organization.service.js";
 import {CreateQuestionForm} from "./CreateQuestionForm/CreateQuestionForm.jsx";
 import {CreateQuizForm} from "./CreateQuizForm/CreateQuizForm.jsx";
+import {PublicQuestionForm} from "./PublicQuestionForm/PublicQuestionForm.jsx";
+import {QuestionsAIForm} from "./QuestionsAIForm/QuestionsAIForm.jsx";
 
 const CreateQuiz = () => {
     const [quiz, setQuiz] = useState({});
@@ -146,7 +148,7 @@ const CreateQuiz = () => {
                 }
             });
 
-            if (questions.length == 0) {
+            if (questions.length === 0) {
                 return toast.error('Please add at least a single question to your quiz!');
             } else {
                 for (let question of questions) {
@@ -334,64 +336,30 @@ const CreateQuiz = () => {
         <div className="container create-quiz-wrapper">
             <div className="row">
                 {/* Left Panel: Quiz Creation Form */}
-               <CreateQuizForm quiz={quiz}
-                               handleChange={handleChange}
-                               addTag={addTag}
-                               removeTag={removeTag}
-                               handleGameRulesChange={handleGameRulesChange}
-                               handleTimeOptionsChange={handleTimeOptionsChange}
-                               handleShowOrganizations={handleShowOrganizations}
-                               organizations={organizations}
-               />
+                <CreateQuizForm quiz={quiz}
+                                handleChange={handleChange}
+                                addTag={addTag}
+                                removeTag={removeTag}
+                                handleGameRulesChange={handleGameRulesChange}
+                                handleTimeOptionsChange={handleTimeOptionsChange}
+                                handleShowOrganizations={handleShowOrganizations}
+                                organizations={organizations}
+                />
 
                 {/* Right Panel: Public Questions */}
-                <div className="col-md-4 question-bank-panel ms-4">
-                    <div className="search-category">
-                        <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Search a category"
-                            onChange={handleSearch}
-                            value={searchTerm}
-                        />
-                        <div className="question-bank">
-                            {filteredQuestions.length === 0 && publicQuestions.length === 0 ? (
-                                <div className="question-item">
-                                    <h6>No questions available</h6>
-                                </div>
-                            ) : filteredQuestions.length === 0 && publicQuestions.length !== 0 ? (
-                                publicQuestions.map((question, index) => (
-                                    <div
-                                        key={index}
-                                        className="question-item"
-                                        onClick={() => handleQuestionClick(question)}
-                                        style={{cursor: "pointer"}}
-                                    >
-                                        <h6>{question?.question || "No question text"}</h6>
-                                    </div>
-                                ))
-                            ) : (
-                                filteredQuestions.map((question, index) => (
-                                    <div
-                                        key={index}
-                                        className="question-item"
-                                        onClick={() => handleQuestionClick(question)}
-                                        style={{cursor: "pointer"}}
-                                    >
-                                        <h6>{question?.question || "No question text"}</h6>
-                                    </div>
-                                ))
-                            )}
-                        </div>
-                    </div>
-                </div>
-
+                <PublicQuestionForm handleSearch={handleSearch}
+                                    searchTerm={searchTerm}
+                                    filteredQuestions={filteredQuestions}
+                                    publicQuestions={publicQuestions}
+                                    handleQuestionClick={handleQuestionClick}/>
 
             </div>
 
             <hr/>
 
             {/* Create Questions Section */}
+
+
             <CreateQuestionForm
                 addQuestion={addQuestion}
                 quiz={quiz}
@@ -403,6 +371,12 @@ const CreateQuiz = () => {
                 handleAddToPublicBankChange={handleAddToPublicBankChange}
                 handleAddToBankChange={handleAddToBankChange}
             />
+
+            {/* Generate AI Questions Form */}
+
+            <QuestionsAIForm questions={questions}
+                             setQuestions={setQuestions}
+                             category={quiz.category}/>
 
             <div className="row d-grid mt-4">
                 <div className="col-md-12 text-center">
