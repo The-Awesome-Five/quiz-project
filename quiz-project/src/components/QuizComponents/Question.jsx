@@ -20,7 +20,7 @@ export const Question = ({question, quizTitle, handleAnswer}) => {
                 {question.answers.map((answer, index) => {
                     return (
                         <Col key={index}>
-                             {String.fromCharCode(65 + index)}) {
+                             {String.fromCharCode(65 + index)}   {
                             <button style={question.selectedAnswer === index
                                 ? {background: "blue"}
                                 : {background: "green"}} onClick={() => changeAnswer(index)}>{answer}</button>

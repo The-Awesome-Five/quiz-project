@@ -66,16 +66,18 @@ export const Quiz = () => {
 
         }
 
-
-        const score = isTimeOver ? 0 : quiz.questions.reduce((accScore, currQuestion, currIndex) => {
+        const score =  quiz.questions.reduce((accScore, currQuestion, currIndex) => {
 
             if (currQuestion.correctAnswerIndex === answers[currIndex]) {
                 accScore+=1;
+                
             }
-
+      
             return accScore;
         },0);
 
+    
+  
         try {
             await submitQuizByUser({answers, score}, path, userData.uid);
 
@@ -92,7 +94,7 @@ export const Quiz = () => {
 
     const finish = () => {
 
-        submit(true);
+        submit(false);
 
     }
 

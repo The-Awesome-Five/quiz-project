@@ -98,9 +98,13 @@ const SingleOrganization = ({ orgId }) => {
     }, [orgId]);
 
     const handleEditClick = (quiz) => {
-        navigate(`/edit-quiz/${quiz.quizId}`, { state: { quizData: quiz } });
+        navigate(`/edit-quiz/${quiz.id}`, { state: { quizData: quiz } });
     };
 
+    const handleReviewClick = (quiz,orgInfo) => {
+        console.log(quiz)
+        navigate(`/review-quiz/${quiz.id}`, { state: { quiz: quiz, orgInfo: orgInfo } });
+    };
     if (!orgInfo|| !userData ) {
         return <div>Loading...</div>; 
     }
@@ -186,13 +190,7 @@ const SingleOrganization = ({ orgId }) => {
             border: "2px solid black",
             cursor: "pointer",
           }}
-          onClick={() =>
-            navigate(`/quizzes/${quizObj[0]}`, {
-              state: {
-                path: `/quizzes/${quizObj[0]}`,
-              },
-            })
-          }
+   
         >
           <img
             src={
@@ -209,10 +207,18 @@ const SingleOrganization = ({ orgId }) => {
           />
           <p className="mt-2 text-center">{quiz.name}</p>
           <div>
-            <button>Start Quiz</button>
+            <button        onClick={() =>
+            navigate(`/quizzes/${quizObj[0]}`, {
+              state: {
+                path: `/quizzes/${quizObj[0]}`,
+              },
+            })
+          }>Start Quiz</button>
             {(userData.organizations[orgId].role === "educator" ||
-              userData.organizations[orgId].role === "owner") && (
+              userData.organizations[orgId].role === "owner") && (<>
               <button onClick={() => handleEditClick(quiz)}>Edit</button>
+              <button onClick={() => handleReviewClick(quiz, orgInfo)}>Review Submissions</button>
+              </>
             )}
           </div>
         </div>
