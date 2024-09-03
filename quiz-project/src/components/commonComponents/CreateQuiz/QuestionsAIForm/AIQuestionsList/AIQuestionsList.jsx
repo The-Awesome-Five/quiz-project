@@ -1,0 +1,3 @@
+export const AIQuestionsList = ({questions}) => {
+
+}
