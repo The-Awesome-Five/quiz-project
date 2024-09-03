@@ -77,7 +77,7 @@ const CreateQuiz = () => {
     }
 
     const {userData} = useContext(AppContext);
-    const [questions, setQuestions] = useState([{questionText: "", answers: ["", "", "", ""], correctAnswerIndex: 0}]);
+    const [questions, setQuestions] = useState([{question: "", answers: ["", "", "", ""], correctAnswerIndex: 0}]);
     const [publicQuestions, setPublicQuestions] = useState([]);
 
     useEffect(() => {
@@ -115,7 +115,7 @@ const CreateQuiz = () => {
 
     const handleQuestionChange = (index, value) => {
         const updatedQuestions = [...questions];
-        updatedQuestions[index].questionText = value;
+        updatedQuestions[index].question = value;
         setQuestions(updatedQuestions);
     };
 
@@ -126,7 +126,7 @@ const CreateQuiz = () => {
     };
 
     const addQuestion = () => {
-        setQuestions([...questions, {questionText: "", answers: ["", "", "", ""], correctAnswerIndex: 0}]);
+        setQuestions([...questions, {question: "", answers: ["", "", "", ""], correctAnswerIndex: 0}]);
     };
 
     const handleCorrectAnswerChange = (questionIndex, answerIndex) => {
@@ -152,7 +152,7 @@ const CreateQuiz = () => {
                 return toast.error('Please add at least a single question to your quiz!');
             } else {
                 for (let question of questions) {
-                    if (!question.questionText) {
+                    if (!question.question) {
                         return toast.error('Please add a name to your question!');
                     }
                     if (!question.answers.some(Boolean)) {
@@ -181,7 +181,7 @@ const CreateQuiz = () => {
                         showCorrectAnswers: quiz.gameRules?.showCorrectAnswers ? quiz.gameRules?.showCorrectAnswers : null,
                     },
                     questions: questions.map((q) => ({
-                        question: q.questionText,
+                        question: q.question,
                         answers: q.answers,
                         correctAnswerIndex: q.correctAnswerIndex,
                     })),
@@ -213,7 +213,7 @@ const CreateQuiz = () => {
                         showCorrectAnswers: quiz.gameRules?.showCorrectAnswers ? quiz.gameRules?.showCorrectAnswers : null,
                     },
                     questions: questions.map((q) => ({
-                        question: q.questionText,
+                        question: q.question,
                         answers: q.answers,
                         correctAnswerIndex: q.correctAnswerIndex,
                     })),
@@ -224,7 +224,6 @@ const CreateQuiz = () => {
                     },
                 }
             }
-            console.log(quizData)
             await createQuizInFirebase(quizData);
 
             const promises = questions.map(async (question) => {
@@ -232,7 +231,7 @@ const CreateQuiz = () => {
 
                 if (question.addToPublicBank) {
                     const questionData = {
-                        question: question.questionText,
+                        question: question.question,
                         category: quiz.category,
                         difficultyLevel: quiz.difficulty,
                         orgID: 'public',
@@ -245,7 +244,7 @@ const CreateQuiz = () => {
                     return addQuestionToQuestionBank(questionData);
                 } else if (question.addPrivate) {
                     const questionData = {
-                        question: question.questionText,
+                        question: question.question,
                         category: quiz.category,
                         difficultyLevel: quiz.difficulty,
                         orgID: quiz.organisationId,
@@ -320,7 +319,7 @@ const CreateQuiz = () => {
         setQuestions([
             ...questions,
             {
-                questionText: question.question,
+                question: question.question,
                 answers: Object.keys(question.answers),
                 correctAnswerIndex: Object.values(question.answers).findIndex(
                     (isCorrect) => isCorrect
@@ -364,6 +363,7 @@ const CreateQuiz = () => {
                 addQuestion={addQuestion}
                 quiz={quiz}
                 questions={questions}
+                setQuestions={setQuestions}
                 removeQuestion={removeQuestion}
                 handleQuestionChange={handleQuestionChange}
                 handleAnswerChange={handleAnswerChange}
@@ -371,12 +371,6 @@ const CreateQuiz = () => {
                 handleAddToPublicBankChange={handleAddToPublicBankChange}
                 handleAddToBankChange={handleAddToBankChange}
             />
-
-            {/* Generate AI Questions Form */}
-
-            <QuestionsAIForm questions={questions}
-                             setQuestions={setQuestions}
-                             category={quiz.category}/>
 
             <div className="row d-grid mt-4">
                 <div className="col-md-12 text-center">

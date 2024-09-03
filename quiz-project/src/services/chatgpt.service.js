@@ -9,18 +9,14 @@ const openai = axios.create({
     },
 });
 
-export const getOpenAIResponse = async (prompt, number) => {
-
-    if (number > 5) {
-        return new Error("Number of questions should be less than 5");
-    }
+export const getOpenAIResponse = async (prompt) => {
 
     const response = await openai.post('/completions', {
         model: 'gpt-4o-mini',
         messages: [
             {
                 role: "system",
-                content: `You create ${number} unique questions. For each question I need 4 answers, one of them correct. JSON format`
+                content: `You create unique questions. For each question I need 4 answers, one of them correct. JSON format`
             },
             {
                 role: "user",
@@ -42,15 +38,10 @@ export const getOpenAIResponse = async (prompt, number) => {
                                 properties: {
                                     question: { type: "string" },
                                     answers: {
-                                        type: "object",
-                                        properties: {
-                                            "0": { type: "string" },
-                                            "1": { type: "string" },
-                                            "2": { type: "string" },
-                                            "3": { type: "string" }
+                                        type: "array",
+                                        items: {
+                                            type: "string"
                                         },
-                                        required: ["0", "1", "2", "3"],
-                                        additionalProperties: false
                                     },
                                     correctAnswerIndex: { type: "integer" }
                                 },

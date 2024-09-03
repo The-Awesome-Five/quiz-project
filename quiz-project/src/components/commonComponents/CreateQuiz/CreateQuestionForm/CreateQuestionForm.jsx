@@ -1,7 +1,10 @@
 import React from "react";
+import {QuestionsAIForm} from "../QuestionsAIForm/QuestionsAIForm.jsx";
+import {toast} from "react-toastify";
 
 export const CreateQuestionForm = ({
                                        questions,
+    setQuestions,
                                        removeQuestion,
                                        handleQuestionChange,
                                        handleAnswerChange,
@@ -14,12 +17,20 @@ export const CreateQuestionForm = ({
 
                                    }) => {
 
+    if (!questions) {
+        return <div>Loading...</div>;
+    }
+
 
     return (
         <div className="row mt-4">
             <div className="col-md-12">
                 <h4>Create Questions</h4>
-                {questions.map((question, questionIndex) => (
+                {questions.map((question, questionIndex) => {
+                    console.log("set")
+                    console.log(questions);
+                    console.log(question);
+                    return (
                     <div key={questionIndex} className="mb-4 question-box">
                         <div className="d-flex justify-content-between align-items-center mb-2">
                             <label className="form-label">
@@ -36,14 +47,14 @@ export const CreateQuestionForm = ({
                             type="text"
                             className="form-control"
                             placeholder="Enter your question"
-                            value={question.questionText}
+                            value={question.question}
                             onChange={(e) =>
                                 handleQuestionChange(questionIndex, e.target.value)
                             }
                         />
 
                         <div className="row mt-3">
-                            {question.answers.map((answer, answerIndex) => (
+                            {question.answers && question.answers.map((answer, answerIndex) => (
                                 <div className="col-md-6 mb-3" key={answerIndex}>
                                     <input
                                         type="text"
@@ -108,7 +119,14 @@ export const CreateQuestionForm = ({
 
                             </div> : <></>}
                     </div>
-                ))}
+                )})}
+
+                {/* Generate AI Questions Form */}
+
+                <QuestionsAIForm questions={questions}
+                                 setQuestions={setQuestions}
+                                 category={quiz.category}
+                difficulty={quiz.difficulty}/>
 
                 <button className="btn btn-secondary" onClick={addQuestion}>
                     Add Another Question
