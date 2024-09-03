@@ -167,67 +167,73 @@ const SingleOrganization = ({ orgId }) => {
                     </div>
                 ))}
             </div>
-            <div className="p-4 rounded-3 shadow bg-light scrollable-container">
-    {orgQuizzes ? (
-        <div>
-            {orgQuizzes.map((quizObj, index) => {
-                const quizKey = Object.keys(quizObj)[1];
-                const quiz = quizObj[quizKey];
-              
-                return (
-                    <div
-                        key={index}
-                        className="quiz-box d-flex flex-column align-items-center justify-content-center border m-3"
-                        style={{
-                            width: "250px",
-                            height: "250px",
-                            border: "2px solid black",
-                            cursor: "pointer",
-                        }}
-                        onClick={() =>     navigate(`/quizzes/${quizObj[0]}`, {
-                            state: {
-                                path: `/quizzes/${quizObj[0]}`
-                            }
-                        })}
-                    >
-                        <img
-                            src={quiz.avatar && quiz.avatar.includes('http') ?
-                                quiz.avatar :
-                                'https://img.freepik.com/premium-vector/quiz-logo-with-speech-bubble-icon_149152-811.jpg'}
-                            alt={`${quiz.name} logo`}
-                            style={{
-                                width: "80px",
-                                height: "80px",
-                                objectFit: "cover",
-                            }}
-                        />
-                        <p className="mt-2 text-center">{quiz.name}</p>
-                        <div>
-                        <button>StartQuiz</button>
-                        {(userData.organizations[orgId].role==='educator' || userData.organizations[orgId].role==='owner') ?
-                        <button onClick={() => handleEditClick(quiz)}>Edit</button> : <></> }
-                        </div>
-                      
-                    </div>
-                );
-            })}
-        </div>
-    ) : (
-        <div>No Quizzes Have been made yet</div>
-    )}
-    <span
-        className="quiz-box d-flex align-items-center justify-content-center border m-3"
-        style={{
-            width: "150px",
-            height: "150px",
+            <div
+  className="quiz-container d-flex flex-wrap justify-content-start scrollable-container"
+  style={{ gap: "20px" }}
+>
+  {orgQuizzes ? (
+    orgQuizzes.map((quizObj, index) => {
+      const quizKey = Object.keys(quizObj)[1];
+      const quiz = quizObj[quizKey];
+
+      return (
+        <div
+          key={index}
+          className="quiz-box d-flex flex-column align-items-center justify-content-center"
+          style={{
+            width: "250px",
+            height: "250px",
             border: "2px solid black",
-            fontSize: "50px",
             cursor: "pointer",
-        }}
-        onClick={() => navigate('/create-quiz')}
-    >
-        +
-    </span>
+          }}
+          onClick={() =>
+            navigate(`/quizzes/${quizObj[0]}`, {
+              state: {
+                path: `/quizzes/${quizObj[0]}`,
+              },
+            })
+          }
+        >
+          <img
+            src={
+              quiz.avatar && quiz.avatar.includes("http")
+                ? quiz.avatar
+                : "https://img.freepik.com/premium-vector/quiz-logo-with-speech-bubble-icon_149152-811.jpg"
+            }
+            alt={`${quiz.name} logo`}
+            style={{
+              width: "80px",
+              height: "80px",
+              objectFit: "cover",
+            }}
+          />
+          <p className="mt-2 text-center">{quiz.name}</p>
+          <div>
+            <button>Start Quiz</button>
+            {(userData.organizations[orgId].role === "educator" ||
+              userData.organizations[orgId].role === "owner") && (
+              <button onClick={() => handleEditClick(quiz)}>Edit</button>
+            )}
+          </div>
+        </div>
+      );
+    })
+  ) : (
+    <div>No Quizzes Have been made yet</div>
+  )}
+  <span
+    className="quiz-box d-flex align-items-center justify-content-center"
+    style={{
+      width: "150px",
+      height: "150px",
+      border: "2px solid black",
+      fontSize: "50px",
+      cursor: "pointer",
+    }}
+    onClick={() => navigate('/create-quiz')}
+  >
+    +
+  </span>
 </div>
         </div>
         );

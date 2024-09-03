@@ -84,6 +84,6 @@ export const leaveOrganizationUser = async (pathForUser, pathForOrg) =>{
 }
 
 export const getAllOrganizationQuizzes= async(orgId) =>{
-    const snapshot = await get(query(ref(db, 'quizzes'), orderByChild('organizationID'), equalTo(orgId)));
+    const snapshot = await get(query(ref(db, 'quizzes'), orderByChild('organizationID/orgID'), equalTo(orgId)));
     return Object.entries(snapshot.val())
 }
