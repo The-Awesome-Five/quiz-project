@@ -36,6 +36,8 @@ import {
 } from "./views/AdminMenu/AdminQuestionBankMenu/AdminQuestionBankView/AdminQuestionBankView.jsx";
 import ReviewSubmissions from './components/organizationComponents/ReviewSubmissions/ReviewSubmissions.jsx';
 import Shop from './components/commonComponents/Shop/Shop.jsx';
+import {GamingModeView} from "./views/GamingModeView/GamingModeView.jsx";
+import {Room} from "./components/gamingComponents/roomComponents/Room.jsx";
 // import {TestAI} from "./views/TestAI.jsx";
 
 function App() {
@@ -90,6 +92,9 @@ function App() {
 
                         <Route path="/all-quizes" element={<AllQuizzes />} />
                         <Route path="/quizzes/:quizId" element={<Quiz />} />
+
+                        <Route path='/gaming-modes' element={<GamingModeView />} />
+                        <Route path={`/room/:roomId`} element={<Room />} />
 
                         <Route path="/organizations" element={<Organization /> } />
                         <Route path="/create-organization" element={<CreateOrganization />} />
