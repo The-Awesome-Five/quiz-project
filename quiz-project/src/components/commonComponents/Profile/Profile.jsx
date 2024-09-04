@@ -182,6 +182,10 @@ const Profile = () => {
                             <Link to='/edit-profile'><button className="btn btn-success">Edit Profile</button></Link>
                             )
                         }
+                            {isCurrentUserProfile && (
+                            <Link to='/shop'><button className="btn btn-success ms-3">Shop</button></Link>
+                            )
+                        }
                     </div>
                 </Col>
             </Row>

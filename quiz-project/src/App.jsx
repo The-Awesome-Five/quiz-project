@@ -35,6 +35,7 @@ import {
     AdminQuestionBankView
 } from "./views/AdminMenu/AdminQuestionBankMenu/AdminQuestionBankView/AdminQuestionBankView.jsx";
 import ReviewSubmissions from './components/organizationComponents/ReviewSubmissions/ReviewSubmissions.jsx';
+import Shop from './components/commonComponents/Shop/Shop.jsx';
 // import {TestAI} from "./views/TestAI.jsx";
 
 function App() {
@@ -100,6 +101,7 @@ function App() {
                         <Route path='/create-quiz' element={<CreateQuiz/>} />
                         <Route path='/edit-quiz/:quizId' element={<EditQuizForm/>}/>
                         <Route path='/review-quiz/:quizId' element={<ReviewSubmissions/>}/> 
+                        <Route path='/shop' element={<Shop/>}/>
                         {/* <Route path="/testAI" element={<TestAI />} /> */}
                     </Routes>
                 </div>
