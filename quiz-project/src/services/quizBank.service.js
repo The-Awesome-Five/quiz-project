@@ -52,8 +52,7 @@ export const getQuestionsByOrgIds = async (orgIds) => {
 
   try {
     const queries = [
-      query(ref(db, path), orderByChild('orgID'), equalTo('public')),
-      ...orgIds.map(orgId => query(ref(db, path), orderByChild('orgID'), equalTo(orgId)))
+      query(ref(db, path), orderByChild('orgID'), equalTo('public'))
     ];
     const snapshots = await Promise.all(queries.map(q => get(q)));
     snapshots.forEach(snapshot => {
@@ -109,4 +108,36 @@ export const getAllQuestionBanks = async () => {
     throw new Error('Could not fetch the question banks!');
   }
 
+}
+
+export const getQuestionsByCategoryAndDifficulty = async (category,difficulty) => {
+
+  const path = 'questionBank';
+  let allQuestions = [];
+
+  try {
+    const queries = [
+      query(ref(db, path), orderByChild('category'), equalTo('public'),
+      ...orgIds.map(orgId => query(ref(db, path), orderByChild('orgID'), equalTo(orgId))))
+    ];
+    const snapshots = await Promise.all(queries.map(q => get(q)));
+
+    snapshots.forEach(snapshot => {
+      if (snapshot && snapshot.val) {
+
+        if (snapshot.exists()) {
+          const questions = snapshot.val();
+          allQuestions = [...allQuestions, ...Object.values(questions).filter(q => q.category === category && q.difficulty === difficulty)];
+        }
+
+      } else {
+        console.log('Could not fetch the question banks!');
+      }
+    });
+
+    return allQuestions;
+  } catch (error) {
+    console.error("Error fetching questions:", error);
+    return [];
+  }
 }

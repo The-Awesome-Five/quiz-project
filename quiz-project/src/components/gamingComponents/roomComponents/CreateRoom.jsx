@@ -8,6 +8,7 @@ export const CreateRoom = () => {
 
     const [room, setRoom] = useState({
         name: '',
+        participants: [],
         category: 'Science',
         difficulty: 'Easy',
         timePerRound: ''
@@ -20,14 +21,16 @@ export const CreateRoom = () => {
         setRoom({ ...room, [name]: value });
     };
 
-    const createRoomHandler = async () => {
+    const createRoomHandler = async (e) => {
+
+        e.preventDefault()
 
         if (Object.values(room).some(x => x === null || x === '')) {
          return toast.error('Please fill out all fields');
         }
 
         try {
-            const roomId = createRoom(room);
+            const roomId = await createRoom(room);
 
             if (roomId) {
                 toast.success('Room created:', roomId);
