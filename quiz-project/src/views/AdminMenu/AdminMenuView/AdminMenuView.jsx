@@ -39,6 +39,13 @@ export const AdminMenuView = () => {
                             </Link>
                         </Card>
                     </Col>
+                    <Col>
+                        <Card className="text-center">
+                            <Link to="/shop-management">
+                                <Button variant="primary">Shop menu</Button>
+                            </Link>
+                        </Card>
+                    </Col>
                 </Row>
             </Container>
     )

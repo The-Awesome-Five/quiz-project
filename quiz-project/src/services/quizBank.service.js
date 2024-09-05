@@ -1,4 +1,4 @@
-import { getDatabase, ref, push, get, query, orderByChild, equalTo, update } from "firebase/database";
+import { getDatabase, push, get, query, orderByChild, equalTo, update } from "firebase/database";
 
 const db = getDatabase();
 

@@ -36,6 +36,7 @@ import {
 } from "./views/AdminMenu/AdminQuestionBankMenu/AdminQuestionBankView/AdminQuestionBankView.jsx";
 import ReviewSubmissions from './components/organizationComponents/ReviewSubmissions/ReviewSubmissions.jsx';
 import Shop from './components/commonComponents/Shop/Shop.jsx';
+import AdminShopItem from './components/adminComponents/AdminShopManagement/AdminShopItem.jsx';
 // import {TestAI} from "./views/TestAI.jsx";
 
 function App() {
@@ -86,6 +87,7 @@ function App() {
                         <Route path="/organization-management" element={<AdminOrganisationView />} />
                         <Route path="/quiz-management" element={<AdminQuizMenuView />} />
                         <Route path="/qbank-management" element={<AdminQuestionBankView />} />
+                        <Route path='/shop-management' element={<AdminShopItem/>}/>
 
 
                         <Route path="/all-quizes" element={<AllQuizzes />} />
