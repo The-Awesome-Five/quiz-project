@@ -1,15 +1,15 @@
 import React from "react";
 
 export const CreateQuizForm = ({
-                                   handleChange,
-                                   quiz,
-                                   addTag,
-                                   handleTimeOptionsChange,
-                                   handleGameRulesChange,
-                                   organizations,
-                                   removeTag,
-                                   handleShowOrganizations,
-                               }) => {
+    handleChange,
+    quiz,
+    addTag,
+    handleTimeOptionsChange,
+    handleGameRulesChange,
+    organizations,
+    removeTag,
+    handleShowOrganizations,
+}) => {
 
 
     return (
@@ -84,6 +84,15 @@ export const CreateQuizForm = ({
                     placeholder="Enter picture URL"
                     defaultValue={quiz.pictureUrl}
                     onChange={(e) => handleChange(e)}
+                />
+                
+                 <label htmlFor="Passing Score" className="form-label">
+                   Passing Score
+                </label>
+                <input
+                    type="number"
+                     className="form-control"
+                    onChange={(e) => handleChange(e.target.value, 'passingScore')}
                 />
 
                 {/* Time Limit for Quiz */}
@@ -182,14 +191,14 @@ export const CreateQuizForm = ({
                 <div className="tag-list">
                     {quiz.tags?.map((tag, index) => (
                         <span key={index} className="badge bg-secondary me-2">
-                  {tag}
+                            {tag}
                             <button
                                 type="button"
                                 className="btn-close btn-close-white ms-2"
                                 aria-label="Close"
                                 onClick={() => removeTag(index)}
                             />
-                </span>
+                        </span>
                     ))}
                 </div>
 
@@ -221,9 +230,9 @@ export const CreateQuizForm = ({
                             {organizations.length === 0 ? (
                                 <option value="">You are not a part of any organizations!</option>
                             ) : (organizations.map((organization, index) => (
-                                    <option key={index}
-                                            value={`${organization.organizationID}////${organization.organizationName}`}>{organization.organizationName}</option>
-                                ))
+                                <option key={index}
+                                    value={`${organization.organizationID}////${organization.organizationName}`}>{organization.organizationName}</option>
+                            ))
                             )}
                         </select>
                     </div>
