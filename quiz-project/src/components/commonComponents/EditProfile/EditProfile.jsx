@@ -5,7 +5,8 @@ import {
     updateUserAvatar,
     updateUserFirstName,
     updateUserLastName,
-    updateCustomInfo
+    updateCustomInfo,
+    updatePhone
 } from '../../../services/user.service';
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
@@ -21,6 +22,7 @@ const EditProfile = () => {
     const [info, setInfo] = useState('');
     const [loading, setLoading] = useState(true);
     const [role, setRole] = useState('');
+    const [phone, setPhone] = useState('');
     const [userId, setUserId] = useState('');
     const {uid} = useParams();
 
@@ -36,6 +38,7 @@ const EditProfile = () => {
               setLastName(userDataFromDB.lastName || '');
               setInfo(userDataFromDB.customInfo || '');
               setRole(userDataFromDB.role || '');
+              setPhone(userDataFromDB.phone || '');
             } catch (error) {
               console.error('Failed to load user data:', error);
             }
@@ -54,6 +57,9 @@ const EditProfile = () => {
         setFirstName(e.target.value);
       };
   
+      const handlePhoneNumberChange = (e) => {
+        setPhone(e.target.value);
+      };
       const handleLastNameChange = (e) => {
         setLastName(e.target.value);
       };
@@ -75,6 +81,7 @@ const EditProfile = () => {
             await updateUserFirstName(userId, firstName);
             await updateUserLastName(userId, lastName);
             await updateCustomInfo(userId, info);
+            await updatePhone(userId, phone);
               console.log(role)
             // await updateUserRole(userId, role);
             const updatedUserData = await getUserByID(userId);
@@ -117,6 +124,10 @@ const EditProfile = () => {
           <Form.Group controlId="formLastName" className="mb-3">
             <Form.Label>Last Name:</Form.Label>
             <Form.Control type="text" placeholder="Enter Last Name" value={lastName} onChange={handleLastNameChange} />
+          </Form.Group>
+          <Form.Group controlId="formPhoneNumber" className="mb-3">
+            <Form.Label>Phone Number:</Form.Label>
+            <Form.Control type="text" placeholder="Phone Number" value={phone} onChange={handlePhoneNumberChange} />
           </Form.Group>
 
           {/* Custom Information Field */}
