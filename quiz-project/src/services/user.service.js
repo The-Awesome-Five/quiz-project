@@ -132,3 +132,7 @@ export const updateUserFirstName = async (uid, firstName) => {
     const userRef = ref(db, `users/${uid}/customInfo`);
     await set(userRef, customInfo);
   };
+  export const updatePhone = async (uid, phone) => {
+    const userRef = ref(db, `users/${uid}/phone`);
+    await set(userRef, phone);
+  };

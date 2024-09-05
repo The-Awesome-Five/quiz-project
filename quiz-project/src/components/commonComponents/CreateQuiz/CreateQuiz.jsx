@@ -62,6 +62,13 @@ const CreateQuiz = () => {
 
                 quizValue = isPrivateVal;
                 break;
+            case 'passingScore':
+                    quizName = 'passingScore';
+                    quizValue = e; 
+                    console.log(quiz)
+                    break;
+            
+        
         }
 
         name = quizName ? quizName : name;
@@ -77,7 +84,7 @@ const CreateQuiz = () => {
     }
 
     const {userData} = useContext(AppContext);
-    const [questions, setQuestions] = useState([{question: "", answers: ["", "", "", ""], correctAnswerIndex: 0}]);
+    const [questions, setQuestions] = useState([{question: "", answers: ["", "", "", ""], correctAnswerIndex: 0, points: 0, isMultiple: true}]);
     const [publicQuestions, setPublicQuestions] = useState([]);
 
     useEffect(() => {
@@ -118,6 +125,13 @@ const CreateQuiz = () => {
         updatedQuestions[index].question = value;
         setQuestions(updatedQuestions);
     };
+    const handlePointsChange = (index, value) => {
+        console.log('Updating Points')
+        const updatedQuestions = [...questions];
+        updatedQuestions[index].points = value;
+        setQuestions(updatedQuestions);
+    };
+
 
     const handleAnswerChange = (questionIndex, answerIndex, value) => {
         const updatedQuestions = [...questions];
@@ -125,8 +139,11 @@ const CreateQuiz = () => {
         setQuestions(updatedQuestions);
     };
 
-    const addQuestion = () => {
-        setQuestions([...questions, {question: "", answers: ["", "", "", ""], correctAnswerIndex: 0}]);
+    const addMultipleChoiceQuestion = () => {
+        setQuestions([...questions, {question: "", answers: ["", "", "", ""], correctAnswerIndex: 0, points:0, isMultiple: true}]);
+    };
+    const addOpenQuestion = () => {
+        setQuestions([...questions, {question: "", points:0, isMultiple: false}]);
     };
 
     const handleCorrectAnswerChange = (questionIndex, answerIndex) => {
@@ -141,7 +158,7 @@ const CreateQuiz = () => {
 
     const handleCreateQuiz = async () => {
         try {
-
+           
             Object.entries(quiz).map(([key, val]) => {
                 if (!val) {
                     return toast.error(`Please add a ${key} for your quiz!`);
@@ -155,13 +172,16 @@ const CreateQuiz = () => {
                     if (!question.question) {
                         return toast.error('Please add a name to your question!');
                     }
+                    if(question.isMultiple){
                     if (!question.answers.some(Boolean)) {
                         return toast.error('Please add at least a single answer to your question!');
                     }
                 }
+                }
             }
 
-            let quizData;
+            
+           let quizData;
             if (quiz.organisationId) {
                 const x = quiz.organisationId.split('////');
                 quizData = {
@@ -180,10 +200,12 @@ const CreateQuiz = () => {
                         openDuration: quiz.timeOptions?.isOpenDurationActive ? quiz.gameRules?.openDuration : null,
                         showCorrectAnswers: quiz.gameRules?.showCorrectAnswers ? quiz.gameRules?.showCorrectAnswers : null,
                     },
+                    passingScore: quiz.passingScore,
                     questions: questions.map((q) => ({
                         question: q.question,
-                        answers: q.answers,
-                        correctAnswerIndex: q.correctAnswerIndex,
+                        points: q.points,
+                        answers: q.isMultiple ? q.answers : [], 
+                        correctAnswerIndex: q.isMultiple ? q.correctAnswerIndex : null 
                     })),
                     isPublic: quiz.isPrivate,
                     creator: {
@@ -212,10 +234,12 @@ const CreateQuiz = () => {
                         openDuration: quiz.timeOptions?.isOpenDurationActive ? quiz.gameRules?.openDuration : null,
                         showCorrectAnswers: quiz.gameRules?.showCorrectAnswers ? quiz.gameRules?.showCorrectAnswers : null,
                     },
+                    passingScore: quiz.passingScore,
                     questions: questions.map((q) => ({
                         question: q.question,
-                        answers: q.answers,
-                        correctAnswerIndex: q.correctAnswerIndex,
+                        points: q.points,
+                        answers: q.isMultiple ? q.answers : [], 
+                        correctAnswerIndex: q.isMultiple ? q.correctAnswerIndex : null 
                     })),
                     isPublic: true,
                     creator: {
@@ -224,6 +248,8 @@ const CreateQuiz = () => {
                     },
                 }
             }
+            console.log(quizData);
+      
             await createQuizInFirebase(quizData);
 
             const promises = questions.map(async (question) => {
@@ -240,6 +266,7 @@ const CreateQuiz = () => {
                             [`${answer}`]: index === question.correctAnswerIndex,
                         }), {}),
                         tags: quiz.tags ? quiz.tags.reduce((acc, tag) => ({...acc, [tag]: tag}), {}) : [],
+                        isMultiple: true,
                     };
                     return addQuestionToQuestionBank(questionData);
                 } else if (question.addPrivate) {
@@ -253,6 +280,7 @@ const CreateQuiz = () => {
                             [`${answer}`]: index === question.correctAnswerIndex,
                         }), {}),
                         tags: quiz.tags ? quiz.tags.reduce((acc, tag) => ({...acc, [tag]: tag}), {}) : [],
+                        isMultiple: true,
                     };
                     return addQuestionToQuestionBank(questionData);
                 }
@@ -343,6 +371,7 @@ const CreateQuiz = () => {
                                 handleTimeOptionsChange={handleTimeOptionsChange}
                                 handleShowOrganizations={handleShowOrganizations}
                                 organizations={organizations}
+                                
                 />
 
                 {/* Right Panel: Public Questions */}
@@ -360,7 +389,8 @@ const CreateQuiz = () => {
 
 
             <CreateQuestionForm
-                addQuestion={addQuestion}
+                addMultipleChoiceQuestion={addMultipleChoiceQuestion}
+                addOpenQuestion={addOpenQuestion}
                 quiz={quiz}
                 questions={questions}
                 setQuestions={setQuestions}
@@ -370,6 +400,7 @@ const CreateQuiz = () => {
                 handleCorrectAnswerChange={handleCorrectAnswerChange}
                 handleAddToPublicBankChange={handleAddToPublicBankChange}
                 handleAddToBankChange={handleAddToBankChange}
+                handlePointsChange={handlePointsChange}
             />
 
             <div className="row d-grid mt-4">

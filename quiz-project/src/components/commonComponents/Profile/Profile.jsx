@@ -114,9 +114,11 @@ const Profile = () => {
                 </Col>
                 <Col xs={12} md={6}>
                     <h2 className="mb-4">{profileData.username}</h2>
-                    <p className="mb-0">{profileData.firstName}</p>
-                    <p className="mb-0">{profileData.lastName}</p>
-                    <p className="mb-0">{profileData.customInfo}</p>
+                    <p className="mb-0"> First Name: {profileData.firstName}</p>
+                    <p className="mb-0">Last Name: {profileData.lastName}</p>
+                    <p className="mb-0">Phone Number:{profileData.phone}</p>
+                    <p className="mb-0"> {profileData.customInfo}</p>
+                
                 </Col>
                 <Col xs={12} md={3}>
                     <div className="hero-section">

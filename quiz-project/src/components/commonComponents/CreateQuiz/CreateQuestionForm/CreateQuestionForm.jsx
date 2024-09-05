@@ -1,10 +1,11 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import {QuestionsAIForm} from "../QuestionsAIForm/QuestionsAIForm.jsx";
 import {toast} from "react-toastify";
 
 export const CreateQuestionForm = ({
                                        questions,
-    setQuestions,
+                                        setQuestions,
                                        removeQuestion,
                                        handleQuestionChange,
                                        handleAnswerChange,
@@ -12,7 +13,9 @@ export const CreateQuestionForm = ({
                                        handleAddToPublicBankChange,
                                        handleAddToBankChange,
                                        quiz,
-                                       addQuestion
+                                       addMultipleChoiceQuestion,
+                                       addOpenQuestion,
+                                       handlePointsChange
 
 
                                    }) => {
@@ -87,7 +90,17 @@ export const CreateQuestionForm = ({
                             ))}
                         </div>
 
-                        <div className="form-check mt-3">
+                        <input
+                            type="number"
+                            className="form-control"
+                            placeholder="Enter Points For This Question"
+                            
+                            onChange={(e) =>
+                                handlePointsChange(questionIndex, e.target.value)
+                            }
+                        />
+
+                        {question.isMultiple ?<div className="form-check mt-3">
                             <input
                                 className="form-check-input"
                                 type="checkbox"
@@ -101,8 +114,8 @@ export const CreateQuestionForm = ({
                                 Add this question to the public bank
                             </label>
 
-                        </div>
-                        {quiz.organisationId ?
+                        </div>: <></>}
+                        {(quiz.organisationId && question.isMultiple)?
                             <div className="form-check mt-3">
                                 <input
                                     className="form-check-input"
@@ -128,8 +141,11 @@ export const CreateQuestionForm = ({
                                  category={quiz.category}
                 difficulty={quiz.difficulty}/>
 
-                <button className="btn btn-secondary" onClick={addQuestion}>
-                    Add Another Question
+                <button className="btn btn-secondary" onClick={addMultipleChoiceQuestion}>
+                    Add Multiple Choice Question
+                </button>
+                <button className="btn btn-secondary" onClick={addOpenQuestion}>
+                    Add Open Ended Question
                 </button>
             </div>
         </div>
