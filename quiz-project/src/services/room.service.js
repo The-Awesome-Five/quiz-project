@@ -1,5 +1,9 @@
 
-export const createRoom = () => {
+export const createRoom = (room) => {
+
+    console.log('Room created: ');
+    console.log(room);
+
     return 1;
 }
 

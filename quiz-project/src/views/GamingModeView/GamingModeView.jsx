@@ -1,31 +1,37 @@
 import {Button, Container} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import {createRoom} from "../../services/room.service.js";
-import React from "react";
+import React, {useState} from "react";
+import {CreateRoom} from "../../components/gamingComponents/roomComponents/CreateRoom.jsx";
 
 export const GamingModeView = () => {
 
+    const [isCreateRoom, setIsCreateRoom] = useState(false);
+    const [isJoinRoom, setIsJoinRoom] = useState(false);
 
-    const navigate = useNavigate();
+    const handleJoinRoom = () => {
 
-    const handleCreateRoom = async () => {
-
-
-        const roomId = createRoom();
-
-        if (roomId) {
-            console.log('Room created:', roomId);
-            navigate(`/room/${roomId}`);
-        } else {
-            console.error('Failed to create room');
-
-
-        }
     }
 
     return (
         <Container>
-            <Button onClick={handleCreateRoom}>Create Game</Button>
+            {!isCreateRoom && !isJoinRoom &&
+                <>
+                    <Button onClick={() => {
+                        setIsJoinRoom(true);
+                        setIsCreateRoom(false);
+                    }}>Join Game</Button>
+                    <Button onClick={() => {
+                        setIsJoinRoom(false);
+                        setIsCreateRoom(true);
+                    }}>Create Game</Button>
+                </>
+            }
+
+            {isCreateRoom && <>
+                <CreateRoom/>
+                <Button onClick={() => setIsCreateRoom(false)}>Cancel</Button></>}
+            {isJoinRoom && <Button onClick={handleJoinRoom}>Join Room</Button>}
         </Container>
     )
 }
