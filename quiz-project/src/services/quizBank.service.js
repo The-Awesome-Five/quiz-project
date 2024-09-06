@@ -122,6 +122,8 @@ export const getQuestionsByCategoryAndDifficulty = async (category,difficulty) =
     ];
     const snapshots = await Promise.all(queries.map(q => get(q)));
 
+    console.log(snapshots)
+
     snapshots.forEach(snapshot => {
       if (snapshot && snapshot.val) {
 
