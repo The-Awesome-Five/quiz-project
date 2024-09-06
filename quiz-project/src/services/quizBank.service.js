@@ -52,7 +52,8 @@ export const getQuestionsByOrgIds = async (orgIds) => {
 
   try {
     const queries = [
-      query(ref(db, path), orderByChild('orgID'), equalTo('public'))
+      query(ref(db, path), orderByChild('orgID'), equalTo('public')),
+      ...orgIds.map(orgId => query(ref(db, path), orderByChild('orgID'), equalTo(orgId)))
     ];
     const snapshots = await Promise.all(queries.map(q => get(q)));
     snapshots.forEach(snapshot => {
