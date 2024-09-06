@@ -45,9 +45,12 @@ h2, p {
 }
 
 .hero-customization {
-  position: relative;
-  width: 300px !important;
-  height: 480px; /* Настроено за основното тяло и наслагващите се секции */
+  display: flex;
+  justify-content: center; /* Хоризонтално центриране */
+  align-items: center; /* Вертикално центриране */
+  flex-direction: column; /* Подреждане на елементите едно под друго */
+  height: 480px; /* Може да настроиш височината според нуждите */
+  position: relative; /* За да могат overlay елементите да се позиционират правилно */
 }
 
 .hero-image {
@@ -59,7 +62,7 @@ h2, p {
 
 .overlay-head {
   top: 0px; /* Настройваш за правилно наслагване */
-  height: 96px !important; 
+  height: 80px !important; 
   width: 300px !important;
 }
 
