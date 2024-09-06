@@ -139,10 +139,10 @@ export const updateUserFirstName = async (uid, firstName) => {
 
   export const updateUserSelectedItems = async (uid, selectedItems) => {
     try {
-      // Референция към потребителя в базата данни
+      
       const userRef = ref(db, `users/${uid}`);
   
-      // Актуализираме данните в профила на потребителя
+     
       await update(userRef, selectedItems);
   
       console.log("Selected items updated successfully");
