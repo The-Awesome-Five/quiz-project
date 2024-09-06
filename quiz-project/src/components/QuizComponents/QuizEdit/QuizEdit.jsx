@@ -36,15 +36,33 @@ const EditQuizForm = () => {
     const handleAddChange = (e) => {
         setAddUser(e.target.value); 
     };
-
     const handleAddParticipant = async () => {
-        if (addUser) { 
+        if (addUser) {
+            const isUserAlreadyInvited =
+                quiz.inviteList?.pending?.[addUser] ||
+                quiz.inviteList?.accepted?.[addUser] ||
+                quiz.inviteList?.rejected?.[addUser];
+        if (isUserAlreadyInvited) {
+                toast.error('User has already been invited.');
+                return;
+            }
             try {
-                await addParticipant(quizData.id, addUser); 
+                await addParticipant(quizData.id, addUser)
+                setQuiz((prevQuiz) => ({
+                    ...prevQuiz,
+                    inviteList: {
+                        ...prevQuiz.inviteList,
+                        pending: {
+                            ...prevQuiz.inviteList?.pending,
+                            [addUser]: addUser,
+                        },
+                    },
+                })); 
                 setAddUser('');
-                toast.success('User invited')
+                toast.success('User invited');
             } catch (error) {
                 console.error("Error adding participant:", error);
+                toast.error('Failed to invite user');
             }
         }
     };
