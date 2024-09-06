@@ -1,5 +1,6 @@
 import {child, get, getDatabase, push, ref, set, update} from "firebase/database";
 import { db } from "../firebase/config";
+import { getUserDataByUsername } from "./user.service.js";
 
 export const createQuizInFirebase = async (quizData) => {
   try {
@@ -116,3 +117,25 @@ export const updateQuiz = async (quizID, updatedQuizData) => {
     throw error;
   }
 };
+
+export const addParticipant = async (quizID, username) =>{
+  console.log(username);
+  console.log(quizID);
+
+
+  
+
+  const userInfo = Object.entries(await getUserDataByUsername(username));
+  const uid= userInfo[0];
+  console.log(uid);
+  const dataRef = ref(db, `quizzes/${quizID}/inviteList/pending`);
+  const infoForUpdate = { [uid[0]]: username };
+  // console.log(infoForUpdate)
+  try {
+    await update(dataRef, infoForUpdate);
+    console.log('Update successful');
+  } catch (error) {
+    console.error('Error updating invite list:', error);
+  }
+
+}

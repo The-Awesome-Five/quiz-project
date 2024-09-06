@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { updateQuiz } from "../../../services/quiz.service";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { addParticipant, updateQuiz } from "../../../services/quiz.service";
 import { toast } from "react-toastify";
 
 const EditQuizForm = () => {
@@ -14,11 +14,14 @@ const EditQuizForm = () => {
         ruleSet: {},
         isPublic: false,
     });
+    const [addUser, setAddUser]= useState('')
     const navigate= useNavigate();
 
+    
     useEffect(() => {
         if (quizData) {
             setQuiz(quizData);
+            console.log(quizData)
         }
     }, [quizData]);
 
@@ -30,6 +33,21 @@ const EditQuizForm = () => {
         }));
     };
 
+    const handleAddChange = (e) => {
+        setAddUser(e.target.value); 
+    };
+
+    const handleAddParticipant = async () => {
+        if (addUser) { 
+            try {
+                await addParticipant(quizData.id, addUser); 
+                setAddUser('');
+                toast.success('User invited')
+            } catch (error) {
+                console.error("Error adding participant:", error);
+            }
+        }
+    };
     const handleQuestionChange = (index, field, value) => {
         const updatedQuestions = [...quiz.questions];
         if (field === "correctAnswerIndex") {
@@ -164,7 +182,46 @@ const EditQuizForm = () => {
                             />
                         ))}
                     </div>
+              
                 ))}
+                {quiz.isInvites ?
+                 <div className="p-4 rounded-3 shadow bg-light scrollable-container">
+                    {quiz.inviteList?.accepted ? Object.entries(quiz.inviteList.accepted).map(([id, name]) => (
+                  <div key={id} className="d-flex justify-content-between align-items-center py-2 border-bottom">
+                      <Link to={`/profile/${id}`} className="mb-0">{name}</Link>
+                      <h5 className="mb-0 text-muted">accepted</h5> 
+                  </div>)):<></>}
+                  {quiz.inviteList?.rejected ? Object.entries(quiz.inviteList.rejected).map(([id, name]) => (
+                  <div key={id} className="d-flex justify-content-between align-items-center py-2 border-bottom">
+                      <Link to={`/profile/${id}`} className="mb-0">{name}</Link>
+                      <h5 className="mb-0 text-muted">rejected</h5> 
+                  </div>)):<></>}
+                  {quiz.inviteList?.pending ? Object.entries(quiz.inviteList.pending).map(([id, name]) => (
+                  <div key={id} className="d-flex justify-content-between align-items-center py-2 border-bottom">
+                      <Link to={`/profile/${id}`} className="mb-0">{name}</Link>
+                      <h5 className="mb-0 text-muted">pending</h5> 
+                  </div>)):<></>}
+                  <div className="input-group mb-2">
+            <input
+                type="text"
+                className="form-control"
+                placeholder="Please enter a username"
+                value={addUser}
+                onChange={handleAddChange}
+            />
+            <div className="input-group-append">
+                <button
+                    className="btn btn-outline-secondary"
+                    type="button"
+                    onClick={handleAddParticipant}
+                >
+                    Add Participant
+                </button>
+            </div>
+        </div>
+                 </div>
+                
+                :<></>}
             </div>
 
             <button type="submit" className="btn btn-primary">
