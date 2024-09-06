@@ -1,25 +1,25 @@
-import React, {useContext, useState, useEffect} from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "./CreateQuiz.css";
-import {createQuizInFirebase} from "../../../services/quiz.service";
-import {AppContext} from "../../../appState/app.context.js";
-import {toast} from "react-toastify";
+import { createQuizInFirebase } from "../../../services/quiz.service";
+import { AppContext } from "../../../appState/app.context.js";
+import { toast } from "react-toastify";
 import {
     getQuestionsByOrgIds,
     getAllQuestionFromSearch,
     addQuestionToQuestionBank
 } from "../../../services/quizBank.service.js";
-import {getUserOrganizations} from "../../../services/organization.service.js";
-import {CreateQuestionForm} from "./CreateQuestionForm/CreateQuestionForm.jsx";
-import {CreateQuizForm} from "./CreateQuizForm/CreateQuizForm.jsx";
-import {PublicQuestionForm} from "./PublicQuestionForm/PublicQuestionForm.jsx";
-import {QuestionsAIForm} from "./QuestionsAIForm/QuestionsAIForm.jsx";
+import { getUserOrganizations } from "../../../services/organization.service.js";
+import { CreateQuestionForm } from "./CreateQuestionForm/CreateQuestionForm.jsx";
+import { CreateQuizForm } from "./CreateQuizForm/CreateQuizForm.jsx";
+import { PublicQuestionForm } from "./PublicQuestionForm/PublicQuestionForm.jsx";
+import { QuestionsAIForm } from "./QuestionsAIForm/QuestionsAIForm.jsx";
 
 const CreateQuiz = () => {
     const [quiz, setQuiz] = useState({});
 
     const handleChange = (e, type) => {
         let updatedValue = {};
-        let {name, value} = e.target ? e.target : e;
+        let { name, value } = e.target ? e.target : e;
         let quizName = "";
         let quizValue = "";
         switch (type) {
@@ -39,7 +39,7 @@ const CreateQuiz = () => {
             case 'gameRules':
                 quizName = 'gameRules';
 
-                const {name, value, type, checked} = e.target;
+                const { name, value, type, checked } = e.target;
                 let gameRulesObj = quiz.gameRules !== undefined ? quiz.gameRules : {};
                 gameRulesObj[name] = type === "checkbox" ? checked : value;
 
@@ -63,12 +63,13 @@ const CreateQuiz = () => {
                 quizValue = isPrivateVal;
                 break;
             case 'passingScore':
-                    quizName = 'passingScore';
-                    quizValue = e; 
-                    console.log(quiz)
-                    break;
-            
-        
+                quizName = 'passingScore';
+                quizValue = e;
+                console.log(quiz)
+                break;
+  
+
+
         }
 
         name = quizName ? quizName : name;
@@ -83,8 +84,8 @@ const CreateQuiz = () => {
         }));
     }
 
-    const {userData} = useContext(AppContext);
-    const [questions, setQuestions] = useState([{question: "", answers: ["", "", "", ""], correctAnswerIndex: 0, points: 0, isMultiple: true}]);
+    const { userData } = useContext(AppContext);
+    const [questions, setQuestions] = useState([{ question: "", answers: ["", "", "", ""], correctAnswerIndex: 0, points: 0, isMultiple: true }]);
     const [publicQuestions, setPublicQuestions] = useState([]);
 
     useEffect(() => {
@@ -120,6 +121,17 @@ const CreateQuiz = () => {
         handleChange(e, 'timeOptions')
     };
 
+    
+    const handleIsInvitesOnlyChange = (e) => {
+        if(quiz.isInvites===false || quiz.isInvites===undefined){
+            quiz.isInvites=true;
+        }
+        else{
+            quiz.isInvites=false;
+        }
+        console.log(quiz)
+    };
+
     const handleQuestionChange = (index, value) => {
         const updatedQuestions = [...questions];
         updatedQuestions[index].question = value;
@@ -140,10 +152,10 @@ const CreateQuiz = () => {
     };
 
     const addMultipleChoiceQuestion = () => {
-        setQuestions([...questions, {question: "", answers: ["", "", "", ""], correctAnswerIndex: 0, points:0, isMultiple: true}]);
+        setQuestions([...questions, { question: "", answers: ["", "", "", ""], correctAnswerIndex: 0, points: 0, isMultiple: true }]);
     };
     const addOpenQuestion = () => {
-        setQuestions([...questions, {question: "", points:0, isMultiple: false}]);
+        setQuestions([...questions, { question: "", points: 0, isMultiple: false }]);
     };
 
     const handleCorrectAnswerChange = (questionIndex, answerIndex) => {
@@ -158,7 +170,7 @@ const CreateQuiz = () => {
 
     const handleCreateQuiz = async () => {
         try {
-           
+
             Object.entries(quiz).map(([key, val]) => {
                 if (!val) {
                     return toast.error(`Please add a ${key} for your quiz!`);
@@ -172,88 +184,88 @@ const CreateQuiz = () => {
                     if (!question.question) {
                         return toast.error('Please add a name to your question!');
                     }
-                    if(question.isMultiple){
-                    if (!question.answers.some(Boolean)) {
-                        return toast.error('Please add at least a single answer to your question!');
+                    if (question.isMultiple) {
+                        if (!question.answers.some(Boolean)) {
+                            return toast.error('Please add at least a single answer to your question!');
+                        }
                     }
                 }
-                }
             }
-            let date= Date()
-            let x;
-           let quizData;
-           if(quiz.organisationId){
-           x = quiz.organisationId.split('////');
-           } 
-           else
+            let date = Date()
+            let x='';
+            let quizData;
             if (quiz.organisationId) {
-            
-                quizData = {
-
-                    createdOn: date,
-                    name: quiz.quizTitle,
-                    avatar: quiz.pictureUrl,
-                    description: quiz.description,
-                    numberOfQuestions: questions.length,
-                    difficultyLevel: quiz.difficulty,
-                    category: quiz.category,
-                    tags: quiz.tags ? quiz.tags?.reduce((acc, tag) => ({...acc, [tag]: tag}), {}) : [],
-                    ruleSet: {
-                        timeLimitPerQuiz: quiz.timeOptions?.isTimeLimitPerQuizActive ? quiz.gameRules?.timeLimitPerQuiz : null,
-                        timeLimitPerQuestion: quiz.timeOptions?.isTimeLimitPerQuestionActive ? quiz.gameRules?.timeLimitPerQuestion : null,
-                        openDuration: quiz.timeOptions?.isOpenDurationActive ? quiz.gameRules?.openDuration : null,
-                        showCorrectAnswers: quiz.gameRules?.showCorrectAnswers ? quiz.gameRules?.showCorrectAnswers : null,
-                    },
-                    passingScore: quiz.passingScore,
-                    questions: questions.map((q) => ({
-                        question: q.question,
-                        points: q.points,
-                        answers: q.isMultiple ? q.answers : [], 
-                        correctAnswerIndex: q.isMultiple ? q.correctAnswerIndex : null 
-                    })),
-                    isPublic: quiz.isPrivate,
-                    creator: {
-                        userId: userData.uid,
-                        name: userData.username,
-                    },
-                    organizationID: {
-                        orgID: x[0],
-                        orgName: x[1],
-                    }
-                };
-            } else {
-                quizData = {
-
-                    createdOn: date,
-                    name: quiz.quizTitle,
-                    avatar: quiz.pictureUrl,
-                    description: quiz.description,
-                    numberOfQuestions: questions.length,
-                    difficultyLevel: quiz.difficulty,
-                    category: quiz.category,
-                    tags: quiz.tags ? quiz.tags?.reduce((acc, tag) => ({...acc, [tag]: tag}), {}) : [],
-                    ruleSet: {
-                        timeLimitPerQuiz: quiz.timeOptions?.isTimeLimitPerQuizActive ? quiz.gameRules?.timeLimitPerQuiz : null,
-                        timeLimitPerQuestion: quiz.timeOptions?.isTimeLimitPerQuestionActive ? quiz.gameRules?.timeLimitPerQuestion : null,
-                        openDuration: quiz.timeOptions?.isOpenDurationActive ? quiz.gameRules?.openDuration : null,
-                        showCorrectAnswers: quiz.gameRules?.showCorrectAnswers ? quiz.gameRules?.showCorrectAnswers : null,
-                    },
-                    passingScore: quiz.passingScore,
-                    questions: questions.map((q) => ({
-                        question: q.question,
-                        points: q.points,
-                        answers: q.isMultiple ? q.answers : [], 
-                        correctAnswerIndex: q.isMultiple ? q.correctAnswerIndex : null 
-                    })),
-                    isPublic: true,
-                    creator: {
-                        userId: userData.uid,
-                        name: userData.username,
-                    },
-                }
+                x = quiz.organisationId.split('////');
             }
+          
+                if (quiz.organisationId) {
+
+                    quizData = {
+
+                        createdOn: date,
+                        name: quiz.quizTitle,
+                        avatar: quiz.pictureUrl,
+                        description: quiz.description,
+                        numberOfQuestions: questions.length,
+                        difficultyLevel: quiz.difficulty,
+                        category: quiz.category,
+                        tags: quiz.tags ? quiz.tags?.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}) : [],
+                        ruleSet: {
+                            timeLimitPerQuiz: quiz.timeOptions?.isTimeLimitPerQuizActive ? quiz.gameRules?.timeLimitPerQuiz : null,
+                            timeLimitPerQuestion: quiz.timeOptions?.isTimeLimitPerQuestionActive ? quiz.gameRules?.timeLimitPerQuestion : null,
+                            openDuration: quiz.timeOptions?.isOpenDurationActive ? quiz.gameRules?.openDuration : null,
+                            showCorrectAnswers: quiz.gameRules?.showCorrectAnswers ? quiz.gameRules?.showCorrectAnswers : null,
+                        },
+                        passingScore: quiz.passingScore,
+                        questions: questions.map((q) => ({
+                            question: q.question,
+                            points: q.points,
+                            answers: q.isMultiple ? q.answers : [],
+                            correctAnswerIndex: q.isMultiple ? q.correctAnswerIndex : null
+                        })),
+                        isPublic: quiz.isPrivate,
+                        creator: {
+                            userId: userData.uid,
+                            name: userData.username,
+                        },
+                        organizationID: {
+                            orgID: x[0],
+                            orgName: x[1],
+                        }
+                    };
+                } else {
+                    quizData = {
+
+                        createdOn: date,
+                        name: quiz.quizTitle,
+                        avatar: quiz.pictureUrl,
+                        description: quiz.description,
+                        numberOfQuestions: questions.length,
+                        difficultyLevel: quiz.difficulty,
+                        category: quiz.category,
+                        tags: quiz.tags ? quiz.tags?.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}) : [],
+                        ruleSet: {
+                            timeLimitPerQuiz: quiz.timeOptions?.isTimeLimitPerQuizActive ? quiz.gameRules?.timeLimitPerQuiz : null,
+                            timeLimitPerQuestion: quiz.timeOptions?.isTimeLimitPerQuestionActive ? quiz.gameRules?.timeLimitPerQuestion : null,
+                            openDuration: quiz.timeOptions?.isOpenDurationActive ? quiz.gameRules?.openDuration : null,
+                            showCorrectAnswers: quiz.gameRules?.showCorrectAnswers ? quiz.gameRules?.showCorrectAnswers : null,
+                        },
+                        passingScore: quiz.passingScore,
+                        questions: questions.map((q) => ({
+                            question: q.question,
+                            points: q.points,
+                            answers: q.isMultiple ? q.answers : [],
+                            correctAnswerIndex: q.isMultiple ? q.correctAnswerIndex : null
+                        })),
+                        isPublic: true,
+                        creator: {
+                            userId: userData.uid,
+                            name: userData.username,
+                        },
+                    }
+                }
             console.log(quizData);
-      
+
             await createQuizInFirebase(quizData);
 
             const promises = questions.map(async (question) => {
@@ -269,7 +281,7 @@ const CreateQuiz = () => {
                             ...acc,
                             [`${answer}`]: index === question.correctAnswerIndex,
                         }), {}),
-                        tags: quiz.tags ? quiz.tags.reduce((acc, tag) => ({...acc, [tag]: tag}), {}) : [],
+                        tags: quiz.tags ? quiz.tags.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}) : [],
                         isMultiple: true,
                     };
                     return addQuestionToQuestionBank(questionData);
@@ -283,7 +295,7 @@ const CreateQuiz = () => {
                             ...acc,
                             [`${answer}`]: index === question.correctAnswerIndex,
                         }), {}),
-                        tags: quiz.tags ? quiz.tags.reduce((acc, tag) => ({...acc, [tag]: tag}), {}) : [],
+                        tags: quiz.tags ? quiz.tags.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}) : [],
                         isMultiple: true,
                     };
                     return addQuestionToQuestionBank(questionData);
@@ -369,26 +381,27 @@ const CreateQuiz = () => {
             <div className="row">
                 {/* Left Panel: Quiz Creation Form */}
                 <CreateQuizForm quiz={quiz}
-                                handleChange={handleChange}
-                                addTag={addTag}
-                                removeTag={removeTag}
-                                handleGameRulesChange={handleGameRulesChange}
-                                handleTimeOptionsChange={handleTimeOptionsChange}
-                                handleShowOrganizations={handleShowOrganizations}
-                                organizations={organizations}
-                                
+                    handleChange={handleChange}
+                    addTag={addTag}
+                    removeTag={removeTag}
+                    handleGameRulesChange={handleGameRulesChange}
+                    handleTimeOptionsChange={handleTimeOptionsChange}
+                    handleShowOrganizations={handleShowOrganizations}
+                    handleIsInvitesOnly={handleIsInvitesOnlyChange}
+                    organizations={organizations}
+
                 />
 
                 {/* Right Panel: Public Questions */}
                 <PublicQuestionForm handleSearch={handleSearch}
-                                    searchTerm={searchTerm}
-                                    filteredQuestions={filteredQuestions}
-                                    publicQuestions={publicQuestions}
-                                    handleQuestionClick={handleQuestionClick}/>
+                    searchTerm={searchTerm}
+                    filteredQuestions={filteredQuestions}
+                    publicQuestions={publicQuestions}
+                    handleQuestionClick={handleQuestionClick} />
 
             </div>
 
-            <hr/>
+            <hr />
 
             {/* Create Questions Section */}
 

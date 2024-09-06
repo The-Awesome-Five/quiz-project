@@ -9,6 +9,7 @@ export const CreateQuizForm = ({
     organizations,
     removeTag,
     handleShowOrganizations,
+    handleIsInvitesOnly
 }) => {
 
 
@@ -235,6 +236,19 @@ export const CreateQuizForm = ({
                             ))
                             )}
                         </select>
+                        <input
+                        type="checkbox"
+                        className="form-check-input isInvites"
+                        id="isInvites"
+                        name="isInvites"
+                        defaultChecked={quiz.isInvites}
+                        onChange={handleIsInvitesOnly}
+                    />
+                        <label className="form-check-label" htmlFor="isInvites"
+                        onChange={(e) => handleIsInvitesOnly()}
+                        >
+                        Invites Only
+                    </label>
                     </div>
                 </div>
             </div>
