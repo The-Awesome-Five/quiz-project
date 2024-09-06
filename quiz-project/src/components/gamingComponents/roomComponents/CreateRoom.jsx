@@ -49,19 +49,19 @@ export const CreateRoom = () => {
     }
 
         return (
-        <Form onSubmit={createRoomHandler}>
 
-            <Form.Group controlId="formName">
-                <Form.Label>Name</Form.Label>
-                <Form.Control
-                    type="text"
-                    name="name"
-                    value={room.name}
-                    onChange={handleInputChange}
-                    placeholder="Enter room name"
-                />
-            </Form.Group>
+            <Form onSubmit={createRoomHandler}>
 
+                <Form.Group controlId="formName">
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control
+                        type="text"
+                        name="name"
+                        value={room.name}
+                        onChange={handleInputChange}
+                        placeholder="Enter room name"
+                    />
+                </Form.Group>
 
             <Form.Group controlId="formCategory">
                 <Form.Label>Category</Form.Label>
