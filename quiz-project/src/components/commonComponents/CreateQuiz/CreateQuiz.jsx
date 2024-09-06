@@ -356,6 +356,7 @@ const CreateQuiz = () => {
                 correctAnswerIndex: Object.values(question.answers).findIndex(
                     (isCorrect) => isCorrect
                 ),
+                isMultiple: true,
             },
         ]);
     };

@@ -26,7 +26,7 @@ export const Question = ({question, quizTitle, handleAnswer, handleOpenAnswer}) 
                                 : {background: "green"}} onClick={() => changeAnswer(index)}>{answer}</button>
                         }</Col>
                     )
-                }):    <input
+                }) :    <input
                 type="text"
                 style={{ width: "500px",
                      height: "300px", 
