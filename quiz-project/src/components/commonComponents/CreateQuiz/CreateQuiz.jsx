@@ -179,7 +179,7 @@ const CreateQuiz = () => {
                 }
                 }
             }
-
+            let date= Date()
             let x;
            let quizData;
            if(quiz.organisationId){
@@ -190,7 +190,7 @@ const CreateQuiz = () => {
             
                 quizData = {
 
-                    createdOn: new Date(),
+                    createdOn: date,
                     name: quiz.quizTitle,
                     avatar: quiz.pictureUrl,
                     description: quiz.description,
@@ -224,7 +224,7 @@ const CreateQuiz = () => {
             } else {
                 quizData = {
 
-                    createdOn: new Date(),
+                    createdOn: date,
                     name: quiz.quizTitle,
                     avatar: quiz.pictureUrl,
                     description: quiz.description,

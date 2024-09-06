@@ -89,12 +89,14 @@ export const CreateQuestionForm = ({
                                 </div>
                             ))}
                         </div>
-
+                        <label className="form-check-label">
+                                            Points For Question
+                                        </label>
                         <input
                             type="number"
                             className="form-control"
                             placeholder="Enter Points For This Question"
-                            
+                            value={question.points}
                             onChange={(e) =>
                                 handlePointsChange(questionIndex, e.target.value)
                             }
