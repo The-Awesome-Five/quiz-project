@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
 import { getAllShopItems } from "../../../services/shop.service";
-import { addItemToUser } from "../../../services/shop.service"; // Импортираме новата функция
-import { AppContext } from '../../../appState/app.context'; // За достъп до текущия потребител
+import { addItemToUser } from "../../../services/shop.service"; 
+import { AppContext } from '../../../appState/app.context'; 
 import './Shop.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Shop = () => {
     const [shopItems, setShopItems] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { userData } = useContext(AppContext); // Вземаме данни за текущия потребител (включително uid)
+    const { userData } = useContext(AppContext); 
   
-    // Fetch на артикулите при зареждане на компонента
+   
     useEffect(() => {
       const fetchItems = async () => {
         try {
@@ -26,17 +26,17 @@ const Shop = () => {
       fetchItems();
     }, []);
   
-    // Филтриране на артикулите по категория
+    
     const getItemsByCategory = (category) => {
       return shopItems.filter((item) => item.type === category);
     };
   
     const handleBuy = async (item) => {
       try {
-        // Определяме категорията на артикула, за да го добавим към правилната секция (head, torso, legs)
-        const category = item.type; // "head", "torso", "legs"
         
-        // Викаме функцията за добавяне на артикула към потребителя
+        const category = item.type; 
+        
+        
         await addItemToUser(userData.uid, item, category);
 
         alert(`You bought ${item.name}!`);
@@ -61,7 +61,7 @@ const Shop = () => {
                 <div key={index} className="armor-box col-2 text-center">
                   <div className="img-box border rounded mb-2 p-4">
                     <img
-                      src={item.image}  // Вземаме image URL от базата
+                      src={item.image}  
                       alt={item.name}
                       className="img-box-inner img-fluid"
                       style={{ height: '100px', width: '100px' }}
@@ -78,7 +78,7 @@ const Shop = () => {
           </div>
         </div>
   
-        {/* Добави останалите категории, ако е нужно */}
+        {/* Добави останалите категории*/}
       </div>
     );
   };
