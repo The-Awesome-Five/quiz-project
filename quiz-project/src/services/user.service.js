@@ -136,3 +136,18 @@ export const updateUserFirstName = async (uid, firstName) => {
     const userRef = ref(db, `users/${uid}/phone`);
     await set(userRef, phone);
   };
+
+  export const updateUserSelectedItems = async (uid, selectedItems) => {
+    try {
+      // Референция към потребителя в базата данни
+      const userRef = ref(db, `users/${uid}`);
+  
+      // Актуализираме данните в профила на потребителя
+      await update(userRef, selectedItems);
+  
+      console.log("Selected items updated successfully");
+    } catch (error) {
+      console.error("Error updating selected items:", error);
+      throw new Error("Failed to update selected items");
+    }
+  };
