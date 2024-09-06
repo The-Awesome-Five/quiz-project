@@ -9,8 +9,8 @@ export const CreateRoom = () => {
     const [room, setRoom] = useState({
         name: '',
         participants: [],
-        category: 'Science',
-        difficulty: 'Easy',
+        category: 'science',
+        difficulty: 'easy',
         timePerRound: ''
     });
 
@@ -18,7 +18,7 @@ export const CreateRoom = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setRoom({ ...room, [name]: value });
+        setRoom({ ...room, [name]: typeof value === 'string' ? value.toLowerCase() : value });
     };
 
     const createRoomHandler = async (e) => {

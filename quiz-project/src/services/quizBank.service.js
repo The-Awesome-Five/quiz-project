@@ -116,21 +116,32 @@ export const getQuestionsByCategoryAndDifficulty = async (category,difficulty) =
   const path = 'questionBank';
   let allQuestions = [];
 
+  console.log('category', category);
+
   try {
     const queries = [
-      query(ref(db, path), orderByChild('category'), equalTo('public'),
-      ...orgIds.map(orgId => query(ref(db, path), orderByChild('orgID'), equalTo(orgId))))
+      query(ref(db, path), orderByChild('category'), equalTo(category))
     ];
+
+    console.log(queries);
+
     const snapshots = await Promise.all(queries.map(q => get(q)));
 
-    console.log(snapshots)
+    console.log(snapshots);
 
     snapshots.forEach(snapshot => {
+
+      console.log('snapshot');
+      console.log(snapshot.val());
+
       if (snapshot && snapshot.val) {
 
         if (snapshot.exists()) {
           const questions = snapshot.val();
-          allQuestions = [...allQuestions, ...Object.values(questions).filter(q => q.category === category && q.difficulty === difficulty)];
+
+          console.log(questions);
+
+          allQuestions = [...allQuestions, ...Object.values(questions).filter(q => q.category === category && q.difficultyLevel === difficulty)];
         }
 
       } else {
