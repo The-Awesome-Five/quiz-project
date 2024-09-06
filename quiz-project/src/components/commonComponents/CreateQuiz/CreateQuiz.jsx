@@ -180,10 +180,14 @@ const CreateQuiz = () => {
                 }
             }
 
-            
+            let x;
            let quizData;
+           if(quiz.organisationId){
+           x = quiz.organisationId.split('////');
+           } 
+           else
             if (quiz.organisationId) {
-                const x = quiz.organisationId.split('////');
+            
                 quizData = {
 
                     createdOn: new Date(),
@@ -274,7 +278,7 @@ const CreateQuiz = () => {
                         question: question.question,
                         category: quiz.category,
                         difficultyLevel: quiz.difficulty,
-                        orgID: quiz.organisationId,
+                        orgID: x[0],
                         answers: question.answers.reduce((acc, answer, index) => ({
                             ...acc,
                             [`${answer}`]: index === question.correctAnswerIndex,

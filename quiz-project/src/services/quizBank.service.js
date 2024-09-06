@@ -1,9 +1,9 @@
-import { getDatabase, push, get, query, orderByChild, equalTo, update } from "firebase/database";
+import { getDatabase, push, get, query, orderByChild, equalTo, update, ref } from "firebase/database";
 
 const db = getDatabase();
 
 export const addQuestionToOrgBank = async (
-  info,
+  info, 
   orgId,
   category,
   difficulty
