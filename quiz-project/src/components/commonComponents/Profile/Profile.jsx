@@ -104,21 +104,18 @@ const Profile = () => {
     
     const renderItemsByCategory = (category) => {
         const items = profileData?.items && profileData.items[category] ? profileData.items[category] : {};
-
-      
+    
         const itemsArray = Object.values(items);
-
-        
+    
         return (
             <>
-                <div onClick={handleRemoveItem} style={{ cursor: 'pointer', fontWeight: 'bold', padding: '10px', color: 'red' }}>
-                    None (Remove Armor)
+                <div onClick={handleRemoveItem} className="remove-item">
+                    None
                 </div>
                 {itemsArray.length > 0 ? (
                     itemsArray.map((item, index) => (
-                        <div key={index} onClick={() => handleItemClick(item)} style={{ cursor: 'pointer' }}>
-                            <img src={item.image} alt={item.name} className="item-image" style={{ width: '50px' }} />
-                            <p>{item.name}</p>
+                        <div key={index} onClick={() => handleItemClick(item)}>
+                            <img src={item.image} alt={item.name} className="item-image" />
                         </div>
                     ))
                 ) : (
@@ -127,6 +124,7 @@ const Profile = () => {
             </>
         );
     };
+    
 
     return (
         <Container className="profile-page">
@@ -194,10 +192,21 @@ const Profile = () => {
 
                             {/* Добавяне на бутоните за категориите Head, Torso, Legs */}
                             <div className="d-flex justify-content-around p-3">
-                                <Button variant="primary" onClick={() => handleShowModal('head')}>Head</Button>
-                                <Button variant="primary" onClick={() => handleShowModal('torso')}>Torso</Button>
-                                <Button variant="primary" onClick={() => handleShowModal('legs')}>Legs</Button>
-                            </div>
+                            <Button variant="primary" style={{ padding: '5px 10px', fontSize: '12px' }} onClick={() => handleShowModal('head')}>
+  <img src="../../../../public/img/torso-icon.png" alt="head icon" style={{ width: '22px', height: '22px', marginRight: '5px' }} />
+
+</Button>
+
+<Button variant="primary" style={{ padding: '5px 10px', fontSize: '12px' }} onClick={() => handleShowModal('torso')}>
+  <img src="../../../../public/img/torso-icon.png" alt="torso icon" style={{ width: '22px', height: '22px', marginRight: '5px' }} />
+  
+</Button>
+
+<Button variant="primary" style={{ padding: '5px 10px', fontSize: '12px' }} onClick={() => handleShowModal('legs')}>
+  <img src="../../../../public/img/torso-icon.png" alt="legs icon" style={{ width: '22px', height: '22px', marginRight: '5px' }} />
+  
+</Button>
+</div>
                         </Card>
                     </div>
                 </Col>
@@ -205,16 +214,15 @@ const Profile = () => {
 
             {/* Модал за показване на предметите */}
             <Modal show={showModal} onHide={handleCloseModal} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>{selectedCategory.toUpperCase()} Items</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    {renderItemsByCategory(selectedCategory)}
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseModal}>Close</Button>
-                </Modal.Footer>
-            </Modal>
+  <Modal.Header closeButton>
+    <Modal.Title>{selectedCategory.toUpperCase()} Items</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    {renderItemsByCategory(selectedCategory)}
+  </Modal.Body>
+  {/* Removed the Close button from the footer */}
+</Modal>
+
 
             <Row className="mt-3">
                 <Col>
