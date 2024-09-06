@@ -19,14 +19,28 @@ export const addItemsToShop = async (itemObject) => {
  
 // Function to fetch all shop items from the Realtime Database
 export const getAllShopItems = async () => {
-  try {
-    const shopItems = await get(ref(db, 'shop'));
+    try {
+      const shopItemsSnapshot = await get(ref(db, 'shop'));
+      const shopItemsData = shopItemsSnapshot.val();
+      
+      // Преобразуване на данните в масив
+      const shopItems = [];
   
-    return Object.values(shopItems.val());
-  } catch (e) {
-    throw Error(e);
-  }
-};
- 
+      Object.keys(shopItemsData).forEach(category => {
+        Object.keys(shopItemsData[category]).forEach(itemKey => {
+          const item = shopItemsData[category][itemKey];
+          shopItems.push({
+            ...item, // копираме всички свойства на артикула
+            category // добавяме категорията (head, torso и т.н.)
+          });
+        });
+      });
+  
+      return shopItems;
+    } catch (e) {
+      throw Error(e);
+    }
+  };
+  
 
  
