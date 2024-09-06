@@ -89,6 +89,9 @@ const HeaderBar = ({ logout }) => {
                             <NavDropdown.Item hrref="/organizations"  onClick={(e) => handleOnClickButton('/organizations',e)}>
                                 My Organizations
                             </NavDropdown.Item>
+                            <NavDropdown.Item hrref="/notifications"  onClick={(e) => handleOnClickButton('/notifications',e)}>
+                                My Notifications
+                            </NavDropdown.Item>
                             <NavDropdown.Item hrref="/my-quizzes"  onClick={(e) => handleOnClickButton('/my-quizzes',e)}>
                                 My Quizzes
                             </NavDropdown.Item>
