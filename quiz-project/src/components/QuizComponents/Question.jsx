@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Card, Col, Row} from "react-bootstrap";
 
-export const Question = ({question, quizTitle, handleAnswer}) => {
+export const Question = ({question, quizTitle, handleAnswer, handleOpenAnswer}) => {
 
     const [resetState, setResetState] = useState(true);
 
@@ -11,13 +11,13 @@ export const Question = ({question, quizTitle, handleAnswer}) => {
     }
 
     return (
-        <Card className="text-center align-items-center">
+        <Card className=" align-items-center mw-100 mh-100">
             <Card.Title>{quizTitle}</Card.Title>
             <Row className="text-center">
                 {question.question}
             </Row>
-            <Row className="d-flex flex-column">
-                {question.answers.map((answer, index) => {
+            <Row className="d-flex flex-column ">
+                {question.answers ? question.answers.map((answer, index) => {
                     return (
                         <Col key={index}>
                              {String.fromCharCode(65 + index)}   {
@@ -26,11 +26,22 @@ export const Question = ({question, quizTitle, handleAnswer}) => {
                                 : {background: "green"}} onClick={() => changeAnswer(index)}>{answer}</button>
                         }</Col>
                     )
-                })}
+                }):    <input
+                type="text"
+                style={{ width: "500px",
+                     height: "300px", 
+                    textAlign: 'left',
+                    padding: '10px',
+                    verticalAlign: 'top'}}
+              
+                placeholder="Type Your Answer"
+                defaultValue={''}
+                onChange={(e) => handleOpenAnswer(e)}
+            />}
             </Row>
         </Card>
     )
-
+                    
 }
 
 /*

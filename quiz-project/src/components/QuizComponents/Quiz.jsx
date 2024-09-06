@@ -58,6 +58,15 @@ export const Quiz = () => {
 
     }
 
+    const handleOpenAnswer = (e) => {
+        const answer = e.target.value;        
+        setAnswers((prevAnswers) => {
+            const newAnswers = [...prevAnswers];
+            newAnswers[indexOfQuestion] = answer; 
+            return newAnswers;
+        });
+        quiz.question[indexOfQuestion].selectedAnswer = answer;
+    };
 
     const submit = async (isTimeOver) => {
 
@@ -131,7 +140,9 @@ export const Quiz = () => {
                         <Question
                             question={quiz.questions[indexOfQuestion]}
                             quizTitle={quiz.name}
-                            handleAnswer={handleAnswer}/>
+                            handleAnswer={handleAnswer}
+                            handleOpenAnswer= {handleOpenAnswer}
+                            />
 
                         {
                             indexOfQuestion === quiz.questions.length - 1
