@@ -194,6 +194,11 @@ const CreateQuiz = () => {
             let date = Date()
             let x='';
             let quizData;
+            const hours = quiz.timeOptions?.isOpenDurationActive ? quiz.gameRules?.openDuration : null;  
+            if(hours){
+            const openTime = new Date();
+            var closeTime = new Date(openTime.getTime() + hours * 60 * 60 * 1000);
+            }
             if (quiz.organisationId) {
                 x = quiz.organisationId.split('////');
             }
@@ -213,7 +218,7 @@ const CreateQuiz = () => {
                         ruleSet: {
                             timeLimitPerQuiz: quiz.timeOptions?.isTimeLimitPerQuizActive ? quiz.gameRules?.timeLimitPerQuiz : null,
                             timeLimitPerQuestion: quiz.timeOptions?.isTimeLimitPerQuestionActive ? quiz.gameRules?.timeLimitPerQuestion : null,
-                            openDuration: quiz.timeOptions?.isOpenDurationActive ? quiz.gameRules?.openDuration : null,
+                            openDuration: closeTime,
                             showCorrectAnswers: quiz.gameRules?.showCorrectAnswers ? quiz.gameRules?.showCorrectAnswers : null,
                         },
                         passingScore: quiz.passingScore,
