@@ -7,7 +7,7 @@ export const getUserByID = async (id) => {
   };
 
 export const createUserID = async (username, firstName, lastName, uid, email, avatarUrl, role) => {
-   const user = { username, firstName, lastName, uid, email, avatarUrl, role, createdOn: new Date().toString() };
+   const user = { username, firstName, lastName, uid, email, avatarUrl, role, currency:1000, createdOn: new Date().toString() };
    await set(ref(db, `users/${uid}`), user);
 };
 

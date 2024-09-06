@@ -42,5 +42,13 @@ export const getAllShopItems = async () => {
     }
   };
   
+  export const addItemToUser = async (uid, item, category) => {
+    try {
+      const itemRef = ref(db, `users/${uid}/items/${category}/${item.id}`);
+      await update(itemRef, item); // Добавяме артикул в съответната категория
+    } catch (error) {
+      console.error("Error adding item to user:", error);
+    }
+  };
 
  
