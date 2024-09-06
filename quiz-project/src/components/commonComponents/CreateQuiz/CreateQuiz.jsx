@@ -228,6 +228,7 @@ const CreateQuiz = () => {
                             userId: userData.uid,
                             name: userData.username,
                         },
+                        isInvites: quiz.isInvites ? true : false ,
                         organizationID: {
                             orgID: x[0],
                             orgName: x[1],
