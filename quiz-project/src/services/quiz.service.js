@@ -1,5 +1,6 @@
-import {child, get, getDatabase, push, ref, set, update} from "firebase/database";
+import {child, get, getDatabase, push, ref, remove, set, update} from "firebase/database";
 import { db } from "../firebase/config";
+import { getUserDataByUsername } from "./user.service.js";
 
 export const createQuizInFirebase = async (quizData) => {
   try {
@@ -114,5 +115,53 @@ export const updateQuiz = async (quizID, updatedQuizData) => {
   catch (error) {
     console.error("Error fetching data:", error);
     throw error;
+  }
+};
+export const addParticipant = async (quizID, username) => {
+  console.log(username);
+  console.log(quizID);
+  
+  let userInfo;
+  const dataRef = ref(db, `quizzes/${quizID}/inviteList/pending`);
+  try {
+    const userEntries = Object.entries(await getUserDataByUsername(username));
+    const [uid, userData] = userEntries[0];
+    userInfo = { uid, ...userData };
+  } catch (e) {
+    console.log(e);
+    return;
+  }
+  const infoForUpdate = { [userInfo.uid]: username };
+  
+  try {
+    await update(dataRef, infoForUpdate);
+    const notificationRef = ref(db, `users/${userInfo.uid}/notifications/pending`);
+    const quizRef = ref(db, `quizzes/${quizID}`);
+    const quizSnapshot = await get(quizRef);
+    const quizName = quizSnapshot.val().name;
+    const notificationInfo = {
+      quizName: quizName,
+      status: 'pending'
+    };
+    await set(ref(db, `users/${userInfo.uid}/notifications/pending/${quizID}`), notificationInfo);
+  } catch (error) {
+    console.log('Error updating invite list or adding notification:', error);
+  }
+};
+
+export const updateNotificationStatus = async (userId, quizID, action, username) => {
+  const pendingRef = ref(db, `users/${userId}/notifications/pending/${quizID}`);
+  const statusRef = ref(db, `users/${userId}/notifications/${action}/${quizID}`);
+  const quizInviteRef = ref(db, `quizzes/${quizID}/inviteList/${action}`);
+  const quizInviteRefRemove = ref(db, `quizzes/${quizID}/inviteList/pending/${userId}`);
+  try {
+      await set(statusRef, { quizID: quizID, status: action });
+      await remove(pendingRef);
+
+      const infoForUpdate = { [userId]: username }; 
+      await update(quizInviteRef, infoForUpdate);
+      await remove (quizInviteRefRemove)
+  } catch (error) {
+      console.log('Error updating notification status:', error);
   }
 };
