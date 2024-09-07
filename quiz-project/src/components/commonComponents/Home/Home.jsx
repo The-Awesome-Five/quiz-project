@@ -76,49 +76,56 @@ const Home = () => {
           />
         </div>
 
-        <div className="createquiz-container d-flex align-items-center ms-4">
-          <div className="img-container">
+        <div className="card-container d-flex align-items-center ms-4">
+          <div className="circle" style={{ "--clr": "#19444a" }}>
             <img
-              src="../../../../public/img/organization-icon.png"
-              alt="Organization Image"
+              src="../../../../public/img/org-icon.png"
+              alt="Coca Cola Logo"
+              className="logo"
             />
           </div>
-          <div className="text-container text-center ms-4">
-            <h3 className="text-center">
+          <div className="content text-start ms-4">
+            <h3 className="text-start mb-3">
               <strong>Create an organization</strong>
             </h3>
-            <p>with your friends and</p>
-            <p>conquer new knowledge</p>
+            <p>with your friends or</p>
+            <p>for your students</p>
             <button
-              className="btn create-btn btn-info"
-              onClick={handleCreateOrganizationOnClick}
+              className="btn create-btn btn-info mt-4"
+              onClick={handleCreateQuizOnClick}
             >
               Organization creator
             </button>
           </div>
+          <img
+            src="../../../../public/img/organization-icon.png"
+            alt="Coca Cola Product"
+            className="product_img"
+          />
         </div>
       </div>
 
       <div className="game-modes-container row mt-4 text-start">
         <h4>All quizzes</h4>
         <Swiper
-          navigation={true}
-          modules={[Navigation]}
-          slidesPerView={6}
-          spaceBetween={10}
-          pagination={{
-            clickable: true,
-          }}
-          className="mySwiper"
-        >
-          {Object.entries(quizData).map(([id, info]) => {
-            return (
-              <SwiperSlide key={id}>
-                <QuizItem key={id} quiz={info} id={info.id} />
-              </SwiperSlide>
-            );
-          })}
-        </Swiper>
+  navigation={true}
+  modules={[Navigation]}
+  slidesPerView={6}
+  spaceBetween={10}
+  pagination={{ clickable: true }}
+  className="mySwiper"
+>
+  {Object.entries(historyQuizData).map(([id, info]) => {
+    return (
+      <SwiperSlide key={id}>
+        <div className="quiz-item-container">
+          <QuizItem key={id} quiz={info} id={info.id} className="quiz-item" />
+        </div>
+      </SwiperSlide>
+    );
+  })}
+</Swiper>
+
 
         <h4>History quizzes</h4>
         <Swiper

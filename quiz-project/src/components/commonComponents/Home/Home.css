@@ -64,8 +64,6 @@
     text-align: center;
     font-size: 18px;
     background: white;
-  
-    /* Center slide text vertically */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -81,8 +79,8 @@
 
   .card-container{
     position: relative;
-    width: 350px;
-    height: 350px;
+    width: 250px;
+    height: 250px;
     /* background: #333; */
     border-radius: 20px;
     display: flex;
@@ -108,11 +106,11 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 350px;
-    height: 350px;
+    width: 250px;
+    height: 250px;
     border-radius: 50%;
     border: 8px solid var(--clr);
-    background: #19444a;
+    background: #19444a ;
     transition: 0.5s, background 0.5s;
     transition-delay: 0.75s,1s;
     filter: drop-shadow(0 0 10px var(--clr)) drop-shadow(0 0 60px var(--clr));
@@ -126,8 +124,8 @@
 }
 .card-container .circle .logo{
     position: relative;
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: 100px;
     transition: 0.5s;
     transition-delay: 0.5s;
 }
@@ -149,6 +147,8 @@
     top: 45%;
     left: 75%;
     height: 150px;
+    margin-left: -50px;
+    margin-top: 15px;
 }
 .card-container .content{
     position:absolute;
@@ -164,15 +164,21 @@
     opacity: 1;
     visibility: visible;
     left: 0;
+
 }
 .card-container .content h3{
     color: white;
     font-size: 24px;
+    margin-left: 50px;
+    margin-top: 20px;
+    margin-right: -20px;
 
 }
 .card-container .content p{
     color: #fff;
-    margin: 0;
+    margin-left: 50px;
+    margin-bottom: -5px;
+    margin-right: -20px;
 }
 .card-container .content a{
     position: relative;
@@ -184,4 +190,53 @@
     text-decoration: none;
     font-weight: 600;
     margin-top: 10px;
+}
+
+.card-container .btn {
+    margin-left: 50px;
+}
+
+
+.mySwiper {
+  background: transparent;
+}
+
+
+.swiper-slide {
+  background: transparent;
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  height: 100%; 
+}
+
+
+.quiz-item-container {
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  width: 100%; 
+}
+
+
+.quiz-item {
+  max-width: 200px; 
+  text-align: center; 
+  background-color: rgba(255, 255, 255, 0.3); 
+  padding: 10px;
+  border-radius: 8px;
+  transition: transform 0.3s ease-in-out;
+}
+
+
+.quiz-item:hover {
+  transform: scale(1.05); 
+}
+
+.swiper-button-next, .swiper-button-prev {
+  color: rgba(255, 255, 255, 0.8); 
+}
+
+.swiper-wrapper{
+    align-items: center;
 }
