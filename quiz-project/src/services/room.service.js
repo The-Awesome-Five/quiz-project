@@ -41,17 +41,18 @@ export const getRoom = async (roomId) => {
 
 }
 
-export const updatePlayer = async (roomId, playerId, isReady = false, score = 0) => {
+export const updatePlayer = async (roomId, providedPlayer, isReady = false, score = 0) => {
 
     const player = {
-        id: playerId,
+        id: providedPlayer.id ? providedPlayer.id : providedPlayer.uid,
         isReady,
+        username: providedPlayer.username,
         hasJoined: true,
         score
     }
     try {
         await update(ref(db), {
-            [`room/${roomId}/players/${playerId}`]: player,
+            [`room/${roomId}/players/${providedPlayer.id ? providedPlayer.id : providedPlayer.uid}`]: player,
         });
 
         return player;
@@ -59,6 +60,15 @@ export const updatePlayer = async (roomId, playerId, isReady = false, score = 0)
         console.error('Failed to set player:', e);
     }
 
+}
+
+export const getQuestions = async (roomId) => {
+    try {
+        const questions = await get(ref(db, `room/${roomId}/questions`));
+        return questions.val();
+    } catch (e) {
+        console.error('Failed to get questions:', e);
+    }
 }
 
 export const startGame = async (roomId) => {

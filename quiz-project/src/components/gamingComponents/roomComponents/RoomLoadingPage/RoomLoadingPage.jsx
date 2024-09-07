@@ -21,6 +21,7 @@ export const RoomLoadingPage = ({
         const fetchUser = async () => {
             const fetchedPlayer = await getUser(user.uid, roomId);
 
+            console.log(user);
             if (fetchedPlayer) {
                 setHasJoined(true);
                 setIsReady(fetchedPlayer.isReady);
@@ -34,7 +35,7 @@ export const RoomLoadingPage = ({
 
     const joinGameHandler = async () => {
         try {
-            const player = await updatePlayer(roomId, user.uid);
+            const player = await updatePlayer(roomId, user);
             players ? setPlayers(prevState => [...prevState, player]) : setPlayers([player]);
             setHasJoined(true);
 
@@ -47,7 +48,7 @@ export const RoomLoadingPage = ({
 
         if (player && !player.isReady) {
             try {
-                await updatePlayer(roomId, player.id, true);
+                await updatePlayer(roomId, player, true);
                 setIsReady(true);
             } catch (e) {
                 toast.error('Failed to set ready:', e);
