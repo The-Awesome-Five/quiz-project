@@ -253,7 +253,6 @@ const CreateQuiz = () => {
                         ruleSet: {
                             timeLimitPerQuiz: quiz.timeOptions?.isTimeLimitPerQuizActive ? quiz.gameRules?.timeLimitPerQuiz : null,
                             timeLimitPerQuestion: quiz.timeOptions?.isTimeLimitPerQuestionActive ? quiz.gameRules?.timeLimitPerQuestion : null,
-                            openDuration: quiz.timeOptions?.isOpenDurationActive ? quiz.gameRules?.openDuration : null,
                             showCorrectAnswers: quiz.gameRules?.showCorrectAnswers ? quiz.gameRules?.showCorrectAnswers : null,
                         },
                         passingScore: quiz.passingScore,

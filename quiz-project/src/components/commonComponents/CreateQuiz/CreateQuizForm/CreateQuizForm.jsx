@@ -145,7 +145,7 @@ export const CreateQuizForm = ({
                 </div>
 
                 {/* Quiz Open Duration */}
-                <div className="mb-3">
+                { quiz.organisationId && <div className="mb-3">
                     <input
                         type="checkbox"
                         name="isOpenDurationActive"
@@ -167,6 +167,7 @@ export const CreateQuizForm = ({
                         disabled={!quiz.timeOptions?.isOpenDurationActive}
                     />
                 </div>
+                }
 
                 <label htmlFor="tagInput" className="form-label">
                     Tags
