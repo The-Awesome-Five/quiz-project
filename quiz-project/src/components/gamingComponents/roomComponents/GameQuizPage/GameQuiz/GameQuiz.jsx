@@ -1,26 +1,90 @@
 import {Container} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
-import {getQuestions} from "../../../../../services/room.service.js";
+import { getRoom} from "../../../../../services/room.service.js";
+import TimeCounter from "../../../../../utills/TimeCounter.jsx";
+import {Question} from "../../../../QuizComponents/Question.jsx";
+import {GameQuestion} from "./GameQuestion/GameQuestion.jsx";
+import {toast} from "react-toastify";
+import {saveQuizToUser, submitQuizByUser} from "../../../../../services/quiz.service.js";
 
 export const GameQuiz = ({
-    players,
     roomId
                          }) => {
 
-    const [questions, setQuestions] = useState([]);
+    const [room, setRoom] = useState({});
+    const [indexOfQuestion, setIndexOfQuestion] = useState(0);
+    const [answers, setAnswers] = useState([]);
 
     useEffect(() => {
-        const fetchQuestions = async () => {
-            const fetchedQuestions = await getQuestions(roomId);
-            setQuestions(fetchedQuestions);
+        const fetchRoom = async () => {
+            const fetchedRoom = await getRoom(roomId);
+            console.log(fetchedRoom);
+            setRoom(fetchedRoom);
         }
 
-        fetchQuestions();
+        fetchRoom();
     }, [roomId]);
+
+    const forwards = () => {
+        setIndexOfQuestion(indexOfQuestion + 1);
+    }
+    const backwards = () => {
+        setIndexOfQuestion(indexOfQuestion - 1);
+    }
+
+    const handleAnswer = (selectedIndex) => {
+
+        room.questions[indexOfQuestion].selectedAnswer = selectedIndex;
+
+        setAnswers((prevAnswers) => {
+            prevAnswers[indexOfQuestion] = selectedIndex;
+
+            return prevAnswers;
+        });
+
+    }
+
+    const submit = async (isTimeOver) => {
+
+
+
+    }
+
+    const finish = () => {
+
+        submit(false);
+
+    }
+
+    if(!room.questions){
+        return (<h2>...loading</h2>)
+    }
+
+    console.log('Room: ')
+    console.log(room)
 
     return (
         <Container>
             <h1>Round 1</h1>
+            <div>
+                {
+                    <TimeCounter initialSeconds={room.timePerRound} finish={finish}/>
+
+                }
+                <GameQuestion
+                    question={room.questions[indexOfQuestion]}
+                    handleAnswer={handleAnswer}
+                />
+
+                {
+                    indexOfQuestion === room.questions.length - 1
+                        ? <button onClick={submit}>Submit Quiz</button>
+                        : <button onClick={forwards}>Next</button>
+
+                }
+
+                <button onClick={backwards} disabled={indexOfQuestion === 0}>Back</button>
+            </div>
         </Container>
     )
 }

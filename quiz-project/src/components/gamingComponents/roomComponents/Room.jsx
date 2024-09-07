@@ -11,7 +11,7 @@ export const Room = ({}) => {
     const [players, setPlayers] = useState([]);
     const [ready, setReady] = useState(false);
     const [room, setRoom] = useState({});
-    const {userData} = useContext(AppContext);
+    const {user, userData} = useContext(AppContext);
 
     const {roomId} = useParams();
 
@@ -31,7 +31,7 @@ export const Room = ({}) => {
 
     }, [roomId]);
 
-    if (players.length === 2 && !players.some(player => player.id === userData.uid)) {
+    if (players.length === 2 && !players.some(player => player.id === user.uid)) {
         return <h1>Room is full</h1>
     }
 
@@ -42,7 +42,7 @@ export const Room = ({}) => {
             {players.length === 0 &&
                 <div>
                     <h1>Waiting for players to join. Room ID: {roomId}</h1>
-                    <RoomLoadingPage user={userData} setPlayers={setPlayers} players={players}
+                    <RoomLoadingPage user={user} userData={userData} setPlayers={setPlayers} players={players}
                                      roomId={roomId}/>
                 </div>
             }
@@ -50,7 +50,7 @@ export const Room = ({}) => {
             {players.length > 0 && !ready &&
                 <div>
                     {players.length === 1 && <h1>Waiting for another player to join</h1>}
-                    <RoomLoadingPage user={userData} setPlayers={setPlayers} players={players}
+                    <RoomLoadingPage user={user} userData={userData} setPlayers={setPlayers} players={players}
                                      roomId={roomId}/>
                 </div>
             }
