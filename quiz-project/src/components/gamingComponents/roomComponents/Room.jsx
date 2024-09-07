@@ -5,6 +5,8 @@ import {getRoom} from "../../../services/room.service.js";
 import {RoomLoadingPage} from "./RoomLoadingPage/RoomLoadingPage.jsx";
 import {AppContext} from "../../../appState/app.context.js";
 import {GameQuizPage} from "./GameQuizPage/GameQuizPage.jsx";
+import {onValue, ref} from "firebase/database";
+import {db} from "../../../firebase/config.js";
 
 export const Room = ({}) => {
 
@@ -15,7 +17,7 @@ export const Room = ({}) => {
 
     const {roomId} = useParams();
 
-    useEffect(() => {
+ /*   useEffect(() => {
 
         const fetchRoom = async () => {
             const room = await getRoom(roomId);
@@ -29,7 +31,29 @@ export const Room = ({}) => {
 
         fetchRoom();
 
-    }, [roomId]);
+    }, [roomId]);*/
+
+    useEffect(() => {
+        if(userData){
+            const roomRef = ref(db, `room/${roomId}`);
+            const unsubscribe = onValue(roomRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    setRoom(data);
+                    setPlayers(data.players ? Object.values(data.players) : []);
+
+                    if (data.players && Object.values(data.players).length === 2 && Object.values(data.players).every(player => player.isReady)) {
+                        setReady(true);
+                    }
+
+                } else {
+                    setRoom({});
+                }
+            });
+
+            return () => unsubscribe();
+        }
+    }, [userData]);
 
     if (players.length === 2 && !players.some(player => player.id === user.uid)) {
         return <h1>Room is full</h1>
