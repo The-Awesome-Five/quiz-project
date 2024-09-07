@@ -1,5 +1,5 @@
 import {getQuestionsByCategoryAndDifficulty} from "./quizBank.service.js";
-import {push, ref, update} from "firebase/database";
+import {get, push, ref, update} from "firebase/database";
 import {db} from "../firebase/config.js";
 
 export const createRoom = async (room) => {
@@ -28,6 +28,17 @@ export const createRoom = async (room) => {
     } catch (e) {
         console.error('Failed to create room:', e);
     }
+}
+
+export const getRoom = (roomId) => {
+
+    try {
+        const room = get(ref(db, `room/${roomId}`));
+        return room.val();
+    } catch (e) {
+        console.error('Failed to get room:', e);
+    }
+
 }
 
 export const getPlayers = (roomId) => {

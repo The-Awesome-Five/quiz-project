@@ -8,7 +8,7 @@ export const CreateRoom = () => {
 
     const [room, setRoom] = useState({
         name: '',
-        participants: [],
+        players: [],
         category: 'science',
         difficulty: 'easy',
         timePerRound: ''

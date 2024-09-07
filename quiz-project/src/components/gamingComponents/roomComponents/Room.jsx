@@ -1,32 +1,29 @@
 import React, {useEffect, useState} from "react";
 import {Container} from "react-bootstrap";
+import {useParams} from "react-router-dom";
+import {getRoom} from "../../../services/room.service.js";
 
 export const Room = ({
 
                      }) => {
 
     const [players, setPlayers] = useState([]);
-    const [numPlayers, setNumPlayers] = useState(0);
+    const [numPlayers, setNumPlayers] = useState(2);
     const [ready, setReady] = useState(false);
+    const [room, setRoom] = useState({});
 
-    const { roomId } = room;
+   const { roomId } = useParams();
 
     useEffect(() => {
-        const playerRef = getPlayers(roomId);
-        const handleDataChange = (snapshot) => {
-            const data = snapshot.val() || {};
-            setPlayers(data);
-            const count = Object.values(data).length;
-            setNumPlayers(count);
-        };
 
+        const fetchRoom = async () => {
+            const room = await getRoom(roomId);
+            setRoom(room);
+            setPlayers(room.players);
+            setNumPlayers(room.players.length);
+        }
 
-        onValue(playerRef, handleDataChange, (error) => {
-            console.error('Error with real-time listener:', error);
-        });
-
-        return () => off(notifRef, 'value', handleDataChange);
-    }, [roomId]);
+    },[roomId])
 
 
     return (
