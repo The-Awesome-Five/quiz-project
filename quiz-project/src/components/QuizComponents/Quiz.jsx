@@ -90,7 +90,7 @@ export const Quiz = () => {
         try {
             await submitQuizByUser({answers, score}, path, userData.uid);
 
-            await saveQuizToUser(quiz.quizId, userData.uid, score);
+            await saveQuizToUser(quiz.id, userData.uid, score);
 
             toast.success('Quiz has been submitted!')
 
