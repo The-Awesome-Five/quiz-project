@@ -7,15 +7,9 @@ import {setPlayer} from "../../../../services/room.service.js";
 export const RoomLoadingPage = ({
                                     players,
                                     setPlayers,
-                                    roomId
+                                    roomId,
+    user
                                 }) => {
-
-    const {user} = useContext(AppContext);
-
-    console.log('players')
-    console.log(players)
-    console.log('player')
-    console.log(players.find(player => player.id === user.uid))
 
     const [isReady, setIsReady] = useState(players ? players.find(player => player.id === user.uid)?.isReady : false);
     const [willJoin, setWillJoin] = useState(players.some(player => player.id === user.uid));
@@ -53,10 +47,6 @@ export const RoomLoadingPage = ({
             toast.error('We are waiting for the other player to be ready!');
         }
 
-    }
-
-    if (players.length < 1) {
-        return <h1>Loading</h1>
     }
 
     return (
