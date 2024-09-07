@@ -12,6 +12,7 @@ const Shop = () => {
   const [loading, setLoading] = useState(true);
   const [selectedItem, setSelectedItem] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [userCurrency, setUserCurrency] = useState(0); 
 
   const { userData } = useContext(AppContext);
 
@@ -23,6 +24,7 @@ const Shop = () => {
 
         const user = await getUserByID(userData.uid);
         setUserItems(user.items || {});
+        setUserCurrency(user.currency); 
 
         setLoading(false);
       } catch (error) {
@@ -53,18 +55,23 @@ const Shop = () => {
   };
 
   const handleBuy = async (item) => {
+    if (userCurrency < item.price) {
+      alert("You don't have enough money.");
+      return;
+    }
+
     try {
       const user = await getUserByID(userData.uid);
 
       if (!user || user.currency < item.price) {
-        alert("Недостатъчно средства за покупката.");
+        alert("You don't have enough money.");
         return;
       }
 
       const category = item.type;
 
       if (userHasItem(category, item.id)) {
-        alert("Вече притежавате този артикул.");
+        alert("You already own this item.");
         return;
       }
 
@@ -81,15 +88,17 @@ const Shop = () => {
         },
       }));
 
-      alert(`Успешно купихте ${item.name}!`);
+      setUserCurrency(newCurrency); 
+
+      alert(`You successfully bought ${item.name}!`);
     } catch (error) {
       console.error("Error buying item:", error);
-      alert("Възникна грешка по време на покупката.");
+      alert("An error occurred during the purchase.");
     }
   };
 
   if (loading) {
-    return <div>Зареждане...</div>;
+    return <div>Loading...</div>;
   }
 
   return (
@@ -130,16 +139,17 @@ const Shop = () => {
               Close
             </Button>
             {!userHasItem(selectedItem.type, selectedItem.id) && (
-              <Button variant="primary" onClick={() => handleBuy(selectedItem)}>
+              <Button
+                variant="primary"
+                onClick={() => handleBuy(selectedItem)}
+                disabled={userCurrency < selectedItem.price} 
+              >
                 Buy for {selectedItem.price}{" "}
-                <p>
-                  {item.price}{" "}
-                  <img
-                    src="../../../../public/img/coin-icon.png"
-                    alt="coin"
-                    style={{ width: "16px", height: "16px" }}
-                  />
-                </p>
+                <img
+                  src="../../../../public/img/coin-icon.png"
+                  alt="coin"
+                  style={{ width: "16px", height: "16px" }}
+                />
               </Button>
             )}
           </Modal.Footer>
@@ -183,6 +193,7 @@ const Shop = () => {
                   <button
                     className="btn btn-primary btn-sm"
                     onClick={() => handleBuy(item)}
+                    disabled={userCurrency < item.price} 
                   >
                     Buy {item.name}
                   </button>
@@ -230,6 +241,7 @@ const Shop = () => {
                   <button
                     className="btn btn-primary btn-sm"
                     onClick={() => handleBuy(item)}
+                    disabled={userCurrency < item.price} 
                   >
                     Buy {item.name}
                   </button>
@@ -277,6 +289,7 @@ const Shop = () => {
                   <button
                     className="btn btn-primary btn-sm"
                     onClick={() => handleBuy(item)}
+                    disabled={userCurrency < item.price} 
                   >
                     Buy {item.name}
                   </button>
