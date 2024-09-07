@@ -9,7 +9,7 @@ export const RoomLoadingPage = ({
                                     setPlayers,
                                     roomId,
                                     user,
-    userData
+                                    userData
 
                                 }) => {
 
@@ -32,7 +32,7 @@ export const RoomLoadingPage = ({
 
         fetchUser();
 
-    }, [user]);
+    }, [hasJoined]);
 
     const joinGameHandler = async () => {
         try {
@@ -47,7 +47,9 @@ export const RoomLoadingPage = ({
 
     const setReadyHandler = async () => {
 
-        if (player && !player.isReady) {
+        console.log(player);
+
+        if (!player.isReady) {
             try {
                 await updatePlayer(roomId, player, true);
                 setIsReady(true);
