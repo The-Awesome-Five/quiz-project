@@ -9,7 +9,7 @@ export const createRoom = async (room) => {
 
     try {
         let id;
-        const questions = await getQuestionsByCategoryAndDifficulty(room.category,room.difficulty);
+        const questions = await getQuestionsByCategoryAndDifficulty(room.category, room.difficulty);
 
         room.questions = questions;
 
@@ -18,8 +18,8 @@ export const createRoom = async (room) => {
             id = result.key;
             await update(ref(db), {
                 [`room/${id}/id`]: id,
-            })}
-        catch(e){
+            })
+        } catch (e) {
             console.log(e);
         }
 
@@ -30,10 +30,10 @@ export const createRoom = async (room) => {
     }
 }
 
-export const getRoom = (roomId) => {
+export const getRoom = async (roomId) => {
 
     try {
-        const room = get(ref(db, `room/${roomId}`));
+        const room = await get(ref(db, `room/${roomId}`));
         return room.val();
     } catch (e) {
         console.error('Failed to get room:', e);
@@ -41,12 +41,39 @@ export const getRoom = (roomId) => {
 
 }
 
-export const getPlayers = (roomId) => {
-    return;
+export const setPlayer = async (roomId, playerId, isReady = false) => {
+
+    const player = {
+        id: playerId,
+        isReady,
+        score: 0,
+    }
+    try {
+        await update(ref(db), {
+            [`room/${roomId}/players/${playerId}`]: player,
+        });
+
+        return player;
+    } catch (e) {
+        console.error('Failed to set player:', e);
+    }
+
 }
 
-export const startGame = (roomId) => {
-    return;
+export const startGame = async (roomId) => {
+
+    try {
+
+        await update(ref(db), {
+            [`room/${roomId}/game`]: {
+                started: true,
+                currentQuestion: 0,
+                currentRound: 1,
+                currentPlayers: [],
+        }});
+    } catch (e) {
+        console.error('Failed to start game:', e);
+    }
 }
 
 export const endGame = (roomId) => {
