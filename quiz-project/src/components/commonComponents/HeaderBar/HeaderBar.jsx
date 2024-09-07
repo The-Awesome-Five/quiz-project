@@ -5,9 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import { Container, Navbar, Nav, NavDropdown, Button, Spinner } from "react-bootstrap";
 import { AppContext } from '../../../appState/app.context';
 import React from "react";
+import {toast} from "react-toastify";
 
 const HeaderBar = ({ logout }) => {
     const [loading, setLoading] = useState(true);
+    const [roomId, setRoomId] = useState('');
+
     const navigate = useNavigate();
     const { userData } = useContext(AppContext);
 
@@ -34,6 +37,16 @@ const HeaderBar = ({ logout }) => {
 
     }
 
+    const handleJoin = () => {
+
+        if(roomId.length < 1){
+
+            return toast.error('Room Id must not be empty!');
+        }
+
+        navigate(`/room/${roomId}`);
+    }
+
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
             <Container>
@@ -42,30 +55,32 @@ const HeaderBar = ({ logout }) => {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <NavDropdown title={<span className="fs-1">≡</span>} id="basic-nav-dropdown">
-                            <NavDropdown.Item hrref="/" onClick={(e) => handleOnClickButton('/all-quizes',e)}>
+                            <NavDropdown.Item href="/" onClick={(e) => handleOnClickButton('/all-quizes',e)}>
                                 All Quizzes
                             </NavDropdown.Item>
-                            <NavDropdown.Item hrref="/about"  onClick={(e) => handleOnClickButton('/about',e)}>
+                            <NavDropdown.Item href="/about"  onClick={(e) => handleOnClickButton('/about',e)}>
                                 About
                             </NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
                 </Navbar.Collapse>
-                <div className="header-container d-flex align-items-center justify-content-between p-3">
+                <div className="header-container d-flex align-items-center justify-content-between">
                     <div className='header-bar d-flex'>
-                        <div className="pin-input-container d-flex align-items-center">
-                            <p className='text mb-0 me-2'>Join game?</p>
-                            <input
-                                type="password"
-                                className="form-control pin-input"
-                                placeholder="Enter PIN: 123 456"
-                                maxLength="6"
-                            />
-                        </div>
+                        <p className='text mb-0 me-2'>Join game?</p>
+                        <input
+                            type="text"
+                            value={roomId}
+                            className="form-control pin-input"
+                            placeholder="Enter Room Id:"
+                            onChange={(e) => setRoomId(e.target.value)}
+                        />
+                        <button className="btn btn-primary m-3" onClick={handleJoin}>Join</button>
                     </div>
                 </div>
-                <Nav.Link hrref="/leaderboard"  onClick={(e) => handleOnClickButton('/leaderboard',e)}><Button>Global Leaderboard</Button></Nav.Link>
-                <Nav.Link hrref="/gaming-modes"  onClick={(e) => handleOnClickButton('/gaming-modes',e)}><Button>Gaming Modes</Button></Nav.Link>
+                <Nav.Link hrref="/leaderboard" onClick={(e) => handleOnClickButton('/leaderboard', e)}><Button>Global
+                    Leaderboard</Button></Nav.Link>
+                <Nav.Link hrref="/gaming-modes" onClick={(e) => handleOnClickButton('/gaming-modes', e)}><Button>Gaming
+                    Modes</Button></Nav.Link>
 
                 <div className="login-section d-flex align-items-center ms-3">
                     {loading ? (
