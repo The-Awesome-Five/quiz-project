@@ -36,7 +36,7 @@ const HeaderBar = ({ logout }) => {
 
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
-            <Container>
+            <Container className='navbar-container'>
                 <Navbar.Brand onClick={(e) => handleOnClickButton('/',e)}><img src="../../../../public/img/quizhub-logo.png" alt="Logo" className="logo" /></Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">

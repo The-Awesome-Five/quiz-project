@@ -5,6 +5,17 @@
     padding: 20px;
     box-sizing: border-box;
 }
+.navbar.bg-body-tertiary {
+    background-color: transparent !important;
+}
+
+.navbar-container {
+    background-color: none !important;
+}
+
+.basic-navbar-nav {
+    background-color: none !important;
+}
 
 .container {
     border-bottom:0.8px solid rgb(231, 231, 231) ;
