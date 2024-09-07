@@ -77,9 +77,8 @@ const HeaderBar = ({ logout }) => {
                         <button className="btn btn-primary m-3" onClick={handleJoin}>Join</button>
                     </div>
                 </div>
-                <Nav.Link hrref="/leaderboard" onClick={(e) => handleOnClickButton('/leaderboard', e)}><Button>Global
-                    Leaderboard</Button></Nav.Link>
-                <Nav.Link hrref="/gaming-modes" onClick={(e) => handleOnClickButton('/gaming-modes', e)}><Button>Gaming
+                <Nav.Link href="/shop" className="m-3" onClick={(e) => handleOnClickButton('/shop', e)}><Button>Shop</Button></Nav.Link>
+                <Nav.Link href="/gaming-modes" onClick={(e) => handleOnClickButton('/gaming-modes', e)}><Button>Gaming
                     Modes</Button></Nav.Link>
 
                 <div className="login-section d-flex align-items-center ms-3">
@@ -101,16 +100,16 @@ const HeaderBar = ({ logout }) => {
                             align="end"
                         >
                             <NavDropdown.Item onClick={handleOnClickProfile}>Profile</NavDropdown.Item>
-                            <NavDropdown.Item hrref="/organizations"  onClick={(e) => handleOnClickButton('/organizations',e)}>
+                            <NavDropdown.Item href="/organizations"  onClick={(e) => handleOnClickButton('/organizations',e)}>
                                 My Organizations
                             </NavDropdown.Item>
-                            <NavDropdown.Item hrref="/notifications"  onClick={(e) => handleOnClickButton('/notifications',e)}>
+                            <NavDropdown.Item href="/notifications"  onClick={(e) => handleOnClickButton('/notifications',e)}>
                                 My Notifications
                             </NavDropdown.Item>
-                            <NavDropdown.Item hrref="/my-quizzes"  onClick={(e) => handleOnClickButton('/my-quizzes',e)}>
+                            <NavDropdown.Item href="/my-quizzes"  onClick={(e) => handleOnClickButton('/my-quizzes',e)}>
                                 My Quizzes
                             </NavDropdown.Item>
-                            <NavDropdown.Item hrref="/admin"  onClick={(e) => handleOnClickButton('/admin',e)}>Admin Menu</NavDropdown.Item>
+                            <NavDropdown.Item href="/admin"  onClick={(e) => handleOnClickButton('/admin',e)}>Admin Menu</NavDropdown.Item>
                             <NavDropdown.Item onClick={logout}>Log Out</NavDropdown.Item>
                         </NavDropdown>
                     ) : null}
