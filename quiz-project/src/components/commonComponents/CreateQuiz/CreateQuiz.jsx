@@ -15,7 +15,11 @@ import { PublicQuestionForm } from "./PublicQuestionForm/PublicQuestionForm.jsx"
 import { QuestionsAIForm } from "./QuestionsAIForm/QuestionsAIForm.jsx";
 
 const CreateQuiz = () => {
-    const [quiz, setQuiz] = useState({});
+
+
+    const [quiz, setQuiz] = useState({
+        isPublic: true,
+    });
 
     const handleChange = (e, type) => {
         let updatedValue = {};
@@ -253,7 +257,6 @@ const CreateQuiz = () => {
                         ruleSet: {
                             timeLimitPerQuiz: quiz.timeOptions?.isTimeLimitPerQuizActive ? quiz.gameRules?.timeLimitPerQuiz : null,
                             timeLimitPerQuestion: quiz.timeOptions?.isTimeLimitPerQuestionActive ? quiz.gameRules?.timeLimitPerQuestion : null,
-                            openDuration: quiz.timeOptions?.isOpenDurationActive ? quiz.gameRules?.openDuration : null,
                             showCorrectAnswers: quiz.gameRules?.showCorrectAnswers ? quiz.gameRules?.showCorrectAnswers : null,
                         },
                         passingScore: quiz.passingScore,
@@ -353,19 +356,39 @@ const CreateQuiz = () => {
     const [organizations, setOrganizations] = useState("");
 
     const handleShowOrganizations = async () => {
-        handleChange(!quiz.isPrivate, 'isPrivate');
 
-        const userOrganizations = await getUserOrganizations(userData.uid);
-        let organizationsArray = [];
-        Object.values(userOrganizations).forEach((org, index) => {
-            organizationsArray[index] = org;
-            index++
-        });
+       // handleChange(!quiz.isPrivate, 'isPrivate');
 
-        setOrganizations(organizationsArray);
+        if (quiz.isPublic) {
+            const userOrganizations = await getUserOrganizations(userData.uid);
+            let organizationsArray = [];
+            Object.values(userOrganizations).forEach((org, index) => {
+                organizationsArray[index] = org;
+                index++
+            });
+
+            setOrganizations(organizationsArray);
+            setQuiz(quiz => ({
+                ...quiz,
+                isPublic: false
+            }));
+
+        } else {
+            setOrganizations("");
+            setQuiz(quiz => ({
+                ...quiz,
+                isPublic: true,
+                organisationId: null
+            }));
+
+        }
     };
 
     const handleQuestionClick = (question) => {
+
+        console.log('isPublic:')
+        console.log(quiz);
+
         setQuestions([
             ...questions,
             {

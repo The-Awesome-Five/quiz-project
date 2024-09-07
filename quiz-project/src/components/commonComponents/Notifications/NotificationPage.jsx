@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ref, onValue } from 'firebase/database';
-import Notification from './Notifications';
+import SingleNotification from './SingleNotification.jsx';
 import { AppContext } from '../../../appState/app.context';
 import { db } from '../../../firebase/config';
 
-const Notifications = () => {
+const NotificationPage = () => {
     const [notifications, setNotifications] = useState([]);
     const {userData}= useContext(AppContext)
 
@@ -31,7 +31,7 @@ const Notifications = () => {
         <div>
             {notifications.length > 0 ? (
                 notifications.map((notification) => (
-                    <Notification 
+                    <SingleNotification
                         key={notification.quizID} 
                         notification={notification} 
                         userId={userData.uid} 
@@ -45,4 +45,4 @@ const Notifications = () => {
     );
 };
 
-export default Notifications;
+export default NotificationPage;

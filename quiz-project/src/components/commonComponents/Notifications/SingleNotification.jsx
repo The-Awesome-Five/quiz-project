@@ -4,7 +4,7 @@ import { updateNotificationStatus } from '../../../services/quiz.service';
 import { AppContext } from '../../../appState/app.context';
 
 
-const Notification = ({ notification, userId, quizID }) => {
+const SingleNotification = ({ notification, userId, quizID }) => {
     const {userData}= useContext(AppContext);
     const handleAccept = () => {
         updateNotificationStatus(userId, quizID, 'accepted', userData.username);
@@ -24,4 +24,4 @@ const Notification = ({ notification, userId, quizID }) => {
     );
 };
 
-export default Notification;
+export default SingleNotification;

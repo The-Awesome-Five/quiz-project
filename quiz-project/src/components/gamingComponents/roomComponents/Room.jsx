@@ -1,55 +1,90 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Container} from "react-bootstrap";
+import {useParams} from "react-router-dom";
+import {getRoom} from "../../../services/room.service.js";
+import {RoomLoadingPage} from "./RoomLoadingPage/RoomLoadingPage.jsx";
+import {AppContext} from "../../../appState/app.context.js";
+import {GameQuizPage} from "./GameQuizPage/GameQuizPage.jsx";
+import {onValue, ref} from "firebase/database";
+import {db} from "../../../firebase/config.js";
 
-export const Room = ({
-
-                     }) => {
+export const Room = ({}) => {
 
     const [players, setPlayers] = useState([]);
-    const [numPlayers, setNumPlayers] = useState(0);
     const [ready, setReady] = useState(false);
+    const [room, setRoom] = useState({});
+    const {user, userData} = useContext(AppContext);
 
-    const { roomId } = room;
+    const {roomId} = useParams();
+
+ /*   useEffect(() => {
+
+        const fetchRoom = async () => {
+            const room = await getRoom(roomId);
+            setRoom(room);
+            setPlayers(room.players ? Object.values(room.players) : []);
+
+            if (room.players && Object.values(room.players).length === 2 && Object.values(room.players).every(player => player.isReady)) {
+                setReady(true);
+            }
+        }
+
+        fetchRoom();
+
+    }, [roomId]);*/
 
     useEffect(() => {
-        const playerRef = getPlayers(roomId);
-        const handleDataChange = (snapshot) => {
-            const data = snapshot.val() || {};
-            setPlayers(data);
-            const count = Object.values(data).length;
-            setNumPlayers(count);
-        };
+        if(userData){
+            const roomRef = ref(db, `room/${roomId}`);
+            const unsubscribe = onValue(roomRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    setRoom(data);
+                    setPlayers(data.players ? Object.values(data.players) : []);
 
+                    if (data.players && Object.values(data.players).length === 2 && Object.values(data.players).every(player => player.isReady)) {
+                        setReady(true);
+                    }
 
-        onValue(playerRef, handleDataChange, (error) => {
-            console.error('Error with real-time listener:', error);
-        });
+                } else {
+                    setRoom({});
+                }
+            });
 
-        return () => off(notifRef, 'value', handleDataChange);
-    }, [roomId]);
+            return () => unsubscribe();
+        }
+    }, [userData]);
 
+    if (players.length === 2 && !players.some(player => player.id === user.uid)) {
+        return <h1>Room is full</h1>
+    }
 
     return (
         <Container>
-            {numPlayers < 1 && <h1>Waiting for players...</h1>}
-            {numPlayers < 2 &&
-                players.map((player, index) => {
-                    return (
-                        <>
-                            <h1> Waiting for player number two!</h1>
-                            <div key={index}>
-                                <h3>{player.name}</h3>
-                            </div>
-                        </>
-                    )
-                })
+            <h1>Room: {room.name}</h1>
+
+            {players.length === 0 &&
+                <div>
+                    <h1>Waiting for players to join. Room ID: {roomId}</h1>
+                    <RoomLoadingPage user={user} userData={userData} setPlayers={setPlayers} players={players}
+                                     roomId={roomId}/>
+                </div>
+            }
+
+            {players.length > 0 && !ready &&
+                <div>
+                    {players.length === 1 && <h1>Waiting for another player to join</h1>}
+                    <RoomLoadingPage user={user} userData={userData} setPlayers={setPlayers} players={players}
+                                     roomId={roomId}/>
+                </div>
             }
             {
-                numPlayers === 2 && <h1>Game is ready to start! Waiting for players to select start</h1>
+                players.length === 2 && !ready && <h1>Game is ready to start! Waiting for players to select start</h1>
             }
             {
-                numPlayers === 2 && ready && <h1>Game Component</h1>
+                players && ready && <GameQuizPage players={players} roomId={roomId}/>
             }
+
         </Container>
     )
 }

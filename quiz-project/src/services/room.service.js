@@ -1,5 +1,5 @@
 import {getQuestionsByCategoryAndDifficulty} from "./quizBank.service.js";
-import {push, ref, update} from "firebase/database";
+import {get, push, ref, update} from "firebase/database";
 import {db} from "../firebase/config.js";
 
 export const createRoom = async (room) => {
@@ -9,7 +9,7 @@ export const createRoom = async (room) => {
 
     try {
         let id;
-        const questions = await getQuestionsByCategoryAndDifficulty(room.category,room.difficulty);
+        const questions = await getQuestionsByCategoryAndDifficulty(room.category, room.difficulty);
 
         room.questions = questions;
 
@@ -18,8 +18,8 @@ export const createRoom = async (room) => {
             id = result.key;
             await update(ref(db), {
                 [`room/${id}/id`]: id,
-            })}
-        catch(e){
+            })
+        } catch (e) {
             console.log(e);
         }
 
@@ -30,12 +30,72 @@ export const createRoom = async (room) => {
     }
 }
 
-export const getPlayers = (roomId) => {
-    return;
+export const getRoom = async (roomId) => {
+
+    console.log('Room ID: ', roomId);
+
+    try {
+        const room = await get(ref(db, `room/${roomId}`));
+        return room.val();
+    } catch (e) {
+        console.error('Failed to get room:', e);
+    }
+
 }
 
-export const startGame = (roomId) => {
-    return;
+export const updatePlayer = async (roomId, providedPlayer, isReady = false, score = 0) => {
+
+    const player = {
+        id: providedPlayer.id ? providedPlayer.id : providedPlayer.uid,
+        isReady,
+        username: providedPlayer.username,
+        hasJoined: true,
+        score
+    }
+    try {
+        await update(ref(db), {
+            [`room/${roomId}/players/${providedPlayer.id ? providedPlayer.id : providedPlayer.uid}`]: player,
+        });
+
+        return player;
+    } catch (e) {
+        console.error('Failed to set player:', e);
+    }
+
+}
+
+/*export const getQuestions = async (roomId) => {
+    try {
+        const questions = await get(ref(db, `room/${roomId}/questions`));
+        return questions.val();
+    } catch (e) {
+        console.error('Failed to get questions:', e);
+    }
+}*/
+
+export const startGame = async (roomId) => {
+
+    try {
+
+        await update(ref(db), {
+            [`room/${roomId}/game`]: {
+                started: true,
+                currentQuestion: 0,
+                currentRound: 1,
+                currentPlayers: [],
+        }});
+    } catch (e) {
+        console.error('Failed to start game:', e);
+    }
+}
+
+export const getUser = async (userId, roomId) => {
+    try {
+        const user = await get(ref(db, `room/${roomId}/players/${userId}`));
+        return user.val();
+    } catch (e) {
+        console.error('Failed to get user:', e);
+    }
 }
 
 export const endGame = (roomId) => {
