@@ -210,7 +210,7 @@ export const CreateQuizForm = ({
                         className="form-check-input isPrivate"
                         id="isPrivate"
                         name="isPrivate"
-                        defaultChecked={quiz.isPrivate}
+                        defaultChecked={!quiz.isPublic}
                         onChange={handleShowOrganizations}
                     />
                     <label className="form-check-label" htmlFor="isPrivate">
@@ -228,7 +228,7 @@ export const CreateQuizForm = ({
                             value={quiz.organisationId}
                             onChange={(e) => handleChange(e)}
                         >
-                            <option value="" selected disabled>Please select an organization!</option>
+                            <option value="">Please select an organization!</option>
                             {organizations.length === 0 ? (
                                 <option value="">You are not a part of any organizations!</option>
                             ) : (organizations.map((organization, index) => (
