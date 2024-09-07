@@ -39,7 +39,7 @@ import Shop from './components/commonComponents/Shop/Shop.jsx';
 import {GamingModeView} from "./views/GamingModeView/GamingModeView.jsx";
 import {Room} from "./components/gamingComponents/roomComponents/Room.jsx";
 import AdminShopItem from './components/adminComponents/AdminShopManagement/AdminShopItem.jsx';
-import Notifications from './components/commonComponents/Notifications/Notificationz.jsx';
+import NotificationPage from './components/commonComponents/Notifications/NotificationPage.jsx';
 // import {TestAI} from "./views/TestAI.jsx";
 
 function App() {
@@ -98,7 +98,7 @@ function App() {
 
                         <Route path='/gaming-modes' element={<GamingModeView />} />
                         <Route path={`/room/:roomId`} element={<Room />} />
-                        <Route path={`/notifications`} element={<Notifications />} />
+                        <Route path={`/notifications`} element={<NotificationPage />} />
                         <Route path="/organizations" element={<Organization /> } />
                         <Route path="/create-organization" element={<CreateOrganization />} />
                         <Route path="/register" element={<Register />} />
