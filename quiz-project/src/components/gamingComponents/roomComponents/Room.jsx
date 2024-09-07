@@ -8,7 +8,6 @@ import {AppContext} from "../../../appState/app.context.js";
 export const Room = ({}) => {
 
     const [players, setPlayers] = useState([]);
-    const [numPlayers, setNumPlayers] = useState(0);
     const [ready, setReady] = useState(false);
     const [room, setRoom] = useState({});
     const {user} = useContext(AppContext);
@@ -38,17 +37,20 @@ export const Room = ({}) => {
     return (
         <Container>
             <h1>Room: {room.name}</h1>
-            {!players &&
+
+            {players.length === 0 &&
                 <div>
                     <h1>Waiting for players to join. Room ID: {roomId}</h1>
-                    <RoomLoadingPage user={user} setPlayers={setPlayers} players={players} roomId={roomId}/>
+                    <RoomLoadingPage user={user} setPlayers={setPlayers} players={players}
+                                     roomId={roomId}/>
                 </div>
             }
 
             {players && !ready &&
                 <div>
                     {players.length === 1 && <h1>Waiting for another player to join</h1>}
-                    <RoomLoadingPage user={user} setPlayers={setPlayers} players={players} roomId={roomId}/>
+                    <RoomLoadingPage user={user} setPlayers={setPlayers} players={players}
+                                     roomId={roomId}/>
                 </div>
             }
             {
@@ -57,6 +59,7 @@ export const Room = ({}) => {
             {
                 players && ready && <h1>Game Component</h1>
             }
+
         </Container>
     )
 }
