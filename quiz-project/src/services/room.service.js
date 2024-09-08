@@ -70,7 +70,7 @@ export const updatePlayer = async (roomId, providedPlayer, isReady = false, scor
     }
 }*/
 
-export const startGame = async (roomId, players) => {
+export const startGame = async (roomId, players, timePerRound) => {
 
     try {
 
@@ -79,7 +79,8 @@ export const startGame = async (roomId, players) => {
                 started: true,
                 currentQuestion: 0,
                 currentRound: 1,
-                nextPlayer: players[0].id
+                nextPlayer: players[0].id,
+                currentRoundSeconds: timePerRound
         }});
     } catch (e) {
         console.error('Failed to start game:', e);

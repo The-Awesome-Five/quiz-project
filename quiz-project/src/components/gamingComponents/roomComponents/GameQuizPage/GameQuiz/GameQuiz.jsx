@@ -9,8 +9,8 @@ import {saveQuizToUser, submitQuizByUser} from "../../../../../services/quiz.ser
 import {AppContext} from "../../../../../appState/app.context.js";
 
 export const GameQuiz = ({
-    roomId,
-    players,
+                             roomId,
+                             players,
                              setPlayers
                          }) => {
 
@@ -20,12 +20,13 @@ export const GameQuiz = ({
     const [round, setRound] = useState(1);
     const [reset, setReset] = useState(false);
     const [player, setPlayer] = useState(null);
+    const [currSeconds, setCurrSeconds] = useState(0);
     const {user, userData} = useContext(AppContext);
 
     useEffect(() => {
 
-        const beginGame = async () => {
-            await startGame(roomId, players);
+        const beginGame = async (timePerRound) => {
+            await startGame(roomId, players, timePerRound);
         }
 
         const fetchRoom = async () => {
@@ -33,20 +34,17 @@ export const GameQuiz = ({
             setRoom(fetchedRoom);
 
             if (!fetchedRoom.game) {
-                await beginGame();
+                await beginGame(fetchedRoom.timePerRound);
                 setPlayer(fetchedRoom.game.nextPlayer);
+                setCurrSeconds(fetchedRoom.timePerRound);
             } else {
-                
-                
                 setRound(fetchedRoom.game.currentRound);
-                
-                
                 setPlayer(fetchedRoom.game.nextPlayer);
+                setCurrSeconds(fetchedRoom.timePerRound);
             }
         }
 
         fetchRoom();
-
 
 
     }, [reset]);
@@ -77,6 +75,11 @@ export const GameQuiz = ({
 
         await nextRound(roomId, score, player);
         setRound(round + 1);
+        if (indexOfQuestion === room.questions.length - 1) {
+            console.log('Quiz Submitted');
+        } else {
+            setIndexOfQuestion(indexOfQuestion + 1);
+        }
         setReset(!reset);
 
     }
@@ -87,34 +90,35 @@ export const GameQuiz = ({
 
     }
 
-    if(!room.questions){
+    if (!room.questions) {
         return (<h2>...loading</h2>)
     }
 
-    
-    
 
     return (
         <Container>
             <Container className="d-flex align-items-center flex-column">
-            <h1>{room.name}</h1>
-            <h2>Round: {round}</h2>
+                <h1>{room.name}</h1>
+                <h2>Round: {round}</h2>
             </Container>
             <div>
                 {
-                    <TimeCounter initialSeconds={room.timePerRound * 60} reset={reset} finish={finish}/>
+                    <TimeCounter initialSeconds={currSeconds * 60} reset={reset} finish={finish}/>
 
                 }
-                <GameQuestion
-                    question={room.questions[indexOfQuestion]}
-                    handleAnswer={handleAnswer}
-                />
+                {player === user.uid &&
+                    <>
+                        <GameQuestion
+                            question={room.questions[indexOfQuestion]}
+                            handleAnswer={handleAnswer}
+                        />
+                        <button onClick={submit}>Submit Quiz</button>
+                    </>
+                }
 
                 {
-                    indexOfQuestion === room.questions.length - 1
-                        ? <button onClick={submit}>Submit Quiz</button>
-                        : <button onClick={forwards}>Next</button>
-
+                    player !== user.uid &&
+                    <h2>Waiting for other player to finish</h2>
                 }
 
                 <button onClick={backwards} disabled={indexOfQuestion === 0}>Back</button>
