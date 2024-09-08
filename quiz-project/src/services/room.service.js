@@ -95,12 +95,13 @@ export const getUser = async (userId, roomId) => {
     }
 }
 
-export const nextRound = async (roomId, players) => {
+export const nextRound = async (roomId, score, playerId) => {
     try {
         const room = await getRoom(roomId);
         const currentRound = room.game.currentRound;
         await update(ref(db), {
             [`room/${roomId}/game/currentRound`]: currentRound + 1,
+            [`room/${roomId}/players/${playerId}/score`]: score,
         });
     } catch (e) {
         console.error('Failed to start next round:', e);

@@ -1,15 +1,17 @@
 import {Card, Container} from "react-bootstrap";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {getRoom, nextRound, startGame} from "../../../../../services/room.service.js";
 import TimeCounter from "../../../../../utills/TimeCounter.jsx";
 import {Question} from "../../../../QuizComponents/Question.jsx";
 import {GameQuestion} from "./GameQuestion/GameQuestion.jsx";
 import {toast} from "react-toastify";
 import {saveQuizToUser, submitQuizByUser} from "../../../../../services/quiz.service.js";
+import {AppContext} from "../../../../../appState/app.context.js";
 
 export const GameQuiz = ({
     roomId,
-    players
+    players,
+                             setPlayers
                          }) => {
 
     const [room, setRoom] = useState({});
@@ -17,6 +19,8 @@ export const GameQuiz = ({
     const [answers, setAnswers] = useState([]);
     const [round, setRound] = useState(1);
     const [reset, setReset] = useState(false);
+    const [player, setPlayer] = useState(null);
+    const {user, userData} = useContext(AppContext);
 
     useEffect(() => {
 
@@ -27,6 +31,7 @@ export const GameQuiz = ({
         const fetchRoom = async () => {
             const fetchedRoom = await getRoom(roomId);
             setRoom(fetchedRoom);
+            setPlayer(fetchedRoom.players[user.uid]);
 
             if (!fetchedRoom.game) {
                 await beginGame();
@@ -39,7 +44,7 @@ export const GameQuiz = ({
 
 
 
-    }, [roomId]);
+    }, [reset]);
 
     const forwards = () => {
         setIndexOfQuestion(indexOfQuestion + 1);
@@ -62,7 +67,16 @@ export const GameQuiz = ({
 
     const submit = async (isTimeOver) => {
 
-        await nextRound(roomId, players);
+        const score = player.score + 100;
+
+       setPlayer(prevPlayer => {
+            return {
+                ...prevPlayer,
+                score: prevPlayer.score + 100
+            }
+        });
+
+        await nextRound(roomId, score, player.id);
         setRound(round + 1);
         setReset(!reset);
 
@@ -89,7 +103,7 @@ export const GameQuiz = ({
             </Container>
             <div>
                 {
-                    <TimeCounter initialSeconds={room.timePerRound * 60} reset={reset} finish={finish}/>
+                    <TimeCounter initialSeconds={room.timePerRound * 10} reset={reset} finish={finish}/>
 
                 }
                 <GameQuestion
