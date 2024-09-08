@@ -103,7 +103,7 @@ export const Room = ({}) => {
                 </Col>
             }
             {
-                players && ready && <GameQuizPage players={players} setPlayers={setPlayers} roomId={roomId}/>
+                players && ready && <GameQuizPage room={room} setRoom={setRoom} players={players} setPlayers={setPlayers} roomId={roomId}/>
             }
 
         </Container>

@@ -11,10 +11,11 @@ import {AppContext} from "../../../../../appState/app.context.js";
 export const GameQuiz = ({
                              roomId,
                              players,
-                             setPlayers
+                             setPlayers,
+    room,
+    setRoom
                          }) => {
 
-    const [room, setRoom] = useState({});
     const [indexOfQuestion, setIndexOfQuestion] = useState(0);
     const [answers, setAnswers] = useState([]);
     const [round, setRound] = useState(1);
@@ -29,7 +30,18 @@ export const GameQuiz = ({
         }
 
         const fetchRoom = async () => {
+
+            if (!room.game) {
+                await beginGame(room.timePerRound);
+
+            }
+
             const fetchedRoom = await getRoom(roomId);
+            setRoom(fetchedRoom);
+            setPlayer(fetchedRoom.game.nextPlayer);
+            setRound(fetchedRoom.game.currentRound);
+
+           /* const fetchedRoom = await getRoom(roomId);
             setRoom(fetchedRoom);
 
             if (!fetchedRoom.game) {
@@ -38,7 +50,7 @@ export const GameQuiz = ({
             } else {
                 setRound(fetchedRoom.game.currentRound);
                 setPlayer(fetchedRoom.game.nextPlayer);
-            }
+            }*/
         }
 
         fetchRoom();
