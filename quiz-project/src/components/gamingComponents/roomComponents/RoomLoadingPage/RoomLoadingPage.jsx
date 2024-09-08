@@ -22,7 +22,7 @@ export const RoomLoadingPage = ({
         const fetchUser = async () => {
             const fetchedPlayer = await getUser(user.uid, roomId);
 
-            console.log(user);
+            
             if (fetchedPlayer) {
                 setHasJoined(true);
                 setIsReady(fetchedPlayer.isReady);
@@ -47,7 +47,7 @@ export const RoomLoadingPage = ({
 
     const setReadyHandler = async () => {
 
-        console.log(player);
+        
 
         if (!player.isReady) {
             try {

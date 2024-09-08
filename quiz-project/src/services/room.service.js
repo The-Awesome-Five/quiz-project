@@ -79,7 +79,7 @@ export const startGame = async (roomId, players) => {
                 started: true,
                 currentQuestion: 0,
                 currentRound: 1,
-                currentPlayers: players,
+                nextPlayer: players[0].id
         }});
     } catch (e) {
         console.error('Failed to start game:', e);
@@ -99,9 +99,12 @@ export const nextRound = async (roomId, score, playerId) => {
     try {
         const room = await getRoom(roomId);
         const currentRound = room.game.currentRound;
+        console.log('Current Score: ', room.players);
+        console.log(playerId)
         await update(ref(db), {
             [`room/${roomId}/game/currentRound`]: currentRound + 1,
-            [`room/${roomId}/players/${playerId}/score`]: score,
+            [`room/${roomId}/players/${playerId}/score`]: room.players[playerId].score + score,
+            [`room/${roomId}/game/nextPlayer`]: Object.values(room.players).find(player => player.id !== playerId).id
         });
     } catch (e) {
         console.error('Failed to start next round:', e);

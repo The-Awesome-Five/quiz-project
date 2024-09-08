@@ -31,12 +31,17 @@ export const GameQuiz = ({
         const fetchRoom = async () => {
             const fetchedRoom = await getRoom(roomId);
             setRoom(fetchedRoom);
-            setPlayer(fetchedRoom.players[user.uid]);
 
             if (!fetchedRoom.game) {
                 await beginGame();
+                setPlayer(fetchedRoom.game.nextPlayer);
             } else {
+                
+                
                 setRound(fetchedRoom.game.currentRound);
+                
+                
+                setPlayer(fetchedRoom.game.nextPlayer);
             }
         }
 
@@ -67,16 +72,10 @@ export const GameQuiz = ({
 
     const submit = async (isTimeOver) => {
 
-        const score = player.score + 100;
+        const score = 100;
 
-       setPlayer(prevPlayer => {
-            return {
-                ...prevPlayer,
-                score: prevPlayer.score + 100
-            }
-        });
 
-        await nextRound(roomId, score, player.id);
+        await nextRound(roomId, score, player);
         setRound(round + 1);
         setReset(!reset);
 
@@ -92,8 +91,8 @@ export const GameQuiz = ({
         return (<h2>...loading</h2>)
     }
 
-    console.log('Room: ')
-    console.log(room)
+    
+    
 
     return (
         <Container>
@@ -103,7 +102,7 @@ export const GameQuiz = ({
             </Container>
             <div>
                 {
-                    <TimeCounter initialSeconds={room.timePerRound * 10} reset={reset} finish={finish}/>
+                    <TimeCounter initialSeconds={room.timePerRound * 60} reset={reset} finish={finish}/>
 
                 }
                 <GameQuestion
