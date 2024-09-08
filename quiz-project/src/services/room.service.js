@@ -70,7 +70,7 @@ export const updatePlayer = async (roomId, providedPlayer, isReady = false, scor
     }
 }*/
 
-export const startGame = async (roomId) => {
+export const startGame = async (roomId, players) => {
 
     try {
 
@@ -79,7 +79,7 @@ export const startGame = async (roomId) => {
                 started: true,
                 currentQuestion: 0,
                 currentRound: 1,
-                currentPlayers: [],
+                currentPlayers: players,
         }});
     } catch (e) {
         console.error('Failed to start game:', e);
@@ -92,6 +92,18 @@ export const getUser = async (userId, roomId) => {
         return user.val();
     } catch (e) {
         console.error('Failed to get user:', e);
+    }
+}
+
+export const nextRound = async (roomId, players) => {
+    try {
+        const room = await getRoom(roomId);
+        const currentRound = room.game.currentRound;
+        await update(ref(db), {
+            [`room/${roomId}/game/currentRound`]: currentRound + 1,
+        });
+    } catch (e) {
+        console.error('Failed to start next round:', e);
     }
 }
 

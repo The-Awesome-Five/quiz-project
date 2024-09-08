@@ -1,6 +1,6 @@
-import {Container} from "react-bootstrap";
+import {Card, Container} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
-import { getRoom} from "../../../../../services/room.service.js";
+import {getRoom, nextRound, startGame} from "../../../../../services/room.service.js";
 import TimeCounter from "../../../../../utills/TimeCounter.jsx";
 import {Question} from "../../../../QuizComponents/Question.jsx";
 import {GameQuestion} from "./GameQuestion/GameQuestion.jsx";
@@ -8,21 +8,37 @@ import {toast} from "react-toastify";
 import {saveQuizToUser, submitQuizByUser} from "../../../../../services/quiz.service.js";
 
 export const GameQuiz = ({
-    roomId
+    roomId,
+    players
                          }) => {
 
     const [room, setRoom] = useState({});
     const [indexOfQuestion, setIndexOfQuestion] = useState(0);
     const [answers, setAnswers] = useState([]);
+    const [round, setRound] = useState(1);
+    const [reset, setReset] = useState(false);
 
     useEffect(() => {
+
+        const beginGame = async () => {
+            await startGame(roomId, players);
+        }
+
         const fetchRoom = async () => {
             const fetchedRoom = await getRoom(roomId);
-            console.log(fetchedRoom);
             setRoom(fetchedRoom);
+
+            if (!fetchedRoom.game) {
+                await beginGame();
+            } else {
+                setRound(fetchedRoom.game.currentRound);
+            }
         }
 
         fetchRoom();
+
+
+
     }, [roomId]);
 
     const forwards = () => {
@@ -46,7 +62,9 @@ export const GameQuiz = ({
 
     const submit = async (isTimeOver) => {
 
-
+        await nextRound(roomId, players);
+        setRound(round + 1);
+        setReset(!reset);
 
     }
 
@@ -65,10 +83,13 @@ export const GameQuiz = ({
 
     return (
         <Container>
+            <Container className="d-flex align-items-center flex-column">
             <h1>{room.name}</h1>
+            <h2>Round: {round}</h2>
+            </Container>
             <div>
                 {
-                    <TimeCounter initialSeconds={room.timePerRound * 60} finish={finish}/>
+                    <TimeCounter initialSeconds={room.timePerRound * 60} reset={reset} finish={finish}/>
 
                 }
                 <GameQuestion

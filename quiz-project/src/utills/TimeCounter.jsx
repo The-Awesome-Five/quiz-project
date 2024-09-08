@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import {Container, Card} from "react-bootstrap";
 
-const TimeCounter = ({ initialSeconds, finish }) => {
+const TimeCounter = ({ initialSeconds, finish, reset }) => {
     const [seconds, setSeconds] = useState(initialSeconds);
+
+    useEffect(() => {
+
+       setSeconds(initialSeconds);
+
+    }, [reset])
 
     useEffect(() => {
 // Exit early if countdown is finished
@@ -32,6 +38,7 @@ const TimeCounter = ({ initialSeconds, finish }) => {
     return (
         <Card className={seconds / initialSeconds > 0.5 ? "bg-warning-subtle" : "bg-danger"} style={{display: "flex", justifyItems: "center", textAlign: "center"}}>
             <Card.Text as="h4" className="text-center">Time left: {formatTime(seconds)}</Card.Text>
+            {reset}
         </Card>
     );
 };
