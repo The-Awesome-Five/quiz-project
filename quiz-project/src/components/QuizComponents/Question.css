@@ -1,0 +1,82 @@
+.card {
+    width: 100% !important;
+    max-width: 1000px !important;
+    margin: 20px auto !important;
+    padding: 20px !important;
+    border-radius: 15px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+
+h4 {
+    font-size: 1.5rem !important;
+    font-weight: bold !important;
+    color: #333 !important;
+}
+
+
+.answers-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;  
+    gap: 15px !important;
+    justify-content: center !important; 
+}
+
+.answer-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 245px;
+    width: 490px;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0); 
+    z-index: 0; 
+    transition: background-color 0.3s ease;
+}
+
+
+.answer-btn {
+    position: relative; 
+    display: inline-block;
+    width: 490px;
+    padding: 15px;
+    font-size: 1.2rem;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+    z-index: 1; 
+}
+
+
+.answer-btn-1 {
+    background-color: #ff7f50 !important; 
+}
+
+.answer-btn-2 {
+    background-color: #b446b4 !important; 
+}
+
+.answer-btn-3 {
+    background-color: #32cd32 !important; 
+}
+
+.answer-btn-4 {
+    background-color: #ff6347 !important; 
+}
+
+
+.answer-btn:hover {
+    filter: brightness(85%) !important; 
+    transform: scale(1.05) !important;
+}
+
+
+.answer-btn.selected {
+    background-color: #007bff !important;
+    color: white !important;
+}
+
