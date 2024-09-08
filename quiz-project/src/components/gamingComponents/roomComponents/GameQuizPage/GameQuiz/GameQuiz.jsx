@@ -20,7 +20,6 @@ export const GameQuiz = ({
     const [round, setRound] = useState(1);
     const [reset, setReset] = useState(false);
     const [player, setPlayer] = useState(null);
-    const [currSeconds, setCurrSeconds] = useState(0);
     const {user, userData} = useContext(AppContext);
 
     useEffect(() => {
@@ -36,11 +35,9 @@ export const GameQuiz = ({
             if (!fetchedRoom.game) {
                 await beginGame(fetchedRoom.timePerRound);
                 setPlayer(fetchedRoom.game.nextPlayer);
-                setCurrSeconds(fetchedRoom.timePerRound);
             } else {
                 setRound(fetchedRoom.game.currentRound);
                 setPlayer(fetchedRoom.game.nextPlayer);
-                setCurrSeconds(fetchedRoom.timePerRound);
             }
         }
 
@@ -72,7 +69,6 @@ export const GameQuiz = ({
 
         const score = 100;
 
-
         await nextRound(roomId, score, player);
         setRound(round + 1);
         if (indexOfQuestion === room.questions.length - 1) {
@@ -103,7 +99,7 @@ export const GameQuiz = ({
             </Container>
             <div>
                 {
-                    <TimeCounter initialSeconds={currSeconds * 60} reset={reset} finish={finish}/>
+                    <TimeCounter initialSeconds={room.timePerRound * 5} reset={reset} finish={finish}/>
 
                 }
                 {player === user.uid &&
