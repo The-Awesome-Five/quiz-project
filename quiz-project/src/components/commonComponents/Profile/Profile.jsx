@@ -47,7 +47,7 @@ const Profile = () => {
       setSelectedLegsItem(userData?.selectedLegsItem || "");
       setIsLoading(false);
     }
-  }, [uid, userData]);
+  }, [userData]);
 
   if (isLoading) {
     return <div>Loading...</div>;
