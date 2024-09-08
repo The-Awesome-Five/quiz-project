@@ -39,17 +39,27 @@
 }
 
 .logo {
-    height: 50px;
+    height: 70px;
+}
+
+.dropdown-toggle::after {
+    display: none !important;
 }
 
 .btn-primary {
-    height: 50px;
-    background-color: rgb(184, 255, 184) !important;
-    border-radius: 60px !important;
-    padding: 0 25px 0 25px !important;
-    border: 3px solid black !important;
-    color: black !important;
+    background-color: #E5B56A !important;
+    color: #fff !important;
+    border: none !important;
+    padding: 10px 20px !important;
+    border-radius: 5px !important;
     font-weight: bold !important;
+    cursor: pointer !important;
+    transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out !important;
+}
+
+.btn-primary:hover {
+    background-color: #d8ac66 !important; 
+    transform: scale(1.05) !important; 
 }
 
 
@@ -108,3 +118,7 @@ body .bg-body-tertiary {
     }
 }
 
+.avatar {
+    box-shadow: 0px 4px 7px rgba(0, 0, 0, 0.5);
+    border: 2px solid #e5e3dc !important;
+}
