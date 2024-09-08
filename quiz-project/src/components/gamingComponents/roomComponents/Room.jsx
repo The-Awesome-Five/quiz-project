@@ -1,7 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import {Container} from "react-bootstrap";
 import {useParams} from "react-router-dom";
-import {getRoom} from "../../../services/room.service.js";
 import {RoomLoadingPage} from "./RoomLoadingPage/RoomLoadingPage.jsx";
 import {AppContext} from "../../../appState/app.context.js";
 import {GameQuizPage} from "./GameQuizPage/GameQuizPage.jsx";
@@ -17,23 +16,10 @@ export const Room = ({}) => {
 
     const {roomId} = useParams();
 
- /*   useEffect(() => {
-
-        const fetchRoom = async () => {
-            const room = await getRoom(roomId);
-            setRoom(room);
-            setPlayers(room.players ? Object.values(room.players) : []);
-
-            if (room.players && Object.values(room.players).length === 2 && Object.values(room.players).every(player => player.isReady)) {
-                setReady(true);
-            }
-        }
-
-        fetchRoom();
-
-    }, [roomId]);*/
-
     useEffect(() => {
+
+        // fetch room -> check for players -> if players.length === 2 navigate to home page
+
         if(userData){
             const roomRef = ref(db, `room/${roomId}`);
             const unsubscribe = onValue(roomRef, (snapshot) => {
@@ -46,12 +32,20 @@ export const Room = ({}) => {
                         setReady(true);
                     }
 
+                    // if players.some(player => player.id === user.uid) && isComplete === true => finish game function -> navigate to gameResults + state( room )
+
                 } else {
                     setRoom({});
                 }
             });
 
-            return () => unsubscribe();
+            return () => {
+
+                // if !winner
+                // update database - isCompleted = true, winner, loser = userData.uid, score
+
+                return unsubscribe()
+            };
         }
     }, [userData]);
 
@@ -62,6 +56,8 @@ export const Room = ({}) => {
     return (
         <Container>
             <h1>Room: {room.name}</h1>
+
+            {/*if isComplete === true -> navigate to home*/}
 
             {players.length === 0 &&
                 <div>
