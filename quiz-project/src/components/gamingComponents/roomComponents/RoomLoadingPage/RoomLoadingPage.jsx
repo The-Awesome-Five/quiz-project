@@ -37,7 +37,7 @@ export const RoomLoadingPage = ({
     const joinGameHandler = async () => {
         try {
             const player = await updatePlayer(roomId, userData);
-            players ? setPlayers(prevState => [...prevState, player]) : setPlayers([player]);
+            // players ? setPlayers(prevState => [...prevState, player]) : setPlayers([player]);
             setHasJoined(true);
 
         } catch (e) {

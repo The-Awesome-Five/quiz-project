@@ -53,13 +53,17 @@ export const Room = ({}) => {
         return <h1>Room is full</h1>
     }
 
+    console.log('players:');
+    console.log(players);
+
     return (
         <Container>
             <h1>Room: {room.name}</h1>
 
             {/*if isComplete === true -> navigate to home*/}
 
-            {players.length === 0 &&
+            {
+                players.length === 0 &&
                 <div>
                     <h1>Waiting for players to join. Room ID: {roomId}</h1>
                     <RoomLoadingPage user={user} userData={userData} setPlayers={setPlayers} players={players}
@@ -67,9 +71,10 @@ export const Room = ({}) => {
                 </div>
             }
 
-            {players.length > 0 && !ready &&
+            {
+                players.length > 0 && !ready &&
                 <div>
-                    {players.length === 1 && <h1>Waiting for another player to join</h1>}
+                    {players.length === 1 && <h1>Waiting for another player to join. Room ID: {roomId}</h1>}
                     <RoomLoadingPage user={user} userData={userData} setPlayers={setPlayers} players={players}
                                      roomId={roomId}/>
                 </div>
