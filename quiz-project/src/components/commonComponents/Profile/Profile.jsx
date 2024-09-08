@@ -139,17 +139,79 @@ const Profile = () => {
             alt="User Avatar"
             className="profile-avatar"
           />
+          <Col className="mt-3">
+            <Col>
+              <div className="btn-edit d-flex justify-content-center justify-content-md-start">
+                {isCurrentUserProfile && (
+                  <Link to="/edit-profile">
+                    <button className="btn-success">Edit Profile</button>
+                  </Link>
+                )}
+                {isCurrentUserProfile && (
+                  <Link to="/shop">
+                    <button className="btn-success ms-3">Shop</button>
+                  </Link>
+                )}
+              </div>
+            </Col>
+          </Col>
         </Col>
 
         {/* Колона за информация за профила */}
-        <Col xs={12} md={6} className="text-center text-md-start">
-          <h2 className="mb-4">{profileData?.username}</h2>
-          <p className="mb-0">First Name: {profileData?.firstName}</p>
-          <p className="mb-0">Last Name: {profileData?.lastName}</p>
-          <p className="mb-0">Phone Number: {profileData?.phone || "N/A"}</p>
-          <p className="mb-0">Wisdom points: {profileData?.currency}</p>
+        <Col xs={12} md={6} className="info-col text-center text-md-start">
+          <h2 className="mb-4" style={{ fontWeight: "bold" }}>
+            {profileData?.username}
+          </h2>
           <p className="mb-0">
-            {profileData?.customInfo || "No additional info provided."}
+            {" "}
+            <img
+              className="mb-1"
+              src="../../../../public/img/R (2).png"
+              alt=""
+              height={20}
+            />{" "}
+            FIRST NAME: {profileData?.firstName}
+          </p>
+          <p className="mb-0">
+            {" "}
+            <img
+              className="mb-1"
+              src="../../../../public/img/R (2).png"
+              alt=""
+              height={20}
+            />{" "}
+            LAST NAME: {profileData?.lastName}
+          </p>
+          <p className="mb-0">
+            {" "}
+            <img
+              className="mb-1"
+              src="../../../../public/img/R (2).png"
+              alt=""
+              height={20}
+            />{" "}
+            PHONE NUMBER: {profileData?.phone || "N/A"}
+          </p>
+          <p className="mb-0">
+            {" "}
+            <img
+              className="mb-1"
+              src="../../../../public/img/R (2).png"
+              alt=""
+              height={20}
+            />
+            {profileData?.customInfo || " No additional info provided."}
+          </p>
+          <br />
+          <p className="mb-0">
+            {" "}
+            <img
+              className="mb-1"
+              src="../../../../public/img/coin-icon.png"
+              alt=""
+              height={20}
+            />{" "}
+            WINDSOM POINTS: {profileData?.currency}
           </p>
         </Col>
 
@@ -205,6 +267,8 @@ const Profile = () => {
                     justifyContent: "center",
                     padding: "5px 10px",
                     fontSize: "12px",
+                    background: "#977746",
+                    border: "#977746",
                   }}
                   onClick={() => handleShowModal("head")}
                 >
@@ -223,6 +287,8 @@ const Profile = () => {
                     justifyContent: "center",
                     padding: "5px 10px",
                     fontSize: "12px",
+                    background: "#977746",
+                    border: "#977746",
                   }}
                   onClick={() => handleShowModal("torso")}
                 >
@@ -234,6 +300,7 @@ const Profile = () => {
                 </Button>
 
                 <Button
+                  className="btn-success"
                   variant="success"
                   style={{
                     display: "flex",
@@ -241,6 +308,8 @@ const Profile = () => {
                     justifyContent: "center",
                     padding: "5px 10px",
                     fontSize: "12px",
+                    background: "#977746",
+                    border: "#977746",
                   }}
                   onClick={() => handleShowModal("legs")}
                 >
@@ -265,36 +334,7 @@ const Profile = () => {
         {/* Removed the Close button from the footer */}
       </Modal>
 
-      <Row className="mt-3">
-        <Col>
-          <div className="d-flex justify-content-center justify-content-md-start">
-            <button className="btn btn-success me-3">All Quizzes</button>
-            {isCurrentUserProfile && (
-              <Link to="/edit-profile">
-                <button className="btn btn-success">Edit Profile</button>
-              </Link>
-            )}
-            {isCurrentUserProfile && (
-              <Link to="/shop">
-                <button className="btn btn-success ms-3">Shop</button>
-              </Link>
-            )}
-          </div>
-        </Col>
-      </Row>
-
-      <hr />
-
-      <Row>
-        <Col>
-          <h4>{profileData?.username}'s Quizzes</h4>
-          <Card className="mt-2">
-            <Card.Body>
-              <p>Quiz 1</p>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+      
     </Container>
   );
 };
