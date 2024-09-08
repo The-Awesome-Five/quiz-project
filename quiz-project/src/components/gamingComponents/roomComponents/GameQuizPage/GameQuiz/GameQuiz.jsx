@@ -101,12 +101,9 @@ export const GameQuiz = ({
                 <h2>Round: {round}</h2>
             </Container>
             <div>
-                {
-                    <TimeCounter initialSeconds={room.timePerRound * 10} reset={reset} finish={finish}/>
-
-                }
                 {player === user.uid &&
                     <>
+                        <TimeCounter initialSeconds={room.timePerRound * 10} reset={reset} finish={finish}/>
                         <GameQuestion
                             question={room.questions[indexOfQuestion]}
                             handleAnswer={handleAnswer}
@@ -117,7 +114,15 @@ export const GameQuiz = ({
 
                 {
                     player !== user.uid &&
-                    <h2>Waiting for other player to finish</h2>
+                    <>
+                    <h2>Waiting for {players.filter(currPlayer => currPlayer.id === player)[0].username} to finish</h2>
+                    <GameQuestion
+                        question={room.questions[indexOfQuestion]}
+                        handleAnswer={handleAnswer}
+                        notYourTurn={true}
+                    />
+                    </>
+
                 }
 
                 <button onClick={backwards} disabled={indexOfQuestion === 0}>Back</button>
