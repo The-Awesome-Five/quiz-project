@@ -24,7 +24,7 @@ const Shop = () => {
 
         const user = await getUserByID(userData.uid);
         setUserItems(user.items || {});
-        setUserCurrency(user.currency); 
+        setUserCurrency(user.currency);
 
         setLoading(false);
       } catch (error) {

@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import {Button, Container} from "react-bootstrap";
+import {Button, Card, Container} from "react-bootstrap";
 import {AppContext} from "../../../../appState/app.context.js";
 import {toast} from "react-toastify";
 import {getRoom, getUser, updatePlayer} from "../../../../services/room.service.js";
@@ -22,7 +22,7 @@ export const RoomLoadingPage = ({
         const fetchUser = async () => {
             const fetchedPlayer = await getUser(user.uid, roomId);
 
-            console.log(user);
+            
             if (fetchedPlayer) {
                 setHasJoined(true);
                 setIsReady(fetchedPlayer.isReady);
@@ -37,7 +37,7 @@ export const RoomLoadingPage = ({
     const joinGameHandler = async () => {
         try {
             const player = await updatePlayer(roomId, userData);
-            players ? setPlayers(prevState => [...prevState, player]) : setPlayers([player]);
+            // players ? setPlayers(prevState => [...prevState, player]) : setPlayers([player]);
             setHasJoined(true);
 
         } catch (e) {
@@ -47,7 +47,7 @@ export const RoomLoadingPage = ({
 
     const setReadyHandler = async () => {
 
-        console.log(player);
+        
 
         if (!player.isReady) {
             try {
@@ -64,24 +64,32 @@ export const RoomLoadingPage = ({
     }
 
     return (
-        <Container>
+        <Card className="d-flex flex-column text-center align-items-center bg-light-subtle ">
+            {players.length === 0 && <Card className="bg-danger-subtle">
+                <h3>Waiting for players to join. </h3>
+            </Card>}
+            {players.length === 1 && <Card className="bg-danger-subtle">
+                <h3>Waiting for another player to join.</h3>
+            </Card>}
             {!hasJoined &&
-                <Container><h1>
-                    You have been invited to join the game. Click the button below to join the game.
-                </h1>
-                    <Button variant="primary" onClick={joinGameHandler}>
+                <Card className="bg-warning-subtle">
+                    <h3>
+                        You have been invited to join the game. Click the button below to join the game.
+                    </h3>
+                    <button onClick={joinGameHandler}>
                         Join Game
-                    </Button>
-                </Container>
+                    </button>
+                </Card>
             }
             {hasJoined && !isReady &&
-                <Container><h1>
-                    Are you ready to start the game?
-                </h1>
-                    <Button variant="primary" onClick={setReadyHandler}>
+                <Card className="bg-warning-subtle">
+                    <h3>
+                        Are you ready to start the game?
+                    </h3>
+                    <button onClick={setReadyHandler}>
                         I am ready!
-                    </Button>
-                </Container>}
-        </Container>
+                    </button>
+                </Card>}
+        </Card>
     )
 }

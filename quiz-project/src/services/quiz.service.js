@@ -165,3 +165,22 @@ export const updateNotificationStatus = async (userId, quizID, action, username)
       console.log('Error updating notification status:', error);
   }
 };
+
+
+export const getQuizDetails = async (quizIDs) => {
+  try {
+    const dbRef = ref(db);
+    const quizPromises = quizIDs.map(quizID => {
+      const quizRef = child(dbRef, `quizzes/${quizID}`);
+      return get(quizRef);
+    });
+    const quizSnapshots = await Promise.all(quizPromises);
+    const quizData = quizSnapshots.map(snapshot => {
+        return snapshot.val();  
+    }).filter(data => data !== null); 
+    return quizData;
+  } catch (error) {
+    console.error("Error fetching quiz details:", error);
+    throw error;  
+  }
+};

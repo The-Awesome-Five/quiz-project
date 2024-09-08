@@ -4,12 +4,9 @@ import {db} from "../firebase/config.js";
 
 export const createRoom = async (room) => {
 
-    console.log('Room created: ');
-    console.log(room);
-
     try {
         let id;
-        const questions = await getQuestionsByCategoryAndDifficulty(room.category, room.difficulty);
+        const questions = await getQuestionsByCategoryAndDifficulty(room.category.toLowerCase(), room.difficulty.toLowerCase());
 
         room.questions = questions;
 
@@ -73,7 +70,7 @@ export const updatePlayer = async (roomId, providedPlayer, isReady = false, scor
     }
 }*/
 
-export const startGame = async (roomId) => {
+export const startGame = async (roomId, players, timePerRound) => {
 
     try {
 
@@ -82,7 +79,8 @@ export const startGame = async (roomId) => {
                 started: true,
                 currentQuestion: 0,
                 currentRound: 1,
-                currentPlayers: [],
+                nextPlayer: players[0].id,
+                currentRoundSeconds: timePerRound
         }});
     } catch (e) {
         console.error('Failed to start game:', e);
@@ -95,6 +93,20 @@ export const getUser = async (userId, roomId) => {
         return user.val();
     } catch (e) {
         console.error('Failed to get user:', e);
+    }
+}
+
+export const nextRound = async (roomId, score, playerId) => {
+    try {
+        const room = await getRoom(roomId);
+        const currentRound = room.game.currentRound;
+        await update(ref(db), {
+            [`room/${roomId}/game/currentRound`]: currentRound + 1,
+            [`room/${roomId}/players/${playerId}/score`]: room.players[playerId].score + score,
+            [`room/${roomId}/game/nextPlayer`]: Object.values(room.players).find(player => player.id !== playerId).id
+        });
+    } catch (e) {
+        console.error('Failed to start next round:', e);
     }
 }
 
