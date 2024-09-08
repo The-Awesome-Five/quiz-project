@@ -21,7 +21,7 @@ export const QuizItem = ({
     </Card.Body>
     <Card.Body>
         <Link to={`/quizzes/${id}`} state={{ path: `/quizzes/${id}` }}>
-            <button className="quiz-button">Start Quiz</button>
+            <button className="btn-success quiz-button">Start Quiz</button>
         </Link>
     </Card.Body>
 </Card>
