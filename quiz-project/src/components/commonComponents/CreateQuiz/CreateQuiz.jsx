@@ -48,6 +48,7 @@ const CreateQuiz = () => {
                 gameRulesObj[name] = type === "checkbox" ? checked : value;
 
                 quizValue = gameRulesObj
+                console.log(quiz)
                 break;
             case 'timeOptions':
                 quizName = 'timeOptions';
@@ -198,7 +199,8 @@ const CreateQuiz = () => {
             let date = Date()
             let x='';
             let quizData;
-            const hours = quiz.timeOptions?.isOpenDurationActive ? quiz.gameRules?.openDuration : null;  
+            const hours = quiz.gameRules?.openDuration ? quiz.gameRules?.openDuration : null;  
+            console.log(hours);
             if(hours){
             const openTime = new Date();
             var closeTime = new Date(openTime.getTime() + hours * 60 * 60 * 1000);
@@ -222,7 +224,7 @@ const CreateQuiz = () => {
                         ruleSet: {
                             timeLimitPerQuiz: quiz.timeOptions?.isTimeLimitPerQuizActive ? quiz.gameRules?.timeLimitPerQuiz : null,
                             timeLimitPerQuestion: quiz.timeOptions?.isTimeLimitPerQuestionActive ? quiz.gameRules?.timeLimitPerQuestion : null,
-                            openDuration: closeTime,
+                            openDuration: `${closeTime}`,
                             showCorrectAnswers: quiz.gameRules?.showCorrectAnswers ? quiz.gameRules?.showCorrectAnswers : null,
                         },
                         passingScore: quiz.passingScore,
@@ -232,7 +234,7 @@ const CreateQuiz = () => {
                             answers: q.isMultiple ? q.answers : [],
                             correctAnswerIndex: q.isMultiple ? q.correctAnswerIndex : null
                         })),
-                        isPublic: quiz.isPrivate,
+                        isPublic: false,
                         creator: {
                             userId: userData.uid,
                             name: userData.username,

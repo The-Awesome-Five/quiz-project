@@ -40,6 +40,7 @@ import {GamingModeView} from "./views/GamingModeView/GamingModeView.jsx";
 import {Room} from "./components/gamingComponents/roomComponents/Room.jsx";
 import AdminShopItem from './components/adminComponents/AdminShopManagement/AdminShopItem.jsx';
 import NotificationPage from './components/commonComponents/Notifications/NotificationPage.jsx';
+import MyQuizzes from './views/MyQuizzesView/MyQuizzes.jsx';
 // import {TestAI} from "./views/TestAI.jsx";
 
 function App() {
@@ -110,6 +111,7 @@ function App() {
                         <Route path='/edit-quiz/:quizId' element={<EditQuizForm/>}/>
                         <Route path='/review-quiz/:quizId' element={<ReviewSubmissions/>}/> 
                         <Route path='/shop' element={<Shop/>}/>
+                        <Route path='/my-quizzes' element={<MyQuizzes/>} />
                         {/* <Route path="/testAI" element={<TestAI />} /> */}
                     </Routes>
                 </div>
