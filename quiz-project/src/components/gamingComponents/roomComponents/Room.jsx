@@ -1,17 +1,19 @@
 import React, {useContext, useEffect, useState} from "react";
-import {Card, Col, Container} from "react-bootstrap";
+import {Button, Card, Col, Container} from "react-bootstrap";
 import {useParams} from "react-router-dom";
 import {RoomLoadingPage} from "./RoomLoadingPage/RoomLoadingPage.jsx";
 import {AppContext} from "../../../appState/app.context.js";
 import {GameQuizPage} from "./GameQuizPage/GameQuizPage.jsx";
 import {onValue, ref} from "firebase/database";
 import {db} from "../../../firebase/config.js";
+import {toast} from "react-toastify";
 
 export const Room = ({}) => {
 
     const [players, setPlayers] = useState([]);
     const [ready, setReady] = useState(false);
     const [room, setRoom] = useState({});
+    const [copySuccess, setCopySuccess] = useState('');
     const {user, userData} = useContext(AppContext);
 
     const {roomId} = useParams();
@@ -53,8 +55,15 @@ export const Room = ({}) => {
         return <h1>Room is full</h1>
     }
 
-    console.log('players:');
-    console.log(players);
+    const handleCopy = (text) => {
+        navigator.clipboard.writeText(text).then(() => {
+            setCopySuccess('Copied!');
+            toast.success('Room Id has been copied!');
+        }).catch((err) => {
+            setCopySuccess('Failed to copy the room Id!');
+            toast.error('Failed to copy the room Id: ', err);
+        });
+    };
 
     return (
         <Container className="text-center d-flex justify-content-center flex-column align-items-center">
@@ -62,7 +71,9 @@ export const Room = ({}) => {
                 <Card className="bg-success text-center align-items-center">
                     <h1>{room.name}</h1>
                     <h3>Room ID:</h3>
-                    <h3>{roomId}</h3>
+                    <h4>{roomId}</h4>
+                    <button style={{background: "lightgreen", fontSize: "18px"}} onClick={() => handleCopy(roomId)}>Click to copy the Room ID</button>
+                    <hr/>
                 </Card>
             </Col>
 
