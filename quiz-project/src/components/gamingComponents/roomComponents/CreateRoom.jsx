@@ -18,7 +18,7 @@ export const CreateRoom = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setRoom({ ...room, [name]: typeof value === 'string' ? value.toLowerCase() : value });
+        setRoom({ ...room, [name]: value ? value : '' });
     };
 
     const createRoomHandler = async (e) => {
@@ -88,7 +88,7 @@ export const CreateRoom = () => {
                 >
                     <option>Easy</option>
                     <option>Medium</option>
-                    <option>High</option>
+                    <option>Hard</option>
                 </Form.Control>
             </Form.Group>
 

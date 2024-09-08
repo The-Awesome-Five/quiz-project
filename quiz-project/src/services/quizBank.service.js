@@ -117,6 +117,7 @@ export const getQuestionsByCategoryAndDifficulty = async (category,difficulty) =
   let allQuestions = [];
 
   console.log('category', category);
+  console.log('difficulty', difficulty);
 
   try {
     const queries = [

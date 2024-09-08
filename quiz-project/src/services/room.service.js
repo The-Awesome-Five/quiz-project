@@ -4,12 +4,9 @@ import {db} from "../firebase/config.js";
 
 export const createRoom = async (room) => {
 
-    console.log('Room created: ');
-    console.log(room);
-
     try {
         let id;
-        const questions = await getQuestionsByCategoryAndDifficulty(room.category, room.difficulty);
+        const questions = await getQuestionsByCategoryAndDifficulty(room.category.toLowerCase(), room.difficulty.toLowerCase());
 
         room.questions = questions;
 
