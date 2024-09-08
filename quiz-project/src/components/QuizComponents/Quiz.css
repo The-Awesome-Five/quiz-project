@@ -1,0 +1,99 @@
+/* Централизиране на контейнера */
+.quiz-container {
+    max-width: 800px !important;
+    margin: 0 auto !important;
+    padding: 20px !important;
+}
+
+/* Стилизация за картата */
+.quiz-card {
+    background-color: #fff6e3 !important;
+    border-radius: 15px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    padding: 20px !important;
+    text-align: center !important;
+}
+
+/* Стилизация за въпроса */
+.question-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  /* Грид система за отговорите, 2x2 формат */
+  .answers-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 колони */
+    grid-gap: 20px; /* Разстояние между елементите */
+    margin-top: 20px;
+  }
+  
+  /* Бутон за всеки отговор */
+  .answer-btn {
+    padding: 15px;
+    font-size: 1.2rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+  }
+  
+  /* Hover ефект за бутона */
+  .answer-btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+  
+  /* Активен отговор */
+  .answer-btn.active {
+    background-color: #28a745;
+    transform: scale(1.1);
+  }
+
+/* Бутоните за навигация */
+.navigation-btn {
+    background-color: #17a2b8 !important;
+    color: white !important;
+    padding: 10px 20px !important;
+    margin: 10px !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-size: 1.1rem !important;
+    cursor: pointer !important;
+    transition: background-color 0.3s ease !important;
+}
+
+.navigation-btn:hover {
+    background-color: #138496 !important;
+}
+
+/* Бутон за обратно действие */
+.navigation-btn:disabled {
+    background-color: #ccc !important;
+    cursor: not-allowed !important;
+}
+
+/* Бутон за изпращане */
+.submit-btn {
+    background-color: #28a745 !important;
+    color: white !important;
+    padding: 10px 20px !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-size: 1.1rem !important;
+    cursor: pointer !important;
+}
+
+.submit-btn:hover {
+    background-color: #218838 !important;
+}
+
+
+.first-quiz-container {
+    border-bottom: none;
+  }
+  
