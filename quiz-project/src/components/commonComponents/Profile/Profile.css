@@ -193,3 +193,45 @@ h2, p {
 .btn-edit {
   margin-left: 29px;
 }
+
+.list {
+  list-style: none !important;
+  padding-left: 0; /* Optional: Може да използвате и това за премахване на отстояние */
+}
+
+.list li {
+  margin-bottom: 5px; /* Може да добавите и малко отстояние между елементите */
+  display: flex;
+  justify-content: center; /* Центриране по хоризонталата */
+}
+
+.org-img {
+  border: 5px solid#E5B56A;
+  display: block;
+  margin: 0 auto; /* Центриране на изображението в рамките на родителя */
+  border-radius: 10px; /* Добавяне на заоблени ъгли за по-красив вид */
+}
+
+.org-container > h5 {
+  text-align: center;
+  font-size: 1.8rem; 
+  font-weight: bold; 
+  color: #333; 
+  letter-spacing: 1px; 
+  margin-bottom: 1rem; 
+  padding-bottom: 0.5rem; 
+  border-bottom: 2px solid #E5B56A; 
+  display: inline-block; 
+}
+
+.name {
+  text-align: center;
+  font-size: 1.8rem; 
+  font-weight: bold; 
+  color: #333;
+  letter-spacing: 1px; 
+  margin-bottom: 1rem; 
+  padding-bottom: 0.5rem; 
+  border-bottom: 2px solid #E5B56A; 
+  display: inline-block; 
+}

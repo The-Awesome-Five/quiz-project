@@ -15,6 +15,7 @@ const Profile = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [organizations, setOrganizations] = useState([]);
 
   const [selectedHeadItem, setSelectedHeadItem] = useState("");
   const [selectedTorsoItem, setSelectedTorsoItem] = useState("");
@@ -27,6 +28,7 @@ const Profile = () => {
       getUserDataByUID(uid)
         .then((data) => {
           const userProfile = Object.values(data)[0];
+          console.log("User Profile:", userProfile); // Проверяваме какво съдържа потребителският профил
           if (userProfile) {
             setProfileData(userProfile);
 
@@ -42,12 +44,29 @@ const Profile = () => {
         });
     } else {
       setProfileData(userData);
+      console.log("User Data from Context:", userData); // Проверяваме данните от контекста
       setSelectedHeadItem(userData?.selectedHeadItem || "");
       setSelectedTorsoItem(userData?.selectedTorsoItem || "");
       setSelectedLegsItem(userData?.selectedLegsItem || "");
       setIsLoading(false);
     }
-  }, [userData]);
+
+    if (uid) {
+      // Fetch organizations
+      getUserDataByUID(uid)
+        .then((data) => {
+          const userProfile = Object.values(data)[0];
+          console.log("Organizations:", userProfile?.organizations); // Проверяваме организациите
+          if (userProfile?.organizations) {
+            const orgs = Object.values(userProfile.organizations);
+            setOrganizations(orgs);
+          }
+        })
+        .catch((error) => {
+          console.error("Failed to fetch organizations:", error);
+        });
+    }
+  }, [uid, userData]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -155,15 +174,37 @@ const Profile = () => {
               </div>
             </Col>
           </Col>
+          <div className="org-container mt-4">
+            <h5>ORGANIZATIONS</h5>
+            {profileData?.organizations ? (
+              <ul className="list">
+                {Object.values(profileData.organizations).map((org, index) => (
+                  <li key={index}>
+                    <Link to={`/organization/${org.organizationID}`}>
+                    <img
+                      className="org-img"
+                      src={org.organizationImage}
+                      alt={org.organizationName}
+                      width={100}
+                      height={100}
+                    />{" "}
+                    
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No organizations available.</p>
+            )}
+          </div>
         </Col>
 
         {/* Колона за информация за профила */}
         <Col xs={12} md={6} className="info-col text-center text-md-start">
-          <h2 className="mb-4" style={{ fontWeight: "bold" }}>
+          <h2 className="name mb-4" style={{ fontWeight: "bold" }}>
             {profileData?.username}
           </h2>
           <p className="mb-0">
-            {" "}
             <img
               className="mb-1"
               src="../../../../public/img/R (2).png"
@@ -173,7 +214,6 @@ const Profile = () => {
             FIRST NAME: {profileData?.firstName}
           </p>
           <p className="mb-0">
-            {" "}
             <img
               className="mb-1"
               src="../../../../public/img/R (2).png"
@@ -183,7 +223,6 @@ const Profile = () => {
             LAST NAME: {profileData?.lastName}
           </p>
           <p className="mb-0">
-            {" "}
             <img
               className="mb-1"
               src="../../../../public/img/R (2).png"
@@ -193,7 +232,6 @@ const Profile = () => {
             PHONE NUMBER: {profileData?.phone || "N/A"}
           </p>
           <p className="mb-0">
-            {" "}
             <img
               className="mb-1"
               src="../../../../public/img/R (2).png"
@@ -204,7 +242,6 @@ const Profile = () => {
           </p>
           <br />
           <p className="mb-0">
-            {" "}
             <img
               className="mb-1"
               src="../../../../public/img/coin-icon.png"
@@ -331,10 +368,7 @@ const Profile = () => {
           <Modal.Title>{selectedCategory.toUpperCase()} Items</Modal.Title>
         </Modal.Header>
         <Modal.Body>{renderItemsByCategory(selectedCategory)}</Modal.Body>
-        {/* Removed the Close button from the footer */}
       </Modal>
-
-      
     </Container>
   );
 };
