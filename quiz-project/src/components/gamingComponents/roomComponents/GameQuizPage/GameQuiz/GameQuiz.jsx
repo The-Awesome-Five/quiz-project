@@ -65,7 +65,7 @@ export const GameQuiz = ({
 
     return (
         <Container>
-            <h1>Round 1</h1>
+            <h1>{room.name}</h1>
             <div>
                 {
                     <TimeCounter initialSeconds={room.timePerRound * 60} finish={finish}/>

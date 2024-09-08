@@ -30,9 +30,8 @@ const TimeCounter = ({ initialSeconds, finish }) => {
     };
 
     return (
-        <Card style={{display: "flex", justifyItems: "center", textAlign: "center"}}>
-            <Card.Title as="h4" className="text-center">Timer</Card.Title>
-            <Card.Text as="h4" className="text-center">{formatTime(seconds)}</Card.Text>
+        <Card className={seconds / initialSeconds > 0.5 ? "bg-warning-subtle" : "bg-danger"} style={{display: "flex", justifyItems: "center", textAlign: "center"}}>
+            <Card.Text as="h4" className="text-center">Time left: {formatTime(seconds)}</Card.Text>
         </Card>
     );
 };

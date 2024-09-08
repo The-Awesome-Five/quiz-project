@@ -67,7 +67,7 @@ export const Room = ({}) => {
 
     return (
         <Container className="text-center d-flex justify-content-center flex-column align-items-center">
-            <Col md={4} className="mb-4">
+            {!ready && <Col md={4} className="mb-4">
                 <Card className="bg-success text-center align-items-center">
                     <h1>{room.name}</h1>
                     <h3>Room ID:</h3>
@@ -75,7 +75,7 @@ export const Room = ({}) => {
                     <button style={{background: "lightgreen", fontSize: "18px"}} onClick={() => handleCopy(roomId)}>Click to copy the Room ID</button>
                     <hr/>
                 </Card>
-            </Col>
+            </Col>}
 
             {/*if isComplete === true -> navigate to home*/}
 
