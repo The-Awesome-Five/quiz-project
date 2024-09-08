@@ -91,6 +91,8 @@ export const GameQuiz = ({
         return (<h2>...loading</h2>)
     }
 
+    console.log(players);
+
 
     return (
         <Container className="d-flex flex-row justify-content-center">
@@ -113,7 +115,7 @@ export const GameQuiz = ({
                 }
 
                 {
-                    player !== user.uid &&
+                    players.length === 2 && player !== user.uid &&
                     <>
                     <h2>Waiting for {players.filter(currPlayer => currPlayer.id === player)[0].username} to finish</h2>
                     <GameQuestion
