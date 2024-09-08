@@ -110,10 +110,10 @@
     height: 250px;
     border-radius: 50%;
     border: 8px solid var(--clr);
-    background: #19444a ;
+    background: #00819b ;
     transition: 0.5s, background 0.5s;
     transition-delay: 0.75s,1s;
-    filter: drop-shadow(0 0 10px var(--clr)) drop-shadow(0 0 60px var(--clr));
+    filter: drop-shadow(0 0 2px var(--clr)) drop-shadow(0 0 0px var(--clr));
 }
 .card-container:hover .circle::before{
     width: 100%;
@@ -143,7 +143,7 @@
 }
 .card-container:hover .product_img{
     transition-delay: 0.75s;
-    transform: translate(-50%,-50%) scale(1) rotate(15deg);
+    transform: translate(-50%,-50%) scale(1) rotate(1deg);
     top: 45%;
     left: 75%;
     height: 150px;
@@ -194,6 +194,28 @@
 
 .card-container .btn {
     margin-left: 50px;
+}
+
+.card-container .input-id {
+    background-color: #ffffff !important; 
+    border: none !important;
+    border-radius: 15px !important;
+    padding: 10px 20px !important;
+    box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.1) !important;
+    font-size: 1rem !important;
+    color: #333 !important; 
+    max-width: 200px !important; 
+}
+
+.card-container .create-btn {
+    background-color: #006080; 
+    border: none;
+    border-radius: 15px;
+    padding: 10px 20px;
+    color: white;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
 }
 
 
