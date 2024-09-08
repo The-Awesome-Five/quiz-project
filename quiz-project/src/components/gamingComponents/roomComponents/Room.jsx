@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import {Container} from "react-bootstrap";
+import {Card, Col, Container} from "react-bootstrap";
 import {useParams} from "react-router-dom";
 import {RoomLoadingPage} from "./RoomLoadingPage/RoomLoadingPage.jsx";
 import {AppContext} from "../../../appState/app.context.js";
@@ -20,7 +20,7 @@ export const Room = ({}) => {
 
         // fetch room -> check for players -> if players.length === 2 navigate to home page
 
-        if(userData){
+        if (userData) {
             const roomRef = ref(db, `room/${roomId}`);
             const unsubscribe = onValue(roomRef, (snapshot) => {
                 const data = snapshot.val();
@@ -57,30 +57,39 @@ export const Room = ({}) => {
     console.log(players);
 
     return (
-        <Container>
-            <h1>Room: {room.name}</h1>
+        <Container className="text-center d-flex justify-content-center flex-column align-items-center">
+            <Col md={4} className="mb-4">
+                <Card className="bg-success text-center align-items-center">
+                    <h1>{room.name}</h1>
+                    <h3>Room ID:</h3>
+                    <h3>{roomId}</h3>
+                </Card>
+            </Col>
 
             {/*if isComplete === true -> navigate to home*/}
 
             {
                 players.length === 0 &&
-                <div>
-                    <h1>Waiting for players to join. Room ID: {roomId}</h1>
-                    <RoomLoadingPage user={user} userData={userData} setPlayers={setPlayers} players={players}
-                                     roomId={roomId}/>
-                </div>
+                <Col md={4} className="mb-4">
+                    <RoomLoadingPage user={user} userData={userData} setPlayers={setPlayers}
+                                                              players={players}
+                                                              roomId={roomId}/>
+                </Col>
+            }
+            {
+                players.length === 2 && !ready && <Col md={4} className="mb-4">
+                    <Card className="bg-warning-subtle text-center align-items-center">
+                        <h3>Game is ready to start! Waiting for players to select start</h3>
+                    </Card>
+                </Col>
             }
 
             {
-                players.length > 0 && !ready &&
-                <div>
-                    {players.length === 1 && <h1>Waiting for another player to join. Room ID: {roomId}</h1>}
+            players.length > 0 && !ready &&
+                <Col md={4} className="mb-4">
                     <RoomLoadingPage user={user} userData={userData} setPlayers={setPlayers} players={players}
                                      roomId={roomId}/>
-                </div>
-            }
-            {
-                players.length === 2 && !ready && <h1>Game is ready to start! Waiting for players to select start</h1>
+                </Col>
             }
             {
                 players && ready && <GameQuizPage players={players} roomId={roomId}/>
