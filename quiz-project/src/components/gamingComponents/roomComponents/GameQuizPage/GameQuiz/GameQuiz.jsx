@@ -1,4 +1,4 @@
-import {Card, Container} from "react-bootstrap";
+import {Card, Container, Row} from "react-bootstrap";
 import React, {useContext, useEffect, useState} from "react";
 import {getRoom, nextRound, startGame} from "../../../../../services/room.service.js";
 import TimeCounter from "../../../../../utills/TimeCounter.jsx";
@@ -7,11 +7,12 @@ import {GameQuestion} from "./GameQuestion/GameQuestion.jsx";
 import {toast} from "react-toastify";
 import {saveQuizToUser, submitQuizByUser} from "../../../../../services/quiz.service.js";
 import {AppContext} from "../../../../../appState/app.context.js";
+import {onValue, ref} from "firebase/database";
+import {db} from "../../../../../firebase/config.js";
+import {PlayerStatusBar} from "../PlayerStatusBar/PlayerStatusBar.jsx";
 
 export const GameQuiz = ({
                              roomId,
-                             players,
-                             setPlayers,
     room,
     setRoom
                          }) => {
@@ -22,41 +23,29 @@ export const GameQuiz = ({
     const [reset, setReset] = useState(false);
     const [player, setPlayer] = useState(null);
     const {user, userData} = useContext(AppContext);
+    const [players, setPlayers ] = useState([]);
 
     useEffect(() => {
 
-        const beginGame = async (timePerRound) => {
-            await startGame(roomId, players, timePerRound);
+        // fetch room -> check for players -> if players.length === 2 navigate to home page
+
+        if (userData) {
+            const roomRef = ref(db, `room/${roomId}`);
+            const unsubscribe = onValue(roomRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+
+                    setRoom(data);
+                    setRound(data.game.currentRound);
+                    setPlayer(data.game.nextPlayer);
+                    setPlayers(Object.values(data.players));
+
+                }
+            });
+
+            return () => unsubscribe();
         }
-
-        const fetchRoom = async () => {
-
-            if (!room.game) {
-                await beginGame(room.timePerRound);
-
-            }
-
-            const fetchedRoom = await getRoom(roomId);
-            setRoom(fetchedRoom);
-            setPlayer(fetchedRoom.game.nextPlayer);
-            setRound(fetchedRoom.game.currentRound);
-
-           /* const fetchedRoom = await getRoom(roomId);
-            setRoom(fetchedRoom);
-
-            if (!fetchedRoom.game) {
-                await beginGame(fetchedRoom.timePerRound);
-                setPlayer(fetchedRoom.game.nextPlayer);
-            } else {
-                setRound(fetchedRoom.game.currentRound);
-                setPlayer(fetchedRoom.game.nextPlayer);
-            }*/
-        }
-
-        fetchRoom();
-
-
-    }, [reset]);
+    }, [userData]);
 
     const forwards = () => {
         setIndexOfQuestion(indexOfQuestion + 1);
@@ -98,20 +87,22 @@ export const GameQuiz = ({
 
     }
 
-    if (!room.questions) {
+    if (!room) {
         return (<h2>...loading</h2>)
     }
 
 
     return (
-        <Container>
-            <Container className="d-flex align-items-center flex-column">
+        <Container className="d-flex flex-row justify-content-center">
+            <Row className="m-1 text-lg-start"><PlayerStatusBar player={players[0]} /></Row>
+
+            <Row><Container className="d-flex align-items-center flex-column">
                 <h1>{room.name}</h1>
                 <h2>Round: {round}</h2>
             </Container>
             <div>
                 {
-                    <TimeCounter initialSeconds={room.timePerRound * 5} reset={reset} finish={finish}/>
+                    <TimeCounter initialSeconds={room.timePerRound * 10} reset={reset} finish={finish}/>
 
                 }
                 {player === user.uid &&
@@ -131,6 +122,8 @@ export const GameQuiz = ({
 
                 <button onClick={backwards} disabled={indexOfQuestion === 0}>Back</button>
             </div>
+            </Row>
+            <Row className="m-1 text-lg-end"><PlayerStatusBar player={players[1]} /></Row>
         </Container>
     )
 }

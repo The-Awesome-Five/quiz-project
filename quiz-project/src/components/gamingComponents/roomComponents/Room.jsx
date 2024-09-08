@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import {Button, Card, Col, Container} from "react-bootstrap";
+import {Button, Card, Col, Container, Row} from "react-bootstrap";
 import {useParams} from "react-router-dom";
 import {RoomLoadingPage} from "./RoomLoadingPage/RoomLoadingPage.jsx";
 import {AppContext} from "../../../appState/app.context.js";
@@ -7,6 +7,8 @@ import {GameQuizPage} from "./GameQuizPage/GameQuizPage.jsx";
 import {onValue, ref} from "firebase/database";
 import {db} from "../../../firebase/config.js";
 import {toast} from "react-toastify";
+import {startGame} from "../../../services/room.service.js";
+import {GameQuiz} from "./GameQuizPage/GameQuiz/GameQuiz.jsx";
 
 export const Room = ({}) => {
 
@@ -27,11 +29,22 @@ export const Room = ({}) => {
             const unsubscribe = onValue(roomRef, (snapshot) => {
                 const data = snapshot.val();
                 if (data) {
+
                     setRoom(data);
+
                     setPlayers(data.players ? Object.values(data.players) : []);
 
                     if (data.players && Object.values(data.players).length === 2 && Object.values(data.players).every(player => player.isReady)) {
+
+                        const beginGame = async () => {
+                            await startGame(roomId, Object.values(data.players), data.timePerRound);
+                        }
+
+                        beginGame();
+
                         setReady(true);
+
+                        unsubscribe();
                     }
 
                     // if players.some(player => player.id === user.uid) && isComplete === true => finish game function -> navigate to gameResults + state( room )
@@ -46,7 +59,7 @@ export const Room = ({}) => {
                 // if !winner
                 // update database - isCompleted = true, winner, loser = userData.uid, score
 
-                return unsubscribe()
+                return () => unsubscribe();
             };
         }
     }, [userData]);
@@ -103,7 +116,9 @@ export const Room = ({}) => {
                 </Col>
             }
             {
-                players && ready && <GameQuizPage room={room} setRoom={setRoom} players={players} setPlayers={setPlayers} roomId={roomId}/>
+                players && ready && <Container className="d-flex flex-row justify-content-center">
+                    <Row className="m-1"><GameQuiz room={room} setRoom={setRoom} roomId={roomId} /></Row>
+                </Container>
             }
 
         </Container>

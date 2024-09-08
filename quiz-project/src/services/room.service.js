@@ -100,8 +100,6 @@ export const nextRound = async (roomId, score, playerId) => {
     try {
         const room = await getRoom(roomId);
         const currentRound = room.game.currentRound;
-        console.log('Current Score: ', room.players);
-        console.log(playerId)
         await update(ref(db), {
             [`room/${roomId}/game/currentRound`]: currentRound + 1,
             [`room/${roomId}/players/${playerId}/score`]: room.players[playerId].score + score,
