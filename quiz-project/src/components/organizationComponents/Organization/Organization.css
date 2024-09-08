@@ -1,0 +1,52 @@
+.organizations-title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .organization-box {
+    background-color: #fff6e3; 
+    border-radius: 10px; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+  }
+  
+  .organization-box:hover {
+    transform: scale(1.05); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  }
+  
+  .organization-box img {
+    border-radius: 50%; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .organization-box p {
+    margin-top: 10px;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+  }
+  
+  .create-org-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff6e3; 
+    color: rgb(255, 173, 173);
+    font-size: 2rem;
+    font-weight: bold;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .create-org-box:hover {
+    transform: scale(1.05); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  }
+  
+  .create-org-box:active {
+    transform: scale(1); 
+    box-shadow: none; 
+  }
+  
