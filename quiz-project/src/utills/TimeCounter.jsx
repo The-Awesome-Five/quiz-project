@@ -31,8 +31,8 @@ const TimeCounter = ({ initialSeconds, finish }) => {
 
     return (
         <Card style={{display: "flex", justifyItems: "center", textAlign: "center"}}>
-            <Card.Title as="h4" className="text-center">Countdown Timer</Card.Title>
-            <Card.Text className="text-center">{formatTime(seconds)}</Card.Text>
+            <Card.Title as="h4" className="text-center">Timer</Card.Title>
+            <Card.Text as="h4" className="text-center">{formatTime(seconds)}</Card.Text>
         </Card>
     );
 };

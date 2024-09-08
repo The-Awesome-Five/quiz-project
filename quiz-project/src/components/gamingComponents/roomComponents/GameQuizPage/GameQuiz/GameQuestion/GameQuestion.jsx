@@ -11,19 +11,22 @@ export const GameQuestion = ({question, handleAnswer}) => {
     }
 
     return (
-        <Card className=" align-items-center mw-100 mh-100">
+        <Card className="align-items-center mw-100 mh-100">
+            <hr/>
             <Row className="text-center">
-                {question.question}
+                <h3>{question.question}</h3>
             </Row>
-            <Row className="d-flex flex-column ">
+            <Row>
                 {Object.keys(question.answers).map((answer, index) => {
                     return (
-                        <Col key={index}>
-                            {String.fromCharCode(65 + index)}   {
+                        <Col xs={6} className="mb-2">
+                            <Card className="border border-dark bg-light p-3 mb-4"> {
                             <button style={question.selectedAnswer === index
                                 ? {background: "blue"}
-                                : {background: "green"}} onClick={() => changeAnswer(index)}>{answer}</button>
-                        }</Col>
+                                : {background: "green"}} onClick={() => changeAnswer(index)}>{String.fromCharCode(65 + index)}) {answer}</button>
+                        }
+                            </Card>
+                        </Col>
                     )
                 })}
             </Row>
@@ -32,8 +35,13 @@ export const GameQuestion = ({question, handleAnswer}) => {
 
 }
 
-/*
-style={
-    question.selectedAnswer &&
-        question.selectedAnswer === index &&
-        {background:"blue"}*/
+/*{Object.keys(question.answers).map((answer, index) => {
+                    return (
+                        <Col key={index}>
+                            {String.fromCharCode(65 + index)}   {
+                            <button style={question.selectedAnswer === index
+                                ? {background: "blue"}
+                                : {background: "green"}} onClick={() => changeAnswer(index)}>{answer}</button>
+                        }</Col>
+                    )
+                })}*/
