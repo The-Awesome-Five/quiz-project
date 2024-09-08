@@ -1,3 +1,6 @@
+
+
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -8,12 +11,14 @@
 body {
   background-image: url('../public/img/background.png');
   background-size: cover;
+
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed; /* Keeps the background fixed while scrolling */
   margin: 0;
   padding: 0;
   height: 100vh; /* Make sure it covers the full viewport */
+  
 }
 
 
@@ -46,6 +51,28 @@ body {
 .read-the-docs {
   color: #888;
 } */
+
+.btn-success {
+  border-radius: 5px;
+  background-color: rgb(0, 129, 155);
+  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out !important;
+}
+
+.btn-success:hover {
+  background-color: rgb(0, 106, 128);
+  transform: scale(1.05)
+}
+
+.btn-success::before {
+  content: ''; 
+  display: inline-block;
+  width: auto !important; 
+  height: auto !important; 
+  background-color: red; 
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+}
 
 button {
   margin-top: 20px;
