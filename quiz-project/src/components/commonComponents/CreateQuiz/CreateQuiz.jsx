@@ -199,6 +199,12 @@ const CreateQuiz = () => {
             let date = Date()
             let x='';
             let quizData;
+            const totalScore= questions.reduce((acc,curr,index)=>{
+                console.log(curr.points);
+                acc+=+curr.points;
+                return acc
+            },0)
+            console.log(totalScore);
             const hours = quiz.gameRules?.openDuration ? quiz.gameRules?.openDuration : null;  
             console.log(hours);
             if(hours){
@@ -220,6 +226,7 @@ const CreateQuiz = () => {
                         numberOfQuestions: questions.length,
                         difficultyLevel: quiz.difficulty,
                         category: quiz.category,
+                        totalScore:totalScore,
                         tags: quiz.tags ? quiz.tags?.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}) : [],
                         ruleSet: {
                             timeLimitPerQuiz: quiz.timeOptions?.isTimeLimitPerQuizActive ? quiz.gameRules?.timeLimitPerQuiz : null,
@@ -255,12 +262,12 @@ const CreateQuiz = () => {
                         numberOfQuestions: questions.length,
                         difficultyLevel: quiz.difficulty,
                         category: quiz.category,
+                        totalScore:totalScore,
                         tags: quiz.tags ? quiz.tags?.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}) : [],
                         ruleSet: {
                             timeLimitPerQuiz: quiz.timeOptions?.isTimeLimitPerQuizActive ? quiz.gameRules?.timeLimitPerQuiz : null,
                             showCorrectAnswers: quiz.gameRules?.showCorrectAnswers ? quiz.gameRules?.showCorrectAnswers : null,
                         },
-                        passingScore: quiz.passingScore,
                         questions: questions.map((q) => ({
                             question: q.question,
                             points: q.points,
