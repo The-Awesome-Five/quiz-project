@@ -79,7 +79,7 @@ const MyQuizzes = () => {
                     completedQuizzes.map(quiz => (
                         <Col md={4} key={quiz.id} className="mb-4">
                             <Card>
-                                <Card.Img variant="top" src={quiz.avatar} />
+                                <Card.Img variant="top" src={quiz.avatar ? quiz.avatar: '/img/quizhub-logo.png'} style={{ width: 'auto', height: '200px' }} />
                                 <Card.Body>
                                     <Card.Title>{quiz.name}</Card.Title>
                                     <Card.Text>
@@ -107,12 +107,12 @@ const MyQuizzes = () => {
                     acceptedQuizzes.map(quiz => (
                         <Col md={4} key={quiz.id} className="mb-4">
                             <Card>
-                                <Card.Img variant="top" src={quiz.avatar} />
+                                <Card.Img className="quiz-img-card"variant="top" src={quiz.avatar} />
                                 <Card.Body>
                                     <Card.Title>{quiz.name}</Card.Title>
                                     <Card.Text>
-                                        <strong>Description:</strong> {quiz.description}
-                                        <br />
+                                        {/* <strong>Description:</strong> {quiz.description} */}
+                                        {/* <br /> */}
                                         <strong>Difficulty Level:</strong> {quiz.difficultyLevel}
                                         <br />
                                         <strong>Number of Questions:</strong> {quiz.numberOfQuestions}
