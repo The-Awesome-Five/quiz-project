@@ -14,7 +14,7 @@ const TimeCounter = ({ initialSeconds, finish, reset }) => {
 // Exit early if countdown is finished
         if (seconds <= 0) {
 
-            return finish();
+            return finish(true);
         }
 
 // Set up the timer
