@@ -69,7 +69,17 @@ export const GameQuiz = ({
 
     const submit = async (isTimeOver) => {
 
-        const score = 100;
+        let score = 0;
+        const selectedAnswer = room.questions[currentQuestion].selectedAnswer;
+
+        console.log(selectedAnswer);
+
+        if (Object.values(room.questions[currentQuestion].answers)[selectedAnswer]) {
+            toast.success('Correct!');
+            score = 100;
+        } else {
+            toast.error('Wrong!');
+        }
 
         if (currentQuestion === room.questions.length - 1) {
             toast.success('Game is finished!');
