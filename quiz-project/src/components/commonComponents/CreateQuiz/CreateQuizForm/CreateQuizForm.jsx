@@ -14,7 +14,7 @@ export const CreateQuizForm = ({
 
 
     return (
-        <div className="col-md-8 form-panel">
+        <div className="col-md-6 form-panel">
             <div className="p0pform">
                 <label htmlFor="quizTitle" className="form-label">
                     Quiz Title
