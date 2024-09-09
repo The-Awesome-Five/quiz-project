@@ -16,19 +16,16 @@ const ReviewSubmissions = () => {
     return <div>No data available</div>;
   }
 
-  const handleFeedbackChange = (userId, questionIndex, value) => {
-    setFeedback(prevFeedback => ({
+  const handleOverallFeedbackChange = (userId, value) => {
+    setFeedback((prevFeedback) => ({
       ...prevFeedback,
-      [userId]: {
-        ...prevFeedback[userId],
-        [questionIndex]: value,
-      },
+      [userId]: value,
     }));
   };
 
   const handleScoreChange = (userId, questionIndex, value) => {
     const maxScore = quiz.questions[questionIndex].points;
-    const validValue = Math.max(0, Math.min(maxScore, value)); 
+    const validValue = Math.max(0, Math.min(maxScore, value));
     setScores(prevScores => ({
       ...prevScores,
       [userId]: {
@@ -40,7 +37,7 @@ const ReviewSubmissions = () => {
 
   const submitFeedback = async (userId) => {
     const quizId = quiz.id;
-    const totalScore = calculateTotalScore(userId); 
+    const totalScore = calculateTotalScore(userId);
     const quizName = quiz.name;
 
     try {
@@ -56,10 +53,10 @@ const ReviewSubmissions = () => {
 
     quiz.questions.forEach((question, questionIndex) => {
       if (question.correctAnswerIndex !== undefined) {
-    
+
         const userAnswer = quiz.submission[userId]?.answers[questionIndex];
         if (userAnswer !== undefined && userAnswer === question.correctAnswerIndex) {
-          totalScore += +question.points; 
+          totalScore += +question.points;
         }
       } else {
 
@@ -99,10 +96,10 @@ const ReviewSubmissions = () => {
                           answerIndex === question.correctAnswerIndex && quiz.submission[userId]?.answers[questionIndex] === question.correctAnswerIndex
                             ? { border: "2px solid green", borderRadius: "5px", padding: "5px" }
                             : answerIndex === question.correctAnswerIndex
-                            ? { border: "2px solid black", borderRadius: "5px", padding: "5px" }
-                            : quiz.submission[userId]?.answers[questionIndex] === answerIndex
-                            ? { border: "2px solid red", borderRadius: "5px", padding: "5px" }
-                            : { padding: "5px" }
+                              ? { border: "2px solid black", borderRadius: "5px", padding: "5px" }
+                              : quiz.submission[userId]?.answers[questionIndex] === answerIndex
+                                ? { border: "2px solid red", borderRadius: "5px", padding: "5px" }
+                                : { padding: "5px" }
                         }
                       >
                         {String.fromCharCode(65 + answerIndex)} {answer}
@@ -125,20 +122,21 @@ const ReviewSubmissions = () => {
                           onBlur={(e) => handleScoreChange(userId, questionIndex, e.target.value)}
                         />
                       </Row>
-                      <Row className="mb-3">
-                        <Form.Label>Leave Feedback</Form.Label>
-                        <Form.Control
-                          as="textarea"
-                          rows={3}
-                          value={feedback[userId]?.[questionIndex] || ""}
-                          onChange={(e) => handleFeedbackChange(userId, questionIndex, e.target.value)}
-                        />
-                      </Row>
                     </>
                   )}
                 </Row>
               </Col>
             ))}
+            <Row className="mb-3">
+              <Form.Label>Overall Feedback</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                value={feedback[userId] || ""}
+                onChange={(e) => handleOverallFeedbackChange(userId, e.target.value)}
+              />
+            </Row>
+
             <Button variant="primary" onClick={() => submitFeedback(userId)} className="mt-3">
               Submit Feedback
             </Button>

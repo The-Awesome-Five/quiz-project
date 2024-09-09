@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from "../../appState/app.context";
 import { getQuizDetails } from "../../services/quiz.service";
 import { Container, Row, Col, Card, Button, Spinner, Alert } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 const MyQuizzes = () => {
     const { userData } = useContext(AppContext);
@@ -10,7 +11,7 @@ const MyQuizzes = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [timeLeft, setTimeLeft] = useState({});
-
+    const navigate= useNavigate();
     useEffect(() => {
         if (userData) {
             const fetchQuizzes = async () => {
@@ -79,7 +80,7 @@ const MyQuizzes = () => {
                     completedQuizzes.map(quiz => (
                         <Col md={4} key={quiz.id} className="mb-4">
                             <Card>
-                                <Card.Img variant="top" src={quiz.avatar ? quiz.avatar: '/img/quizhub-logo.png'} style={{ width: 'auto', height: '200px' }} />
+                                <Card.Img variant="top" src={quiz.avatar ? quiz.avatar : '/img/quizhub-logo.png'} style={{ width: 'auto', height: '200px' }} />
                                 <Card.Body>
                                     <Card.Title>{quiz.name}</Card.Title>
                                     <Card.Text>
@@ -107,12 +108,10 @@ const MyQuizzes = () => {
                     acceptedQuizzes.map(quiz => (
                         <Col md={4} key={quiz.id} className="mb-4">
                             <Card>
-                                <Card.Img className="quiz-img-card"variant="top" src={quiz.avatar} />
+                                <Card.Img className="quiz-img-card" variant="top" src={quiz.avatar} />
                                 <Card.Body>
                                     <Card.Title>{quiz.name}</Card.Title>
                                     <Card.Text>
-                                        {/* <strong>Description:</strong> {quiz.description} */}
-                                        {/* <br /> */}
                                         <strong>Difficulty Level:</strong> {quiz.difficultyLevel}
                                         <br />
                                         <strong>Number of Questions:</strong> {quiz.numberOfQuestions}
@@ -125,10 +124,15 @@ const MyQuizzes = () => {
                                             </div>
                                         )}
                                     </Card.Text>
-                                    {quiz.questions && quiz.questions.length > 0 ? (
-                                        <Button variant="primary">Take Test</Button>
+                                    {quiz.ruleSet?.openDuration ? (
+                                        calculateTimeLeft(quiz.ruleSet?.openDuration) !== "Time's up!" ? (
+                                            <Button variant="primary" onClick={()=>navigate(`/quizzes/${quiz.id}`, {state: { path: `/quizzes/${quiz.id}` }})}>Take Test</Button>
+                                        ) : (
+                                            <Button variant="primary" disabled>Time's up</Button>
+                                        )
                                     ) : (
-                                        <Alert variant="warning">No questions available for this quiz.</Alert>
+                                        
+                                        <Button variant="primary" onClick={()=>navigate(`/quizzes/${quiz.id}`, {state: { path: `/quizzes/${quiz.id}` }})}>Take Test</Button>
                                     )}
                                 </Card.Body>
                             </Card>
@@ -141,7 +145,7 @@ const MyQuizzes = () => {
         </Container>
     );
 };
-   
+
 const calculateTimeLeft = (timeLimit) => {
     const now = new Date();
     const endTime = new Date(timeLimit);

@@ -190,6 +190,7 @@ export const updateUserSubmission = async (userId, quizId, feedback, scores, qui
     const quizScorePath = `quizzes/${quizId}/submission/${userId}/score`;
     const userCompletedPath = `users/${userId}/completed`;
     const feedbackPath = `users/${userId}/notifications/feedback/${quizId}`;
+    
     await set(ref(db, quizScorePath), totalScore);
     await set(ref(db, `${userCompletedPath}/${quizId}`), totalScore);
     await set(ref(db, feedbackPath), {
@@ -197,7 +198,7 @@ export const updateUserSubmission = async (userId, quizId, feedback, scores, qui
       score: totalScore,
       quizID: quizId,
       totalScore: quiz.totalScore,
-      feedback: feedback[userId]
+      feedback: feedback[userId] || "" 
     });
 
     console.log('Quiz results and feedback updated successfully');
