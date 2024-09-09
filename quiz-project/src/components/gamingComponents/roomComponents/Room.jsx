@@ -3,7 +3,6 @@ import {Button, Card, Col, Container, Row} from "react-bootstrap";
 import {useParams} from "react-router-dom";
 import {RoomLoadingPage} from "./RoomLoadingPage/RoomLoadingPage.jsx";
 import {AppContext} from "../../../appState/app.context.js";
-import {GameQuizPage} from "./GameQuizPage/GameQuizPage.jsx";
 import {onValue, ref} from "firebase/database";
 import {db} from "../../../firebase/config.js";
 import {toast} from "react-toastify";

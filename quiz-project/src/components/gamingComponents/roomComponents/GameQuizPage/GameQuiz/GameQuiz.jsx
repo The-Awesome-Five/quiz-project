@@ -17,7 +17,7 @@ export const GameQuiz = ({
     setRoom
                          }) => {
 
-    const [indexOfQuestion, setIndexOfQuestion] = useState(0);
+    const [currentQuestion, setCurrentQuestion] = useState(0);
     const [answers, setAnswers] = useState([]);
     const [round, setRound] = useState(1);
     const [reset, setReset] = useState(false);
@@ -39,6 +39,7 @@ export const GameQuiz = ({
                     setRound(data.game.currentRound);
                     setPlayer(data.game.nextPlayer);
                     setPlayers(Object.values(data.players));
+                    setCurrentQuestion(data.game.currentQuestion);
 
                 }
             });
@@ -48,18 +49,18 @@ export const GameQuiz = ({
     }, [userData]);
 
     const forwards = () => {
-        setIndexOfQuestion(indexOfQuestion + 1);
+        setCurrentQuestion(currentQuestion + 1);
     }
     const backwards = () => {
-        setIndexOfQuestion(indexOfQuestion - 1);
+        setCurrentQuestion(currentQuestion - 1);
     }
 
     const handleAnswer = (selectedIndex) => {
 
-        room.questions[indexOfQuestion].selectedAnswer = selectedIndex;
+        room.questions[currentQuestion].selectedAnswer = selectedIndex;
 
         setAnswers((prevAnswers) => {
-            prevAnswers[indexOfQuestion] = selectedIndex;
+            prevAnswers[currentQuestion] = selectedIndex;
 
             return prevAnswers;
         });
@@ -70,14 +71,15 @@ export const GameQuiz = ({
 
         const score = 100;
 
-        await nextRound(roomId, score, player);
-        setRound(round + 1);
-        if (indexOfQuestion === room.questions.length - 1) {
-            console.log('Quiz Submitted');
+        if (currentQuestion === room.questions.length - 1) {
+            toast.success('Game is finished!');
         } else {
-            setIndexOfQuestion(indexOfQuestion + 1);
+            await nextRound(roomId, score, player, currentQuestion + 1);
+            setCurrentQuestion(currentQuestion + 1);
+            setReset(!reset);
+            setRound(round + 1);
         }
-        setReset(!reset);
+
 
     }
 
@@ -107,7 +109,7 @@ export const GameQuiz = ({
                     <>
                         <TimeCounter initialSeconds={room.timePerRound * 10} reset={reset} finish={finish}/>
                         <GameQuestion
-                            question={room.questions[indexOfQuestion]}
+                            question={room.questions[currentQuestion]}
                             handleAnswer={handleAnswer}
                         />
                         <button onClick={submit}>Submit Quiz</button>
@@ -119,7 +121,7 @@ export const GameQuiz = ({
                     <>
                     <h2>Waiting for {players.filter(currPlayer => currPlayer.id === player)[0].username} to finish</h2>
                     <GameQuestion
-                        question={room.questions[indexOfQuestion]}
+                        question={room.questions[currentQuestion]}
                         handleAnswer={handleAnswer}
                         notYourTurn={true}
                     />
@@ -127,7 +129,7 @@ export const GameQuiz = ({
 
                 }
 
-                <button onClick={backwards} disabled={indexOfQuestion === 0}>Back</button>
+                <button onClick={backwards} disabled={currentQuestion === 0}>Back</button>
             </div>
             </Row>
             <Row className="m-1 text-lg-end"><PlayerStatusBar player={players[1]} /></Row>

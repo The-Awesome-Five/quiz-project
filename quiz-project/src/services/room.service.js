@@ -60,16 +60,6 @@ export const updatePlayer = async (roomId, providedPlayer, isReady = false, scor
     }
 
 }
-
-/*export const getQuestions = async (roomId) => {
-    try {
-        const questions = await get(ref(db, `room/${roomId}/questions`));
-        return questions.val();
-    } catch (e) {
-        console.error('Failed to get questions:', e);
-    }
-}*/
-
 export const startGame = async (roomId, players, timePerRound) => {
 
     try {
@@ -80,7 +70,6 @@ export const startGame = async (roomId, players, timePerRound) => {
                 currentQuestion: 0,
                 currentRound: 1,
                 nextPlayer: players[0].id,
-                currentRoundSeconds: timePerRound
         }});
     } catch (e) {
         console.error('Failed to start game:', e);
@@ -96,14 +85,15 @@ export const getUser = async (userId, roomId) => {
     }
 }
 
-export const nextRound = async (roomId, score, playerId) => {
+export const nextRound = async (roomId, score, playerId, currentQuestion) => {
     try {
         const room = await getRoom(roomId);
         const currentRound = room.game.currentRound;
         await update(ref(db), {
             [`room/${roomId}/game/currentRound`]: currentRound + 1,
             [`room/${roomId}/players/${playerId}/score`]: room.players[playerId].score + score,
-            [`room/${roomId}/game/nextPlayer`]: Object.values(room.players).find(player => player.id !== playerId).id
+            [`room/${roomId}/game/nextPlayer`]: Object.values(room.players).find(player => player.id !== playerId).id,
+            [`room/${roomId}/game/currentQuestion`]: currentQuestion
         });
     } catch (e) {
         console.error('Failed to start next round:', e);
