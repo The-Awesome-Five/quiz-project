@@ -74,8 +74,8 @@ export const Quiz = () => {
     }
 
     const score = quiz.questions.reduce((accScore, currQuestion, currIndex) => {
-      if (currQuestion.correctAnswerIndex === answers[currIndex]) {
-        accScore += 1;
+      if (currQuestion? .correctAnswerIndex === answers[currIndex]) {
+        accScore += +currQuestion?.points;
       }
 
       return accScore;
@@ -94,8 +94,8 @@ export const Quiz = () => {
     }
   };
 
-  const finish = () => {
-    submit(false);
+  const finish = (isTimeOver) => {
+    submit(isTimeOver);
   };
 
   if (!quiz) {
@@ -136,7 +136,7 @@ export const Quiz = () => {
         <div className="btn-container">
           {quiz.ruleSet && quiz.ruleSet.timeLimitPerQuiz && (
             <TimeCounter
-              initialSeconds={quiz.ruleSet.timeLimitPerQuiz}
+              initialSeconds={quiz.ruleSet.timeLimitPerQuiz*60}
               finish={finish}
             />
           )}
@@ -154,7 +154,7 @@ export const Quiz = () => {
             Back
           </button>
           {indexOfQuestion === quiz.questions.length - 1 ? (
-            <button className="btn-success" onClick={submit}>
+            <button className="btn-success" onClick={()=>submit(false)}>
               Submit Quiz
             </button>
           ) : (
