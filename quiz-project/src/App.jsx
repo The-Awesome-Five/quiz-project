@@ -45,6 +45,9 @@ import AdminAccess from "./hoc/AdminAccess.jsx";
 import EducatorAccess from "./hoc/EducatorAccess.jsx";
 import {NotAuthorisedView} from "./views/NotAuthorisedView/NotAuthorisedView.jsx";
 import {onValue, ref} from "firebase/database";
+import {
+    GameOverPage
+} from "./components/gamingComponents/roomComponents/GameQuizPage/GameQuiz/GameOverPage/GameOverPage.jsx";
 // import {TestAI} from "./views/TestAI.jsx";
 
 function App() {
@@ -120,6 +123,8 @@ function App() {
 
                         <Route path='/gaming-modes' element={<GamingModeView />} />
                         <Route path={`/room/:roomId`} element={<Room />} />
+                        <Route path="game-over" element={<GameOverPage />} />
+
                         <Route path={`/notifications`} element={<NotificationPage />} />
                         <Route path="/organizations" element={<Organization /> } />
                         <Route path="/create-organization" element={<EducatorAccess><CreateOrganization /></EducatorAccess>} />

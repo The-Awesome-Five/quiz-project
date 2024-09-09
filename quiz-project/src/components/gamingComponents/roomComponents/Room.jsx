@@ -35,11 +35,13 @@ export const Room = ({}) => {
 
                     if (data.players && Object.values(data.players).length === 2 && Object.values(data.players).every(player => player.isReady)) {
 
-                        const beginGame = async () => {
-                            await startGame(roomId, Object.values(data.players), data.timePerRound);
-                        }
+                       if (!data.game) {
+                           const beginGame = async () => {
+                               await startGame(roomId, Object.values(data.players), data.timePerRound);
+                           }
 
-                        beginGame();
+                           beginGame();
+                       }
 
                         setReady(true);
 

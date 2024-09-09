@@ -100,8 +100,16 @@ export const nextRound = async (roomId, score, playerId, currentQuestion) => {
     }
 }
 
-export const endGame = (roomId) => {
-    return;
+export const endGame = async (roomId, winner, loser) => {
+    try {
+        await update(ref(db), {
+            [`room/${roomId}/game/finished`]: true,
+            [`room/${roomId}/game/winner`]: winner,
+            [`room/${roomId}/game/loser`]: loser
+        });
+    } catch (e) {
+        console.error('Failed to end game:', e);
+    }
 }
 
 export const getGameQuestions = (category = null) => {

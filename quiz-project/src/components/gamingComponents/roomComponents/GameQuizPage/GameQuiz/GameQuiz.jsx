@@ -1,6 +1,6 @@
 import {Card, Container, Row} from "react-bootstrap";
 import React, {useContext, useEffect, useState} from "react";
-import {getRoom, nextRound, startGame} from "../../../../../services/room.service.js";
+import {endGame, getRoom, nextRound, startGame} from "../../../../../services/room.service.js";
 import TimeCounter from "../../../../../utills/TimeCounter.jsx";
 import {Question} from "../../../../QuizComponents/Question.jsx";
 import {GameQuestion} from "./GameQuestion/GameQuestion.jsx";
@@ -10,6 +10,7 @@ import {AppContext} from "../../../../../appState/app.context.js";
 import {onValue, ref} from "firebase/database";
 import {db} from "../../../../../firebase/config.js";
 import {PlayerStatusBar} from "../PlayerStatusBar/PlayerStatusBar.jsx";
+import {useNavigate} from "react-router-dom";
 
 export const GameQuiz = ({
                              roomId,
@@ -24,6 +25,8 @@ export const GameQuiz = ({
     const [player, setPlayer] = useState(null);
     const {user, userData} = useContext(AppContext);
     const [players, setPlayers ] = useState([]);
+    const [isGameFinished, setIsGameFinished] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
 
@@ -40,6 +43,13 @@ export const GameQuiz = ({
                     setPlayer(data.game.nextPlayer);
                     setPlayers(Object.values(data.players));
                     setCurrentQuestion(data.game.currentQuestion);
+
+                    console.log('data.game')
+                    console.log(data.game);
+
+                    if (data.game.finished) {
+                        navigate('/game-over', {state: {room: data}});
+                    }
 
                 }
             });
@@ -83,6 +93,32 @@ export const GameQuiz = ({
 
         if (currentQuestion === room.questions.length - 1) {
             toast.success('Game is finished!');
+            setIsGameFinished(true);
+
+            let winner = {};
+            let loser = {};
+
+
+            const currPlayer = players.find(player => player.id === user.uid);
+            const otherPlayer = players.find(player => player.id !== user.uid);
+
+
+            if (currPlayer.score + score > otherPlayer.score) {
+
+                winner = players.find(player => player.id === player.id);
+                loser = players.find(player => player.id !== player.id);
+
+            } else if (currPlayer + score === otherPlayer.score) {
+
+                winner = {id: 'draw', username: 'draw'};
+                loser = {id: 'draw', username: 'draw'};
+
+            } else {
+                winner = otherPlayer;
+                loser = currPlayer;
+            }
+
+            await endGame(roomId, winner, loser);
         } else {
             await nextRound(roomId, score, player, currentQuestion + 1);
             setCurrentQuestion(currentQuestion + 1);
@@ -117,7 +153,7 @@ export const GameQuiz = ({
             <div>
                 {player === user.uid &&
                     <>
-                        <TimeCounter initialSeconds={room.timePerRound * 10} reset={reset} finish={finish}/>
+                        <TimeCounter initialSeconds={room.timePerRound * 2} reset={reset} finish={finish}/>
                         <GameQuestion
                             question={room.questions[currentQuestion]}
                             handleAnswer={handleAnswer}
