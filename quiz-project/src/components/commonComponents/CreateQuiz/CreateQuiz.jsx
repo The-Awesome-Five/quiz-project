@@ -223,7 +223,7 @@ const CreateQuiz = () => {
                         tags: quiz.tags ? quiz.tags?.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}) : [],
                         ruleSet: {
                             timeLimitPerQuiz: quiz.timeOptions?.isTimeLimitPerQuizActive ? quiz.gameRules?.timeLimitPerQuiz : null,
-                            timeLimitPerQuestion: quiz.timeOptions?.isTimeLimitPerQuestionActive ? quiz.gameRules?.timeLimitPerQuestion : null,
+
                             openDuration: `${closeTime}`,
                             showCorrectAnswers: quiz.gameRules?.showCorrectAnswers ? quiz.gameRules?.showCorrectAnswers : null,
                         },
@@ -258,7 +258,6 @@ const CreateQuiz = () => {
                         tags: quiz.tags ? quiz.tags?.reduce((acc, tag) => ({ ...acc, [tag]: tag }), {}) : [],
                         ruleSet: {
                             timeLimitPerQuiz: quiz.timeOptions?.isTimeLimitPerQuizActive ? quiz.gameRules?.timeLimitPerQuiz : null,
-                            timeLimitPerQuestion: quiz.timeOptions?.isTimeLimitPerQuestionActive ? quiz.gameRules?.timeLimitPerQuestion : null,
                             showCorrectAnswers: quiz.gameRules?.showCorrectAnswers ? quiz.gameRules?.showCorrectAnswers : null,
                         },
                         passingScore: quiz.passingScore,
@@ -409,28 +408,30 @@ const CreateQuiz = () => {
     }
     return (
         <div className="container create-quiz-wrapper">
-            <div className="row">
-                {/* Left Panel: Quiz Creation Form */}
-                <CreateQuizForm quiz={quiz}
-                    handleChange={handleChange}
-                    addTag={addTag}
-                    removeTag={removeTag}
-                    handleGameRulesChange={handleGameRulesChange}
-                    handleTimeOptionsChange={handleTimeOptionsChange}
-                    handleShowOrganizations={handleShowOrganizations}
-                    handleIsInvitesOnly={handleIsInvitesOnlyChange}
-                    organizations={organizations}
-
-                />
-
-                {/* Right Panel: Public Questions */}
-                <PublicQuestionForm handleSearch={handleSearch}
-                    searchTerm={searchTerm}
-                    filteredQuestions={filteredQuestions}
-                    publicQuestions={publicQuestions}
-                    handleQuestionClick={handleQuestionClick} />
-
-            </div>
+<div className="row">
+    {/* Left Panel: Quiz Creation Form */}
+    {/* Increase width for left panel */}
+        <CreateQuizForm quiz={quiz}
+            handleChange={handleChange}
+            addTag={addTag}
+            removeTag={removeTag}
+            handleGameRulesChange={handleGameRulesChange}
+            handleTimeOptionsChange={handleTimeOptionsChange}
+            handleShowOrganizations={handleShowOrganizations}
+            handleIsInvitesOnly={handleIsInvitesOnlyChange}
+            organizations={organizations}
+        />
+ 
+    {/* Right Panel: Public Questions */}
+    <div className="col-md-5"> {/* Adjust width for right panel */}
+        <PublicQuestionForm handleSearch={handleSearch}
+            searchTerm={searchTerm}
+            filteredQuestions={filteredQuestions}
+            publicQuestions={publicQuestions}
+            handleQuestionClick={handleQuestionClick} 
+        />
+    </div>
+</div>
 
             <hr />
 

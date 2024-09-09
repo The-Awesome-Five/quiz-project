@@ -87,17 +87,17 @@ export const CreateQuizForm = ({
                     onChange={(e) => handleChange(e)}
                 />
                 
-                 <label htmlFor="Passing Score" className="form-label">
+                {quiz.organisationId && <><label htmlFor="Passing Score" className="form-label">
                    Passing Score
                 </label>
                 <input
                     type="number"
                      className="form-control"
                     onChange={(e) => handleChange(e.target.value, 'passingScore')}
-                />
+                /></> }
 
                 {/* Time Limit for Quiz */}
-                <div className="mb-3">
+                { quiz.organisationId && <div className="mb-3">
                     <input
                         type="checkbox"
                         name="isTimeLimitPerQuizActive"
@@ -118,31 +118,7 @@ export const CreateQuizForm = ({
                         onChange={handleGameRulesChange}
                         disabled={!quiz.timeOptions?.isTimeLimitPerQuizActive}
                     />
-                </div>
-
-                {/* Time Limit per Question */}
-                <div className="mb-3">
-                    <input
-                        type="checkbox"
-                        name="isTimeLimitPerQuestionActive"
-                        id="isTimeLimitPerQuestionActive"
-                        checked={quiz.timeOptions?.isTimeLimitPerQuestionActive}
-                        onChange={handleTimeOptionsChange}
-                    />
-                    <label htmlFor="isTimeLimitPerQuestionActive" className="ms-2">
-                        Enable Time Limit per Question
-                    </label>
-                    <input
-                        type="number"
-                        name="timeLimitPerQuestion"
-                        id="timeLimitPerQuestion"
-                        className="form-control mt-2"
-                        placeholder="Enter time limit per question (minutes)"
-                        value={quiz.gameRules?.timeLimitPerQuestion}
-                        onChange={handleGameRulesChange}
-                        disabled={!quiz.timeOptions?.isTimeLimitPerQuestionActive}
-                    />
-                </div>
+                </div>}
 
                 {/* Quiz Open Duration */}
                 { quiz.organisationId && <div className="mb-3">
