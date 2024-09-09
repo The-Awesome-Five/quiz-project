@@ -48,6 +48,7 @@ import {onValue, ref} from "firebase/database";
 import {
     GameOverPage
 } from "./components/gamingComponents/roomComponents/GameQuizPage/GameQuiz/GameOverPage/GameOverPage.jsx";
+import ResultsPage from './components/QuizComponents/ResultsPage/Results.jsx';
 // import {TestAI} from "./views/TestAI.jsx";
 
 function App() {
@@ -139,6 +140,7 @@ function App() {
                         <Route path='/shop' element={<Shop/>}/>
                         <Route path='/my-quizzes' element={<MyQuizzes/>} />
                         <Route path="/not-authorised" element={<NotAuthorisedView/>} />
+                        <Route path='results-page' element= {<ResultsPage />} />
                         {/* <Route path="/testAI" element={<TestAI />} /> */}
                     </Routes>
                 </div>

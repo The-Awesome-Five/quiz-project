@@ -81,6 +81,8 @@ export const Quiz = () => {
       return accScore;
     }, 0);
 
+    console.log(quiz);
+    if(userData){
     try {
       await submitQuizByUser({ answers, score }, path, userData.uid);
 
@@ -88,10 +90,14 @@ export const Quiz = () => {
 
       toast.success("Quiz has been submitted!");
 
-      navigate("/");
+      navigate("/results-page", { state: { quiz: quiz.name, totalScore: quiz.totalScore, userScore: score } });
     } catch (e) {
       toast.error(e);
     }
+  }
+  else{
+    navigate("/results-page", { state: { quiz: quiz.name, totalScore: quiz.totalScore, userScore: score } }); 
+  }
   };
 
   const finish = () => {
