@@ -5,6 +5,8 @@ import SingleNotification from './SingleNotification.jsx';
 import { AppContext } from '../../../appState/app.context';
 import { db } from '../../../firebase/config';
 import FeedbackNotification from './FeedbackNotifications.jsx';
+import './NotificationPage.css'
+
 
 const NotificationPage = () => {
     const [pendingNotifications, setPendingNotifications] = useState([]);
@@ -46,31 +48,31 @@ const NotificationPage = () => {
     }, [userData]);
 
     return (
-        <div>
-            <h4>Pending Notifications</h4>
+        <div className="notification-container">
+            <h4 className="notification-heading">Pending Notifications</h4>
             {pendingNotifications.length > 0 ? (
                 pendingNotifications.map((notification) => (
-                    <SingleNotification
-                        key={notification.quizID}
-                        notification={notification}
-                        userId={userData.uid}
-                        quizID={notification.quizID}
-                    />
+                    <div className="notification-card" key={notification.quizID}>
+                        <SingleNotification
+                            notification={notification}
+                            userId={userData.uid}
+                            quizID={notification.quizID}
+                        />
+                    </div>
                 ))
             ) : (
-                <p>No pending notifications</p>
+                <p className="empty-message">No pending notifications</p>
             )}
 
-            <h4>Feedback Notifications</h4>
+            <h4 className="notification-heading">Feedback Notifications</h4>
             {feedbackNotifications.length > 0 ? (
                 feedbackNotifications.map((notification) => (
-                    <FeedbackNotification
-                        key={notification.quizID}
-                        notification={notification}
-                    />
+                    <div className="notification-card" key={notification.quizID}>
+                        <FeedbackNotification notification={notification} />
+                    </div>
                 ))
             ) : (
-                <p>No feedback available</p>
+                <p className="empty-message">No feedback available</p>
             )}
         </div>
     );
