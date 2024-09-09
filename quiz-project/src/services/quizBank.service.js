@@ -3,7 +3,7 @@ import { getDatabase, push, get, query, orderByChild, equalTo, update, ref } fro
 const db = getDatabase();
 
 export const addQuestionToOrgBank = async (
-  info, 
+  info,
   orgId,
   category,
   difficulty
@@ -64,7 +64,7 @@ export const getQuestionsByOrgIds = async (orgIds) => {
           allQuestions = [...allQuestions, ...Object.values(questions)];
         }
       } else {
-       
+
       }
     });
 
@@ -89,7 +89,7 @@ export const getAllQuestionFromSearch = async (search, orgId) => {
             index++;
         }
     });
-    
+
     return filteredQuestions;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -124,23 +124,14 @@ export const getQuestionsByCategoryAndDifficulty = async (category,difficulty) =
       query(ref(db, path), orderByChild('category'), equalTo(category))
     ];
 
-    console.log(queries);
-
     const snapshots = await Promise.all(queries.map(q => get(q)));
 
-    console.log(snapshots);
-
     snapshots.forEach(snapshot => {
-
-      console.log('snapshot');
-      console.log(snapshot.val());
 
       if (snapshot && snapshot.val) {
 
         if (snapshot.exists()) {
           const questions = snapshot.val();
-
-          console.log(questions);
 
           allQuestions = [...allQuestions, ...Object.values(questions).filter(q => q.category === category && q.difficultyLevel === difficulty)];
         }
@@ -150,6 +141,7 @@ export const getQuestionsByCategoryAndDifficulty = async (category,difficulty) =
       }
     });
 
+    console.log('allQuestions', allQuestions);
     return allQuestions;
   } catch (error) {
     console.error("Error fetching questions:", error);

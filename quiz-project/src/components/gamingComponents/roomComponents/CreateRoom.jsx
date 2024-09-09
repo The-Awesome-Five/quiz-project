@@ -35,14 +35,10 @@ export const CreateRoom = () => {
             if (roomId) {
                 toast.success('Room created:', roomId);
                 navigate(`/room/${roomId}`);
-            } else {
-                toast.error('Failed to create room');
-
             }
 
-
         } catch (e) {
-            toast.error('Failed to create room:', e);
+            toast.error(e.message);
         }
 
 

@@ -1,0 +1,186 @@
+  /*
+    "avatar": "none",
+                "description": "A fun quiz about various topics",
+                "isPublic": true,
+                "name": "History",
+                "numberOfQuestions": 1,
+                "questions": [
+                    {
+                        "answers": [
+                            "681",
+                            "632",
+                            "699",
+                            "861"
+                        ],
+                        "correctAnswerIndex": 0,
+                        "question": "Кога България е създадена?"
+                    }
+                ],
+                "quizId": "quiz_1724272488690",
+                "ruleSet": {
+                    "showCorrectAnswers": false
+                },
+                "tags": {
+                    "history": "history"
+                }
+     */
+    /*{
+    {
+    "history": {
+        "easy": {
+            "quiz_1724272488690": {
+                "avatar": "none",
+                "description": "A fun quiz about various topics",
+                "isPublic": true,
+                "name": "History",
+                "numberOfQuestions": 1,
+                "questions": [
+                    {
+                        "answers": [
+                            "681",
+                            "632",
+                            "699",
+                            "861"
+                        ],
+                        "correctAnswerIndex": 0,
+                        "question": "Кога България е създадена?"
+                    }
+                ],
+                "quizId": "quiz_1724272488690",
+                "ruleSet": {
+                    "showCorrectAnswers": false
+                },
+                "tags": {
+                    "history": "history"
+                }
+            }
+        }
+    },
+    "science": {
+        "easy": {
+            "quiz_1724296355686": {
+                "avatar": "none",
+                "description": "A fun quiz about various topics",
+                "isPublic": true,
+                "name": "army",
+                "numberOfQuestions": 1,
+                "questions": [
+                    {
+                        "answers": [
+                            "Грешен ",
+                            "Грешен",
+                            "Верен",
+                            "Грешен"
+                        ],
+                        "correctAnswerIndex": 2,
+                        "question": "Битката при шипка"
+                    }
+                ],
+                "quizId": "quiz_1724296355686",
+                "ruleSet": {
+                    "showCorrectAnswers": false,
+                    "timeLimitPerQuiz": "60"
+                },
+                "tags": {
+                    "army": "army"
+                }
+            },
+            "quiz_1724296460375": {
+                "avatar": "none",
+                "description": "quiz for army ",
+                "isPublic": true,
+                "name": "army 2",
+                "numberOfQuestions": 2,
+                "questions": [
+                    {
+                        "answers": [
+                            "Грешен ",
+                            "Грешен",
+                            "Верен",
+                            "Грешен"
+                        ],
+                        "correctAnswerIndex": 2,
+                        "question": "Битката при шипка"
+                    },
+                    {
+                        "answers": [
+                            "test",
+                            "test",
+                            "test",
+                            "test"
+                        ],
+                        "correctAnswerIndex": 3,
+                        "question": "test"
+                    }
+                ],
+                "quizId": "quiz_1724296460375",
+                "ruleSet": {
+                    "showCorrectAnswers": false,
+                    "timeLimitPerQuiz": "60"
+                },
+                "tags": {
+                    "army": "army"
+                }
+            },
+            "quiz_1724315940507": {
+                "Creator": {
+                    "name": "donetian",
+                    "userId": "1BH3LM0PgsMPVG98VXWHUZvlWzv2"
+                },
+                "avatar": "https://www.sciencephoto.com/_generated/custom/312/b0c03138.jpg",
+                "description": "Donetian Test",
+                "isPublic": true,
+                "name": "Donetian Quiz",
+                "numberOfQuestions": 3,
+                "questions": [
+                    {
+                        "answers": [
+                            "Nothing",
+                            "Less",
+                            "Everything... just kidding",
+                            "-1"
+                        ],
+                        "correctAnswerIndex": 3,
+                        "question": "What I know?"
+                    },
+                    {
+                        "answers": [
+                            "A lot of this",
+                            "Everything",
+                            "Infinity",
+                            "99999999999"
+                        ],
+                        "correctAnswerIndex": 1,
+                        "question": "What I do not know?"
+                    },
+                    {
+                        "answers": [
+                            "Not exactly",
+                            "Not at all",
+                            "Ask me anything else",
+                            "Sure, why not"
+                        ],
+                        "correctAnswerIndex": 3,
+                        "question": "Is there hope?"
+                    }
+                ],
+                "quizId": "quiz_1724315940507",
+                "ruleSet": {
+                    "showCorrectAnswers": false
+                },
+                "tags": {
+                    "science": "science"
+                }
+            }
+        }
+    }
+}
+}*/
+
+ <AdminQuizItem key={quiz.uid}
+                                           quiz={quiz}
+                                           editQuizId={editQuizId}
+                                           handleInputChange={handleInputChange}
+                                           handleSave={handleSave}
+                                           handleEditClick={handleEditClick} />
+                ))}

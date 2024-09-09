@@ -122,165 +122,181 @@ const SingleOrganization = ({ orgId }) => {
   }
 
   return (
-      <div className="container my-4">
-          <div>Participants</div>
-          {orgInfo.students && Object.keys(orgInfo.students).includes(userData.uid) ? null :
-              <div className="input-group mb-2">
-                  <select
-                      className="custom-select"
-                      id="inputGroupSelect01"
-                      name="role"
-                      value={participantInfo.role}
-                      onChange={handleInputChange}
-                  >
-                      <option value="" disabled>Choose...</option>
-                      <option value="1">Student</option>
-                      <option value="2">Educator</option>
-                      <option value="3">Owner</option>
-                  </select>
-                  <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Please enter a username"
-                      name="username"
-                      value={participantInfo.username}
-                      onChange={handleInputChange}
-                  />
-                  <div className="input-group-append">
-                      <button
-                          className="btn btn-outline-secondary"
-                          type="button"
-                          onClick={handleAddParticipant}
-                      >
-                          Add Participant
-                      </button>
-                  </div>
-              </div>
-          }
-
-          <div className="p-4 rounded-3 shadow bg-light scrollable-container">
-              {orgInfo.owner && Object.entries(orgInfo.owner).map(([id, name], index) => (
-                  <div key={index} className="d-flex justify-content-between align-items-center py-2 border-bottom">
-                      <Link to={`/profile/${id}`} className="mb-0">{name}</Link>
-                      <h5 className="mb-0 text-muted">Owner</h5>
-                      {userData.uid === id && <></>}
-                  </div>
-              ))}
-              {orgInfo.educators && Object.entries(orgInfo.educators).map(([id, name], index) => (
-                  <div key={index} className="d-flex justify-content-between align-items-center py-2 border-bottom">
-                      <Link to={`/profile/${id}`} className="mb-0">{name}</Link>
-                      <h5 className="mb-0 text-muted">Educator</h5>
-                      {userData.uid === id ? <Button variant="danger" onClick={() => leaveOrganization(orgInfo.id, userData.uid, 'educators')}>Leave</Button> : null}
-                      {userInfoForOrg === 'owner' && <Button variant="danger" onClick={() => removeFromOrg(orgInfo.id, id, 'educators')}>Remove</Button>}
-                  </div>
-              ))}
-              {orgInfo.students && Object.entries(orgInfo.students).map(([id, name], index) => (
-                  <div key={index} className="d-flex justify-content-between align-items-center py-2">
-                      <Link to={`/profile/${id}`} className="mb-0">{name}</Link>
-                      <h5 className="mb-0 text-muted">Student</h5>
-                      {userData.uid === id ? <Button variant="danger" onClick={() => leaveOrganization(orgInfo.id, userData.uid, 'students')}>Leave</Button> : null}
-                      {userInfoForOrg === 'owner' && <Button variant="danger" onClick={() => removeFromOrg(orgInfo.id, id, 'students')}>Remove</Button>}
-                  </div>
-              ))}
+    <div className="single-org-container custom-container my-4">
+      <h2 className="org-title"> ORGANIZATION PARTICIPANTS </h2>
+  
+      {!orgInfo.students || !Object.keys(orgInfo.students).includes(userData.uid) ? (
+        <div className="input-group mb-4 add-participant-form">
+          <select
+            className="custom-select participant-role-select"
+            id="inputGroupSelect01"
+            name="role"
+            value={participantInfo.role}
+            onChange={handleInputChange}
+          >
+            <option value="" disabled>Choose Role...</option>
+            <option value="1">Student</option>
+            <option value="2">Educator</option>
+            <option value="3">Owner</option>
+          </select>
+          <input
+            type="text"
+            className="form-control participant-input"
+            placeholder="Enter username"
+            name="username"
+            value={participantInfo.username}
+            onChange={handleInputChange}
+          />
+          <div className="input-group-append">
+            <button
+              className="btn-success add-participant-btn"
+              type="button"
+              onClick={handleAddParticipant}
+            >
+              Add
+            </button>
           </div>
-          <div className="quiz-container d-flex flex-wrap justify-content-start scrollable-container" style={{ gap: "20px" }}>
-              <div>
-                  <div className="button-group">
-                      <button onClick={() => setShowInvites(false)}>Show Available Quizzes</button>
-                      <button onClick={() => setShowInvites(true)}>Show Invited Quizzes</button>
-                  </div>
-                  <div className="row">
-    {orgQuizzes ? (
-        <>
-            {showInvites ? (
-                <div>
-                    <h3>Invited Quizzes</h3>
-                    {orgQuizzes
-                        .filter((quizObj) => quizObj[Object.keys(quizObj)[1]].isInvites)
-                        .map((quizObj, index) => {
-                            const quizKey = Object.keys(quizObj)[1];
-                            const quiz = quizObj[quizKey];
-                            if ((quizObj[1].inviteList && Object.keys(quizObj[1].inviteList.accepted).includes(userData.uid)) ||
-                                userInfoForOrg === 'educator' || userInfoForOrg === 'owner') {
-                                return (
-                                    <div key={index} className="col-md-4 mb-3">
-                                        <div className="quiz-box d-flex flex-column align-items-center justify-content-center"
-                                            style={{ width: "250px", height: "250px", border: "2px solid black", cursor: "pointer" }}>
-                                            <img
-                                                src={quiz.avatar && quiz.avatar.includes("http") ? quiz.avatar : "https://img.freepik.com/premium-vector/quiz-logo-with-speech-bubble-icon_149152-811.jpg"}
-                                                alt={`${quiz.name} logo`}
-                                                style={{ width: "80px", height: "80px", objectFit: "cover" }}
-                                            />
-                                            <p className="mt-2 text-center">{quiz.name}</p>
-                                            <div>
-                                                {(quizObj[1].inviteList && Object.keys(quizObj[1].inviteList.accepted).includes(userData.uid)) || userInfoForOrg === 'educator' || userInfoForOrg === 'owner' ?
-                                                    <button onClick={() => navigate(`/quizzes/${quizObj[0]}`, { state: { path: `/quizzes/${quizObj[0]}` } })}>
-                                                        Start Quiz
-                                                    </button> : null}
-                                                {(userData.organizations[orgId].role === "educator" || userData.organizations[orgId].role === "owner") && (
-                                                    <>
-                                                        <button onClick={() => handleEditClick(quiz)}>Edit</button>
-                                                        <button onClick={() => handleReviewClick(quiz, orgInfo)}>Review Submissions</button>
-                                                    </>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                            }
-                            return null;
-                        })}
-                </div>
-            ) : (
-                <div>
-                    <h3>Available Quizzes</h3>
-                    {orgQuizzes
-                        .filter((quizObj) => !quizObj[Object.keys(quizObj)[1]].isInvites)
-                        .map((quizObj, index) => {
-                            const quizKey = Object.keys(quizObj)[1];
-                            const quiz = quizObj[quizKey];
+        </div>
+      ) : null}
+  
+  <div className="participants-list p-4 rounded-3 shadow-sm" style={{ backgroundColor: "#fff6e3" }}>
+  {orgInfo.owner && Object.entries(orgInfo.owner).map(([id, name]) => (
+    <div key={id} className="participant-item owner-item">
+      <Link to={`/profile/${id}`} className="participant-name">{name}</Link>
+      <span className="participant-role owner-role">Owner</span>
+    </div>
+  ))}
+  {orgInfo.educators && Object.entries(orgInfo.educators).map(([id, name]) => (
+    <div key={id} className="participant-item educator-item">
+      <Link to={`/profile/${id}`} className="participant-name">{name}</Link>
+      <span className="participant-role educator-role">Educator</span>
+      {userInfoForOrg === 'owner' && (
+        <button className="btn btn-outline-danger remove-btn" onClick={() => removeFromOrg(orgInfo.id, id, 'educators')}>
+          <i className="fas fa-trash-alt"></i> Remove
+        </button>
+      )}
+    </div>
+  ))}
+  {orgInfo.students && Object.entries(orgInfo.students).map(([id, name]) => (
+    <div key={id} className="participant-item student-item">
+      <Link to={`/profile/${id}`} className="participant-name">{name}</Link>
+      <span className="participant-role student-role">Student</span>
+      {userInfoForOrg === 'owner' && (
+        <button className="btn btn-outline-danger remove-btn" onClick={() => removeFromOrg(orgInfo.id, id, 'students')}>
+          <i className="fas fa-trash-alt"></i> Remove
+        </button>
+      )}
+    </div>
+  ))}
 
-                            return (
-                                <div key={index} className="quiz-box d-flex flex-column align-items-center justify-content-center"
-                                    style={{ width: "250px", height: "250px", border: "2px solid black", cursor: "pointer" }}>
-                                    <img
-                                        src={quiz.avatar && quiz.avatar.includes("http") ? quiz.avatar : "https://img.freepik.com/premium-vector/quiz-logo-with-speech-bubble-icon_149152-811.jpg"}
-                                        alt={`${quiz.name} logo`}
-                                        style={{ width: "80px", height: "80px", objectFit: "cover" }}
-                                    />
-                                    <p className="mt-2 text-center">{quiz.name}</p>
-                                    <div>
-                                        <button onClick={() => navigate(`/quizzes/${quizObj[0]}`, { state: { path: `/quizzes/${quizObj[0]}` } })}>
-                                            Start Quiz
-                                        </button>
-                                        {(userData.organizations[orgId].role === "educator" || userData.organizations[orgId].role === "owner") && (
-                                            <>
-                                                <button onClick={() => handleEditClick(quiz)}>Edit</button>
-                                                <button onClick={() => handleReviewClick(quiz, orgInfo)}>Review Submissions</button>
-                                            </>
-                                        )}
-                                    </div>
-                                </div>
-                            );
-                        })}
-                </div>
-            )}
-        </>
-    ) : (
-        <div>No Quizzes Have been made yet</div>
-    )}
+  {/* Бутон за напускане на организацията, ако потребителят не е собственик */}
+  {userInfoForOrg !== 'owner' && (
+    <div className="leave-org-container">
+      <button
+        className="btn btn-warning leave-org-btn"
+        onClick={() => leaveOrganization(orgInfo.id, userData.uid, userInfoForOrg)}
+      >
+        <i className="fas fa-sign-out-alt"></i> Leave Organization
+      </button>
+    </div>
+  )}
 </div>
+  
+      <div className="quizzes-container">
+  <div className="quiz-toggle-buttons">
+    <button className={`btn-success ${!showInvites ? 'active' : ''}`} onClick={() => setShowInvites(false)}>
+      Available Quizzes
+    </button>
+    <button className={`btn-success ${showInvites ? 'active' : ''}`} onClick={() => setShowInvites(true)}>
+      Invited Quizzes
+    </button>
+  </div>
+
+  {/* Ensure that the grid displays both available and invited quizzes properly */}
+<div className="quizzes-grid">
+  {orgQuizzes ? (
+    showInvites ? (
+      <>
+        <h3>Invited Quizzes</h3>
+        {orgQuizzes
+          .filter((quizObj) => quizObj[Object.keys(quizObj)[1]].isInvites)
+          .map((quizObj, index) => {
+            const quiz = quizObj[Object.keys(quizObj)[1]];
+            const quizId = quizObj[0];
+            const isInvited = quiz.inviteList && Object.keys(quiz.inviteList).includes(userData.uid);
+            const canEdit = userInfoForOrg === 'educator' || userInfoForOrg === 'owner';
+
+            if (isInvited || canEdit) {
+              return (
+                <div key={quizId} className="quiz-box">
+                  <img src={quiz.avatar} alt={quiz.name} className="quiz-img" />
+                  <p className="quiz-name">{quiz.name}</p>
+                  <div className="quiz-actions">
+                    <button className="btn-success btn-quiz" onClick={() => navigate(`/quizzes/${quizId}`)}>
+                      Start Quiz
+                    </button>
+                    {canEdit && (
+                      <>
+                        <button className="btn-success btn-quiz" onClick={() => handleEditClick(quiz)}>
+                          Edit
+                        </button>
+                        <button className="btn-success btn-quiz mt-1" onClick={() => handleReviewClick(quiz, orgInfo)}>
+                          Review Submissions
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              );
+            }
+            return null;
+          })}
+      </>
+    ) : (
+      <>
+        {orgQuizzes
+          .filter((quizObj) => !quizObj[Object.keys(quizObj)[1]].isInvites)
+          .map((quizObj, index) => {
+            const quiz = quizObj[Object.keys(quizObj)[1]];
+            const quizId = quizObj[0];
+            const canEdit = userInfoForOrg === 'educator' || userInfoForOrg === 'owner';
+
+            return (
+              <div key={quizId} className="quiz-box">
+                <img src={quiz.avatar} alt={quiz.name} className="quiz-img" />
+                <p className="quiz-name">{quiz.name}</p>
+                <div className="quiz-actions">
+                  <button className="btn-success btn-quiz me-1" onClick={() => navigate(`/quizzes/${quizId}`)}>
+                    Start Quiz
+                  </button>
+                  {canEdit && (
+                    <>
+                      <button className="btn-success btn-quiz" onClick={() => handleEditClick(quiz)}>
+                        Edit
+                      </button>
+                      <button className="btn-success btn-quiz mt-1" onClick={() => handleReviewClick(quiz, orgInfo)}>
+                        Review Submissions
+                      </button>
+                    </>
+                  )}
+                </div>
               </div>
-              <span
-                  className="quiz-box d-flex align-items-center justify-content-center"
-                  style={{ width: "150px", height: "150px", border: "2px solid black", fontSize: "50px", cursor: "pointer" }}
-                  onClick={() => navigate('/create-quiz')}
-              >
-                  +
-              </span>
-          </div>
-      </div>
+            );
+          })}
+      </>
+    )
+  ) : (
+    <div className="no-quizzes">No Quizzes Available</div>
+  )}
+</div>
+
+
+  {/* The create quiz box */}
+  <div className="create-quiz-box" onClick={() => navigate('/create-quiz')}>+</div>
+</div>
+    </div>
   );
+  
 };
 
 export default SingleOrganization;
