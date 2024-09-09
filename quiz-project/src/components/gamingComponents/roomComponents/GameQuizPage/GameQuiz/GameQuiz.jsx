@@ -103,10 +103,10 @@ export const GameQuiz = ({
                 winner = currPlayer;
                 loser = otherPlayer;
 
-            } else if (currPlayer === otherPlayer.score) {
+            } else if (currPlayer.score === otherPlayer.score) {
 
-                winner = {id: 'draw', username: 'draw'};
-                loser = {id: 'draw', username: 'draw'};
+                winner = {id: 'draw', username: currPlayer.username, score: currPlayer.score};
+                loser = {id: 'draw', username: otherPlayer.username, score: otherPlayer.score};
 
             } else {
                 winner = otherPlayer;

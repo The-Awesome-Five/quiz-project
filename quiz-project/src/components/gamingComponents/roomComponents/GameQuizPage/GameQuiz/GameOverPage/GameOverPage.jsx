@@ -8,9 +8,10 @@ export const GameOverPage = () => {
 
     return (
         <div>
-            <h1>Winner: {room.game.winner.username}</h1>
+            {room.game.winner.id === "draw" ? <h1>Draw!</h1> : null}
+            <h1>{room.game.winner.id === 'draw' ? 'Draw' : 'Winner'}: {room.game.winner.username}</h1>
             <h2>Score: {room.game.winner.score}</h2>
-            <h1>Loser: {room.game.loser.username}</h1>
+            <h1>{room.game.winner.id === 'draw' ? 'Draw' : 'Loser'}: {room.game.loser.username}</h1>
             <h2>Score: {room.game.loser.score}</h2>
         </div>
     )
