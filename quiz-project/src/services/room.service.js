@@ -8,6 +8,12 @@ export const createRoom = async (room) => {
         let id;
         const questions = await getQuestionsByCategoryAndDifficulty(room.category.toLowerCase(), room.difficulty.toLowerCase());
 
+        if (questions.length === 0) {
+            throw new Error('No questions found for this difficulty and category');
+        }
+
+        console.log('Questions:', questions);
+
         room.questions = questions;
 
         try {
@@ -23,7 +29,7 @@ export const createRoom = async (room) => {
         return id;
 
     } catch (e) {
-        console.error('Failed to create room:', e);
+        throw new Error(e.message);
     }
 }
 
@@ -35,7 +41,7 @@ export const getRoom = async (roomId) => {
         const room = await get(ref(db, `room/${roomId}`));
         return room.val();
     } catch (e) {
-        console.error('Failed to get room:', e);
+        console.error('Failed to get room:', e.message);
     }
 
 }
