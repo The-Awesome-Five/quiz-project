@@ -170,7 +170,7 @@ const EditQuizForm = () => {
                                 )
                             }
                         />
-                        <label>Correct Answer</label>
+                        {question.answers && <><label>Correct Answer</label>
                         <input
                             type="number"
                             className="form-control"
@@ -182,9 +182,9 @@ const EditQuizForm = () => {
                                     e.target.value
                                 )
                             }
-                        />
+                        /></>}
                         <label>Answers</label>
-                        {question.answers.map((answer, answerIndex) => (
+                        {question.answers && question.answers.map((answer, answerIndex) => (
                             <input
                                 key={answerIndex}
                                 type="text"

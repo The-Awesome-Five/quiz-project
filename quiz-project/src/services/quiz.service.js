@@ -184,3 +184,24 @@ export const getQuizDetails = async (quizIDs) => {
     throw error;  
   }
 };
+
+export const updateUserSubmission = async (userId, quizId, feedback, scores, quizName, totalScore, quiz) => {
+  try {
+    const quizScorePath = `quizzes/${quizId}/submission/${userId}/score`;
+    const userCompletedPath = `users/${userId}/completed`;
+    const feedbackPath = `users/${userId}/notifications/feedback/${quizId}`;
+    await set(ref(db, quizScorePath), totalScore);
+    await set(ref(db, `${userCompletedPath}/${quizId}`), totalScore);
+    await set(ref(db, feedbackPath), {
+      quizName: quizName,
+      score: totalScore,
+      quizID: quizId,
+      totalScore: quiz.totalScore,
+      feedback: feedback[userId]
+    });
+
+    console.log('Quiz results and feedback updated successfully');
+  } catch (error) {
+    console.error('Error updating quiz results and feedback:', error);
+  }
+};

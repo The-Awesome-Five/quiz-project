@@ -200,8 +200,7 @@ const SingleOrganization = ({ orgId }) => {
                         .map((quizObj, index) => {
                             const quizKey = Object.keys(quizObj)[1];
                             const quiz = quizObj[quizKey];
-                            // Show quiz if user is invited or if user is an educator or owner
-                            if ((quizObj[1].inviteList && Object.keys(quizObj[1].inviteList).includes(userData.uid)) ||
+                            if ((quizObj[1].inviteList && Object.keys(quizObj[1].inviteList.accepted).includes(userData.uid)) ||
                                 userInfoForOrg === 'educator' || userInfoForOrg === 'owner') {
                                 return (
                                     <div key={index} className="col-md-4 mb-3">
@@ -214,7 +213,7 @@ const SingleOrganization = ({ orgId }) => {
                                             />
                                             <p className="mt-2 text-center">{quiz.name}</p>
                                             <div>
-                                                {(quizObj[1].inviteList && Object.keys(quizObj[1].inviteList).includes(userData.uid)) || userInfoForOrg === 'educator' || userInfoForOrg === 'owner' ?
+                                                {(quizObj[1].inviteList && Object.keys(quizObj[1].inviteList.accepted).includes(userData.uid)) || userInfoForOrg === 'educator' || userInfoForOrg === 'owner' ?
                                                     <button onClick={() => navigate(`/quizzes/${quizObj[0]}`, { state: { path: `/quizzes/${quizObj[0]}` } })}>
                                                         Start Quiz
                                                     </button> : null}
