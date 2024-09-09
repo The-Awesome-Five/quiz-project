@@ -148,7 +148,7 @@ export const GameQuiz = ({
             <div>
                 {player === user.uid &&
                     <>
-                        <TimeCounter initialSeconds={room.timePerRound * 10} reset={reset} finish={finish}/>
+                        <TimeCounter initialSeconds={room.timePerRound * 60} reset={reset} finish={finish}/>
                         <GameQuestion
                             question={room.questions[currentQuestion]}
                             handleAnswer={handleAnswer}
