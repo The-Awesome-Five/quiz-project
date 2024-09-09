@@ -151,3 +151,10 @@ export const updateUserFirstName = async (uid, firstName) => {
       throw new Error("Failed to update selected items");
     }
   };
+
+
+  export const fetchFeedback = async (userId, quizID) => {
+    const feedbackRef = ref(db, `users/${userId}/notifications/feedback/${quizID}`);
+    const snapshot = await get(feedbackRef);
+    return snapshot.val() || {};
+};
