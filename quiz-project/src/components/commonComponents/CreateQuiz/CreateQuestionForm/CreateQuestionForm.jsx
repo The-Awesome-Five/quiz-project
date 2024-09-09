@@ -20,6 +20,8 @@ export const CreateQuestionForm = ({
         return <div>Loading...</div>;
     }
 
+    console.log("Questions", questions);
+
     return (
         <div className="container mt-4">
             <div className="row">
