@@ -58,13 +58,6 @@ export const GameQuiz = ({
         }
     }, [userData]);
 
-    const forwards = () => {
-        setCurrentQuestion(currentQuestion + 1);
-    }
-    const backwards = () => {
-        setCurrentQuestion(currentQuestion - 1);
-    }
-
     const handleAnswer = (selectedIndex) => {
 
         room.questions[currentQuestion].selectedAnswer = selectedIndex;
@@ -102,13 +95,15 @@ export const GameQuiz = ({
             const currPlayer = players.find(player => player.id === user.uid);
             const otherPlayer = players.find(player => player.id !== user.uid);
 
+            currPlayer.score += score;
 
-            if (currPlayer.score + score > otherPlayer.score) {
 
-                winner = players.find(player => player.id === player.id);
-                loser = players.find(player => player.id !== player.id);
+            if (currPlayer.score > otherPlayer.score) {
 
-            } else if (currPlayer + score === otherPlayer.score) {
+                winner = currPlayer;
+                loser = otherPlayer;
+
+            } else if (currPlayer === otherPlayer.score) {
 
                 winner = {id: 'draw', username: 'draw'};
                 loser = {id: 'draw', username: 'draw'};
@@ -153,7 +148,7 @@ export const GameQuiz = ({
             <div>
                 {player === user.uid &&
                     <>
-                        <TimeCounter initialSeconds={room.timePerRound * 2} reset={reset} finish={finish}/>
+                        <TimeCounter initialSeconds={room.timePerRound * 10} reset={reset} finish={finish}/>
                         <GameQuestion
                             question={room.questions[currentQuestion]}
                             handleAnswer={handleAnswer}
@@ -174,8 +169,6 @@ export const GameQuiz = ({
                     </>
 
                 }
-
-                <button onClick={backwards} disabled={currentQuestion === 0}>Back</button>
             </div>
             </Row>
             <Row className="m-1 text-lg-end"><PlayerStatusBar player={players[1]} /></Row>
