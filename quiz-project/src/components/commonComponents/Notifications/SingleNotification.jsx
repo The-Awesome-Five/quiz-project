@@ -15,11 +15,11 @@ const SingleNotification = ({ notification, userId, quizID }) => {
     };
 
     return (
-        <div className="notification">
-            <p>{notification.quizName}</p>
-            <p>Status: {notification.status}</p>
-            <Button variant="success" onClick={handleAccept}>Accept</Button>
-            <Button variant="danger" onClick={handleReject}>Reject</Button>
+        <div className="notification-card">
+            <p className='notification-title'>{notification.quizName}</p>
+            <p className='notification-status'>Status: <span>{notification.status}</span></p>
+            <Button className='btn-success me-2'  onClick={handleAccept}>Accept</Button>
+            <Button className='btn-success' onClick={handleReject}>Reject</Button>
         </div>
     );
 };
