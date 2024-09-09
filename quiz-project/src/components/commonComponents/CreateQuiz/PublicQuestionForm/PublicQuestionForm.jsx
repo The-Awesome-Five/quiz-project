@@ -10,7 +10,7 @@ export const PublicQuestionForm = ({
                                    }) => {
 
     return (
-        <div className="col-md-4 question-bank-panel ms-4">
+        <div className="col-md-12 question-bank-panel ms-4">
             <div className="search-category">
                 <input
                     type="text"

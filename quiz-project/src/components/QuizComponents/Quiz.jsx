@@ -75,7 +75,7 @@ export const Quiz = () => {
 
     const score = quiz.questions.reduce((accScore, currQuestion, currIndex) => {
       if (currQuestion.correctAnswerIndex === answers[currIndex]) {
-        accScore += 1;
+        accScore += +currQuestion.points;
       }
 
       return accScore;
