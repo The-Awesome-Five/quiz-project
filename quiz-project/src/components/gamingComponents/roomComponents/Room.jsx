@@ -117,9 +117,7 @@ export const Room = ({}) => {
                 </Col>
             }
             {
-                players && ready && <Container className="d-flex flex-row justify-content-center">
-                    <Row className="m-1"><GameQuiz room={room} setRoom={setRoom} roomId={roomId} /></Row>
-                </Container>
+                players && ready && <Row className="m-1"><GameQuiz room={room} setRoom={setRoom} roomId={roomId} /></Row>
             }
 
         </Container>

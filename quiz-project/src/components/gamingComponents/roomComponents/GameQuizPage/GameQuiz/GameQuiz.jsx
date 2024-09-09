@@ -14,8 +14,8 @@ import {useNavigate} from "react-router-dom";
 
 export const GameQuiz = ({
                              roomId,
-    room,
-    setRoom
+                             room,
+                             setRoom
                          }) => {
 
     const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -24,7 +24,7 @@ export const GameQuiz = ({
     const [reset, setReset] = useState(false);
     const [player, setPlayer] = useState(null);
     const {user, userData} = useContext(AppContext);
-    const [players, setPlayers ] = useState([]);
+    const [players, setPlayers] = useState([]);
     const [isGameFinished, setIsGameFinished] = useState(false);
     const navigate = useNavigate();
 
@@ -138,40 +138,43 @@ export const GameQuiz = ({
 
 
     return (
-        <Container className="d-flex flex-row justify-content-center">
-            <Row className="m-1 text-lg-start"><PlayerStatusBar player={players[0]} /></Row>
+        <Container className="d-flex flex-row justify-content-around">
 
-            <Row><Container className="d-flex align-items-center flex-column">
-                <h1>{room.name}</h1>
-                <h2>Round: {round}</h2>
-            </Container>
-            <div>
-                {player === user.uid &&
-                    <>
-                        <TimeCounter initialSeconds={room.timePerRound * 60} reset={reset} finish={finish}/>
-                        <GameQuestion
-                            question={room.questions[currentQuestion]}
-                            handleAnswer={handleAnswer}
-                        />
-                        <button onClick={submit}>Submit Quiz</button>
-                    </>
-                }
+            <Row xs={5} className="p-12 mw-100 text-lg-start"><PlayerStatusBar player={players[0]}/></Row>
+            <Row xs={1} className="">
 
-                {
-                    players.length === 2 && player !== user.uid &&
-                    <>
-                    <h2>Waiting for {players.filter(currPlayer => currPlayer.id === player)[0].username} to finish</h2>
-                    <GameQuestion
-                        question={room.questions[currentQuestion]}
-                        handleAnswer={handleAnswer}
-                        notYourTurn={true}
-                    />
-                    </>
+                <Container className="d-flex align-items-center flex-column">
+                    <h1>{room.name}</h1>
+                    <h2>Round: {round}</h2>
+                </Container>
+                <div>
+                    {player === user.uid &&
+                        <>
+                            <TimeCounter initialSeconds={room.timePerRound * 60} reset={reset} finish={finish}/>
+                            <GameQuestion
+                                question={room.questions[currentQuestion]}
+                                handleAnswer={handleAnswer}
+                            />
+                            <button onClick={submit}>Submit Quiz</button>
+                        </>
+                    }
 
-                }
-            </div>
+                    {
+                        players.length === 2 && player !== user.uid &&
+                        <>
+                            <h2>Waiting for {players.filter(currPlayer => currPlayer.id === player)[0].username} to
+                                finish</h2>
+                            <GameQuestion
+                                question={room.questions[currentQuestion]}
+                                handleAnswer={handleAnswer}
+                                notYourTurn={true}
+                            />
+                        </>
+
+                    }
+                </div>
             </Row>
-            <Row className="m-1 text-lg-end"><PlayerStatusBar player={players[1]} /></Row>
+            <Row xs={5} className="p-12 text-lg-end"><PlayerStatusBar player={players[1]}/></Row>
         </Container>
     )
 }

@@ -2,6 +2,8 @@ import {Button, Card, Col, Container} from "react-bootstrap";
 import React, {useContext, useEffect, useState} from "react";
 import {getUserDataByUID} from "../../../../../services/user.service.js";
 import {AppContext} from "../../../../../appState/app.context.js";
+import './PlayerStatusBar.css'
+
 
 export const PlayerStatusBar = ({player}) => {
 
@@ -123,70 +125,6 @@ const uid = player?.id;
                                         </div>
                                     </div>
                                 </Card.Body>
-
-                                {/* Добавяне на бутоните за категориите Head, Torso, Legs */}
-                                <div className="d-flex justify-content-around p-3">
-                                    <Button
-                                        variant="success"
-                                        style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            padding: "5px 10px",
-                                            fontSize: "12px",
-                                            background: "#977746",
-                                            border: "#977746",
-                                        }}
-                                        onClick={() => handleShowModal("head")}
-                                    >
-                                        <img
-                                            src="../../../../public/img/head-icon.png"
-                                            alt="head icon"
-                                            style={{ width: "22px", height: "22px" }}
-                                        />
-                                    </Button>
-
-                                    <Button
-                                        variant="success"
-                                        style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            padding: "5px 10px",
-                                            fontSize: "12px",
-                                            background: "#977746",
-                                            border: "#977746",
-                                        }}
-                                        onClick={() => handleShowModal("torso")}
-                                    >
-                                        <img
-                                            src="../../../../public/img/torso-icon.png"
-                                            alt="torso icon"
-                                            style={{ width: "22px", height: "22px" }}
-                                        />
-                                    </Button>
-
-                                    <Button
-                                        className="btn-success"
-                                        variant="success"
-                                        style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            padding: "5px 10px",
-                                            fontSize: "12px",
-                                            background: "#977746",
-                                            border: "#977746",
-                                        }}
-                                        onClick={() => handleShowModal("legs")}
-                                    >
-                                        <img
-                                            src="../../../../public/img/leg-icon.png"
-                                            alt="legs icon"
-                                            style={{ width: "22px", height: "22px" }}
-                                        />
-                                    </Button>
-                                </div>
                             </Card>
                         </div>
                     </Col>

@@ -1,0 +1,244 @@
+.profile-page {
+    padding: 20px;
+}
+
+.profile-avatar {
+    width: 220px;
+    height: 220px;
+    border-radius: 10px;
+    display: block;
+    box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.5);
+    border: 10px solid #E5B56A;
+    margin: 20px 0 0 20px;
+}
+
+.info-col {
+    margin-top: 20px !important;
+}
+
+.align-items-center {
+    align-items: flex-start !important;
+}
+
+.hero-section {
+    text-align: left;
+}
+
+h2, p {
+    text-align: left;
+}
+
+.custom-avatar-col {
+    max-width: 150px;
+}
+
+.profile-page {
+    background-color: #f5e8d2;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+}
+
+.hero-section {
+    text-align: center;
+    margin-bottom: 20px;
+    background-color: transparent;
+}
+
+.hero-section > .card {
+    background-color: #E5B56A;
+}
+
+.hero-container {
+
+}
+
+.hero-customization-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.hero-customization {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 480px;
+    position: relative;
+}
+
+.hero-image {
+    width: 100% !important;
+    height: 100% !important;
+    height: 100% !important;
+    position: absolute;
+}
+
+.overlay-head {
+    top: 0px;
+    height: 80px !important;
+    width: 300px !important;
+}
+
+.overlay-torso {
+    top: 81px;
+    height: 171px !important;
+    width: 300px !important;
+    z-index: 2;
+}
+
+.overlay-legs {
+    top: 220px;
+    height: 263px !important;
+    width: 300px !important;
+    z-index: 1;
+}
+
+.base-body {
+    width: 300px !important;
+}
+
+.hero-container {
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+}
+
+
+.modal-content {
+    background-color: rgba(20, 20, 30, 0.95);
+    border: 3px solid #ba8b2a;
+    border-radius: 8px;
+    color: #f5e8c8;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+    font-family: 'Cinzel', serif;
+}
+
+
+.modal-header {
+    background-color: rgba(40, 40, 60, 0.8);
+    border-bottom: 2px solid #ba8b2a;
+    color: #f5e8c8;
+}
+
+.modal-title {
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+
+.modal-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 10px;
+    padding: 20px;
+}
+
+
+.modal-body div {
+    border: 2px solid #444;
+    border-radius: 4px;
+    background-color: rgba(30, 30, 45, 0.9);
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+
+.item-image {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+
+.modal-body div:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+}
+
+
+.item-image {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 10px auto;
+}
+
+
+.remove-item {
+    cursor: pointer;
+    font-weight: bold;
+    padding: 10px;
+    color: #ff4444;
+    transition: color 0.2s ease-in-out;
+}
+
+.remove-item:hover {
+    color: #ffaaaa;
+}
+
+
+.modal-footer {
+    background-color: rgba(40, 40, 60, 0.8);
+    border-top: 2px solid #ba8b2a;
+}
+
+.btn-edit {
+    margin-left: 29px;
+}
+
+.list {
+    list-style: none !important;
+
+    padding-left: 0;
+}
+
+.list li {
+    margin-bottom: 5px;
+    display: flex;
+    transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out !important;
+    justify-content: center;
+}
+
+.list li:hover {
+    transform: scale(1.05)
+}
+
+.org-img {
+    border: 5px solid#E5B56A;
+    display: block;
+    margin: 0 auto;
+    border-radius: 10px;
+}
+
+.org-container > h5 {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #E5B56A;
+    display: inline-block;
+}
+
+
+.name {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #E5B56A;
+    display: inline-block;
+}
