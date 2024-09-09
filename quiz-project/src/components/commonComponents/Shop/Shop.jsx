@@ -2,9 +2,11 @@ import React, { useState, useEffect, useContext } from "react";
 import { getAllShopItems, addItemToUser } from "../../../services/shop.service";
 import { getUserByID, editUserByUserId } from "../../../services/user.service";
 import { AppContext } from "../../../appState/app.context";
+import { Modal, Button } from "react-bootstrap";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./Shop.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Modal, Button } from "react-bootstrap";
 
 const Shop = () => {
   const [shopItems, setShopItems] = useState([]);
@@ -12,7 +14,7 @@ const Shop = () => {
   const [loading, setLoading] = useState(true);
   const [selectedItem, setSelectedItem] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [userCurrency, setUserCurrency] = useState(0); 
+  const [userCurrency, setUserCurrency] = useState(0);
 
   const { userData } = useContext(AppContext);
 
@@ -56,7 +58,7 @@ const Shop = () => {
 
   const handleBuy = async (item) => {
     if (userCurrency < item.price) {
-      alert("You don't have enough money.");
+      toast.error("You don't have enough money.");
       return;
     }
 
@@ -64,14 +66,14 @@ const Shop = () => {
       const user = await getUserByID(userData.uid);
 
       if (!user || user.currency < item.price) {
-        alert("You don't have enough money.");
+        toast.error("You don't have enough money.");
         return;
       }
 
       const category = item.type;
 
       if (userHasItem(category, item.id)) {
-        alert("You already own this item.");
+        toast.warning("You already own this item.");
         return;
       }
 
@@ -88,12 +90,12 @@ const Shop = () => {
         },
       }));
 
-      setUserCurrency(newCurrency); 
+      setUserCurrency(newCurrency);
 
-      alert(`You successfully bought ${item.name}!`);
+      toast.success(`You successfully bought ${item.name}!`);
     } catch (error) {
       console.error("Error buying item:", error);
-      alert("An error occurred during the purchase.");
+      toast.error("An error occurred during the purchase.");
     }
   };
 
@@ -103,6 +105,8 @@ const Shop = () => {
 
   return (
     <div className="container-shop mt-5 p-4 rounded">
+      <ToastContainer /> 
+      
       {/* Modal for Item Details */}
       {selectedItem && (
         <Modal
@@ -142,7 +146,7 @@ const Shop = () => {
               <Button
                 variant="primary"
                 onClick={() => handleBuy(selectedItem)}
-                disabled={userCurrency < selectedItem.price} 
+                disabled={userCurrency < selectedItem.price}
               >
                 Buy for {selectedItem.price}{" "}
                 <img
@@ -193,7 +197,7 @@ const Shop = () => {
                   <button
                     className="btn btn-primary btn-sm"
                     onClick={() => handleBuy(item)}
-                    disabled={userCurrency < item.price} 
+                    disabled={userCurrency < item.price}
                   >
                     Buy {item.name}
                   </button>
@@ -241,7 +245,7 @@ const Shop = () => {
                   <button
                     className="btn btn-primary btn-sm"
                     onClick={() => handleBuy(item)}
-                    disabled={userCurrency < item.price} 
+                    disabled={userCurrency < item.price}
                   >
                     Buy {item.name}
                   </button>
@@ -289,7 +293,7 @@ const Shop = () => {
                   <button
                     className="btn btn-primary btn-sm"
                     onClick={() => handleBuy(item)}
-                    disabled={userCurrency < item.price} 
+                    disabled={userCurrency < item.price}
                   >
                     Buy {item.name}
                   </button>

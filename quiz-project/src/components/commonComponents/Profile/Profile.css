@@ -196,20 +196,26 @@ h2, p {
 
 .list {
   list-style: none !important;
-  padding-left: 0; /* Optional: Може да използвате и това за премахване на отстояние */
+  
+  padding-left: 0; 
 }
 
 .list li {
-  margin-bottom: 5px; /* Може да добавите и малко отстояние между елементите */
+  margin-bottom: 5px; 
   display: flex;
-  justify-content: center; /* Центриране по хоризонталата */
+  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out !important;
+  justify-content: center; 
+}
+
+.list li:hover {
+  transform: scale(1.05)
 }
 
 .org-img {
   border: 5px solid#E5B56A;
   display: block;
-  margin: 0 auto; /* Центриране на изображението в рамките на родителя */
-  border-radius: 10px; /* Добавяне на заоблени ъгли за по-красив вид */
+  margin: 0 auto; 
+  border-radius: 10px; 
 }
 
 .org-container > h5 {
@@ -223,6 +229,7 @@ h2, p {
   border-bottom: 2px solid #E5B56A; 
   display: inline-block; 
 }
+
 
 .name {
   text-align: center;
