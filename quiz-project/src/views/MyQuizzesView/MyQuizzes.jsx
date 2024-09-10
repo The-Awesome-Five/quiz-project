@@ -16,7 +16,7 @@ const MyQuizzes = () => {
         if (userData) {
             const fetchQuizzes = async () => {
                 try {
-                    const acceptedQuizIDs = Object.keys(userData.notifications.accepted);
+                    const acceptedQuizIDs = Object.keys(userData?.notifications?.accepted);
                     const completedQuizIDs = Object.keys(userData.completed);
 
                     const incompleteAcceptedQuizzes = acceptedQuizIDs.filter(quizID => !completedQuizIDs.includes(quizID));

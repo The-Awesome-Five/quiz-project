@@ -28,6 +28,7 @@ const Home = () => {
   };
   const [quizData, setQuizData] = useState([]);
   const [historyQuizData, setHistoryQuizData] = useState([]);
+  const [scienceQuizData, setScienceQuizData] = useState([]);
   const [mathQuizData, setMathQuizData] = useState([]);
 
   const handleJoin = () => {
@@ -42,8 +43,10 @@ const Home = () => {
     const fetchQuizzes = async () => {
       const quizzes = await getAllQuizzes();
       const historyQuizzes = await getQuizzesByCat("history");
+      const scienceQuizzes = await getQuizzesByCat("science");
       const mathQuizzes = await getQuizzesByCat("math");
       setMathQuizData(mathQuizzes);
+      setScienceQuizData(scienceQuizzes);
       setHistoryQuizData(historyQuizzes);
       setQuizData(quizzes);
     };
@@ -102,7 +105,7 @@ const Home = () => {
             <p>for your students</p>
             <button
               className="btn create-btn btn-info mt-4"
-              onClick={handleCreateQuizOnClick}
+              onClick={handleCreateOrganizationOnClick}
             >
               Organization creator
             </button>
@@ -153,65 +156,85 @@ const Home = () => {
       <div className="game-modes-container row mt-4 text-start">
         <h4>All quizzes</h4>
         <Swiper
-          navigation={true}
-          modules={[Navigation]}
-          slidesPerView={6}
-          spaceBetween={10}
-          pagination={{ clickable: true }}
-          className="mySwiper"
+            navigation={true}
+            modules={[Navigation]}
+            slidesPerView={6}
+            spaceBetween={10}
+            pagination={{clickable: true}}
+            className="mySwiper"
         >
-          {Object.entries(historyQuizData).map(([id, info]) => {
+          {Object.entries(quizData).map(([id, info]) => {
             return (
-              <SwiperSlide key={id}>
-                <div className="quiz-item-container">
-                  <QuizItem
-                    key={id}
-                    quiz={info}
-                    id={info.id}
-                    className="quiz-item"
-                  />
-                </div>
-              </SwiperSlide>
+                <SwiperSlide key={id}>
+                  <div className="quiz-item-container">
+                    <QuizItem
+                        key={id}
+                        quiz={info}
+                        id={info.id}
+                        className="quiz-item"
+                    />
+                  </div>
+                </SwiperSlide>
+            );
+          })}
+        </Swiper>
+
+        <h4>Science quizzes</h4>
+        <Swiper
+            navigation={true}
+            modules={[Navigation]}
+            slidesPerView={6}
+            spaceBetween={10}
+            pagination={{
+              clickable: true,
+            }}
+            className="mySwiper"
+        >
+          {Object.entries(scienceQuizData).map(([id, info]) => {
+            return (
+                <SwiperSlide key={id}>
+                  <QuizItem key={id} quiz={info} id={info.id}/>
+                </SwiperSlide>
             );
           })}
         </Swiper>
 
         <h4>History quizzes</h4>
         <Swiper
-          navigation={true}
-          modules={[Navigation]}
-          slidesPerView={6}
-          spaceBetween={10}
-          pagination={{
-            clickable: true,
-          }}
-          className="mySwiper"
+            navigation={true}
+            modules={[Navigation]}
+            slidesPerView={6}
+            spaceBetween={10}
+            pagination={{
+              clickable: true,
+            }}
+            className="mySwiper"
         >
           {Object.entries(historyQuizData).map(([id, info]) => {
             return (
-              <SwiperSlide key={id}>
-                <QuizItem key={id} quiz={info} id={info.id} />
-              </SwiperSlide>
+                <SwiperSlide key={id}>
+                  <QuizItem key={id} quiz={info} id={info.id}/>
+                </SwiperSlide>
             );
           })}
         </Swiper>
 
         <h4>Math quizzes</h4>
         <Swiper
-          navigation={true}
-          modules={[Navigation]}
-          slidesPerView={6}
-          spaceBetween={10}
-          pagination={{
-            clickable: true,
-          }}
-          className="mySwiper"
+            navigation={true}
+            modules={[Navigation]}
+            slidesPerView={6}
+            spaceBetween={10}
+            pagination={{
+              clickable: true,
+            }}
+            className="mySwiper"
         >
           {Object.entries(mathQuizData).map(([id, info]) => {
             return (
-              <SwiperSlide key={id}>
-                <QuizItem key={id} quiz={info} id={info.id} />
-              </SwiperSlide>
+                <SwiperSlide key={id}>
+                  <QuizItem key={id} quiz={info} id={info.id}/>
+                </SwiperSlide>
             );
           })}
         </Swiper>

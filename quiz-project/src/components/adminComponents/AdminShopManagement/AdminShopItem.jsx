@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { addItemsToShop } from '../../../services/shop.service'; // Import the service
 import { uploadImage } from '../../../services/storage.service'; // Import the image upload service
+import { toast } from 'react-toastify';
 import { Form, Button, Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -36,10 +37,10 @@ const AdminShopItem = () => {
       itemData.image = imageUrl;
       // Now, add the item to Firebase Realtime Database with the image URL
       await addItemsToShop(itemData); // Call your service
-      alert('Item successfully added');
+      toast.error('Item successfully added');
     } catch (error) {
       console.error('Error adding item:', error);
-      alert('Failed to add item');
+      toast.error('Failed to add item');
     }
   };
 

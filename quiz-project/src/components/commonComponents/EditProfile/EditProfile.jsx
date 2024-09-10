@@ -8,6 +8,7 @@ import {
     updatePhone
 } from '../../../services/user.service';
 import React, { useEffect, useState, useContext } from 'react';
+import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import { AppContext } from '../../../appState/app.context';
 
@@ -96,13 +97,13 @@ const EditProfile = () => {
             setAppState({ userData: updatedUserData });
   
             window.location.reload();
-            alert('Profile updated successfully!');
+            toast.error('Profile updated successfully!');
           } else {
-            alert('User not found or not logged in.');
+            toast.error('User not found or not logged in.');
           }
         } catch (error) {
           console.error('Failed to update profile:', error);
-          alert('Failed to update profile.');
+          toast.error('Failed to update profile.');
         }
     };
   
