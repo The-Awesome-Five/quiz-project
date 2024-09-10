@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react"
 import {AppContext} from "../../../appState/app.context";
 import { toast } from "react-toastify";
 import { createOrganizationInDB } from "../../../services/organization.service";
+import {useNavigate} from "react-router-dom";
 
 const CreateOrganization = () =>{
     const [org, setOrg]= useState({
@@ -10,6 +11,7 @@ const CreateOrganization = () =>{
         imgUrl:'',
     })
     const {userData}= useContext(AppContext);
+    const navigate= useNavigate();
 
     
     const updateOrg = (prop) => (e) => {
@@ -37,7 +39,11 @@ const CreateOrganization = () =>{
         try {
             await createOrganizationInDB (org);
            
-            return toast.success("Organization  Created ")
+            toast.success("Organization  Created ");
+
+            navigate('/organizations');
+
+
         }
         catch(error)
         {

@@ -3,7 +3,7 @@ import { Accordion, Col, Row, Form, Button } from "react-bootstrap";
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { updateUserSubmission } from "../../../services/quiz.service";
-
+import { toast } from "react-toastify";
 
 const ReviewSubmissions = () => {
   const { state } = useLocation();
@@ -42,7 +42,7 @@ const ReviewSubmissions = () => {
 
     try {
       await updateUserSubmission(userId, quizId, feedback, scores, quizName, totalScore, quiz);
-      alert("Feedback submitted!");
+      toast.error("Feedback submitted!");
     } catch (error) {
       console.error("Error submitting feedback:", error);
     }

@@ -93,7 +93,7 @@ const EditQuizForm = () => {
             
         } catch (error) {
             console.error("Error updating quiz:", error);
-            alert("Failed to update quiz.");
+            toast.error("Failed to update quiz.");
         }
     };
 
