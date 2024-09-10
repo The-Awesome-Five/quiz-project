@@ -239,17 +239,21 @@ export const nextRoundCoOpPvE = async (roomId, nextQuestionIndex,takingDamage) =
         if(takingDamage===true){
             bossHP=room.game.bossHP;
             playerHP= room.game.playerHP-1 ;
-            ('Flag:Player taking Damage')
-            console.log(bossHP);
-        console.log(playerHP)
+           if(playerHP<=0){
+            await endGameCoOp(roomId, 'lose')
+            return;
+           }
+           
         }
         else{
            
             bossHP=room.game.bossHP-1;
             playerHP= room.game.playerHP;
-            ('Flag:Boss taking Damage')
-            console.log(bossHP);
-            console.log(playerHP)
+            if(bossHP <=0){
+                await endGameCoOp(roomId, 'win')
+                return;
+               }
+              
         }
       
         await update(ref(db), {

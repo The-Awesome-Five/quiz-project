@@ -66,23 +66,7 @@ export const CoOpAdventure = ({ roomId }) => {
                     }));
 
                     
-                    if (data.game.bossHP <=1) {
-                        const endGameWin = async()=>{
-                        await endGameCoOp(roomId, 'win')
-                        }
-                       
-                        endGameWin();
-                        return;
-                    }
-            
-                    if (data.game.playerHP <=1) {
-                        const endGame = async () =>{
-                            await endGameCoOp(roomId, 'lose')
-                        }
-                        endGame()
-                        
-                        return;
-                    }
+                   
 
                     if(data.game?.finished=== 'lose')
                     {
