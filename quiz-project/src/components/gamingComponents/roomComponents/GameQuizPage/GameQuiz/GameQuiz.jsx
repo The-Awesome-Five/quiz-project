@@ -1,6 +1,6 @@
 import {Card, Container, Row} from "react-bootstrap";
 import React, {useContext, useEffect, useState} from "react";
-import {endGame, getRoom, nextRound, startGame} from "../../../../../services/room.service.js";
+import {endGame, getRoom, nextRound, rewardWinner, startGame} from "../../../../../services/room.service.js";
 import TimeCounter from "../../../../../utills/TimeCounter.jsx";
 import {Question} from "../../../../QuizComponents/Question.jsx";
 import {GameQuestion} from "./GameQuestion/GameQuestion.jsx";
@@ -43,9 +43,6 @@ export const GameQuiz = ({
                     setPlayer(data.game.nextPlayer);
                     setPlayers(Object.values(data.players));
                     setCurrentQuestion(data.game.currentQuestion);
-
-                    console.log('data.game')
-                    console.log(data.game);
 
                     if (data.game.finished) {
                         navigate('/game-over', {state: {room: data}});
@@ -113,6 +110,12 @@ export const GameQuiz = ({
                 loser = currPlayer;
             }
 
+
+
+            if (winner.id !== "draw") {
+                await rewardWinner(roomId, winner.id);
+            }
+
             await endGame(roomId, winner, loser);
         } else {
             await nextRound(roomId, score, player, currentQuestion + 1);
@@ -140,7 +143,9 @@ export const GameQuiz = ({
     return (
         <Container className="d-flex flex-row justify-content-around">
 
-            <Row xs={5} className="p-12 mw-100 text-lg-start"><PlayerStatusBar player={players[0]}/></Row>
+            <Row style={{width: "350px", margin: "-10px"}} className="text-lg-start">
+                <PlayerStatusBar player={players[0]}/>
+            </Row>
             <Row xs={1} className="">
 
                 <Container className="d-flex align-items-center flex-column">
@@ -154,8 +159,9 @@ export const GameQuiz = ({
                             <GameQuestion
                                 question={room.questions[currentQuestion]}
                                 handleAnswer={handleAnswer}
+                                isNotYourTurn={false}
                             />
-                            <button onClick={submit}>Submit Quiz</button>
+                            <button onClick={submit}>Submit</button>
                         </>
                     }
 
@@ -167,14 +173,16 @@ export const GameQuiz = ({
                             <GameQuestion
                                 question={room.questions[currentQuestion]}
                                 handleAnswer={handleAnswer}
-                                notYourTurn={true}
+                                isNotYourTurn={true}
                             />
                         </>
 
                     }
                 </div>
             </Row>
-            <Row xs={5} className="p-12 text-lg-end"><PlayerStatusBar player={players[1]}/></Row>
+            <Row style={{width: "350px", paddingLeft: "100px", margin: "-10px"}} className="p-12 text-lg-end">
+                <PlayerStatusBar player={players[1]}/>
+            </Row>
         </Container>
     )
 }

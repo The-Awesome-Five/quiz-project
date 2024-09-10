@@ -4,7 +4,11 @@ import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import { createRoomPvE } from '../../../services/room.service';
 
-export const CreateRoomPvE = () => {
+export const CreateRoomPvE = (
+    {
+        setIsCreateRoomPvE
+    }
+) => {
 
     const [room, setRoom] = useState({
         name: '',
@@ -73,10 +77,21 @@ export const CreateRoomPvE = () => {
             </Form.Group>
 
 
+                <div className="d-flex flex-row align-items-center">
+                    <button
+                        className="btn create-btn btn-info m-auto"
+                        type="submit"
+                    >
+                        Submit
+                    </button>
+                    <button
+                        className="btn create-btn btn-info mt-auto"
+                        onClick={() => setIsCreateRoomPvE(false)}
+                    >
+                        Cancel
+                    </button>
 
-            <Button variant="primary" type="submit">
-                Submit
-            </Button>
-        </Form>
-    );
+                </div>
+            </Form>
+        );
 };

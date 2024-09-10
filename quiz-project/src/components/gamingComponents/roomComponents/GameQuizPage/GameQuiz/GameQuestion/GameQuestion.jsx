@@ -1,8 +1,9 @@
 /* eslint-disable react/jsx-key */
 import React, {useState} from 'react';
 import {Card, Col, Row} from "react-bootstrap";
+import "./GameQuestion.css";
 
-export const GameQuestion = ({question, handleAnswer,notYourTurn}) => {
+export const GameQuestion = ({question, handleAnswer,isNotYourTurn}) => {
 
     const [resetState, setResetState] = useState(true);
 
@@ -12,7 +13,7 @@ export const GameQuestion = ({question, handleAnswer,notYourTurn}) => {
     }
 
     return (
-        <Card className="align-items-center mw-100 mh-100 bg-success p-4">
+        <Card style={{background: "#e1ac5f"}} className="align-items-center mw-100 mh-100 p-4">
             <hr/>
             <Row className="text-center m-2">
                 <Card className="border border-dark bg-warning-subtle p-3 mb-4">
@@ -22,15 +23,9 @@ export const GameQuestion = ({question, handleAnswer,notYourTurn}) => {
             <Row>
                 {Object.keys(question.answers).map((answer, index) => {
                     return (
-                        <Col xs={6} className="mb-2">
-                            <Card className="border border-dark bg-warning-subtle p-3 mb-4"> {
-                            <button disabled={notYourTurn} style={question.selectedAnswer === index
-                                ? {background: "red"}
-                                : {background: "green"}} onClick={() => changeAnswer(index)}>{String.fromCharCode(65 + index)}) {answer}</button>
-                        }
-                            </Card>
-                        </Col>
-                    )
+                        <button disabled={isNotYourTurn} className={`game-button border border-dark p-3 mb-4 ${isNotYourTurn ? 'disabled-button' : ""} ${question.selectedAnswer === index ? "selected" : ""}`}
+                                onClick={() => changeAnswer(index)}>{String.fromCharCode(65 + index)}) {answer}</button>
+                )
                 })}
             </Row>
         </Card>
