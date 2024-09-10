@@ -26,3 +26,9 @@
     background-color: orangered;
     transform: scale(1.1);
 }
+
+.disabled-button {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+

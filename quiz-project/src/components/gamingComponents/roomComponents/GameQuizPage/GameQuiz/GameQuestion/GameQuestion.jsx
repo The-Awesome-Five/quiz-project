@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {Card, Col, Row} from "react-bootstrap";
 import "./GameQuestion.css";
 
-export const GameQuestion = ({question, handleAnswer,notYourTurn}) => {
+export const GameQuestion = ({question, handleAnswer,isNotYourTurn}) => {
 
     const [resetState, setResetState] = useState(true);
 
@@ -23,7 +23,7 @@ export const GameQuestion = ({question, handleAnswer,notYourTurn}) => {
             <Row>
                 {Object.keys(question.answers).map((answer, index) => {
                     return (
-                        <button disabled={notYourTurn} className={`game-button border border-dark p-3 mb-4 ${question.selectedAnswer === index ? "selected" : ""}`}
+                        <button disabled={isNotYourTurn} className={`game-button border border-dark p-3 mb-4 ${isNotYourTurn ? 'disabled-button' : ""} ${question.selectedAnswer === index ? "selected" : ""}`}
                                 onClick={() => changeAnswer(index)}>{String.fromCharCode(65 + index)}) {answer}</button>
                 )
                 })}

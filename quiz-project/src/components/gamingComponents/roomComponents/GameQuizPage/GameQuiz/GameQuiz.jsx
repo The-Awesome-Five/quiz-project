@@ -159,6 +159,7 @@ export const GameQuiz = ({
                             <GameQuestion
                                 question={room.questions[currentQuestion]}
                                 handleAnswer={handleAnswer}
+                                isNotYourTurn={false}
                             />
                             <button onClick={submit}>Submit</button>
                         </>
@@ -172,7 +173,7 @@ export const GameQuiz = ({
                             <GameQuestion
                                 question={room.questions[currentQuestion]}
                                 handleAnswer={handleAnswer}
-                                notYourTurn={true}
+                                isNotYourTurn={true}
                             />
                         </>
 
