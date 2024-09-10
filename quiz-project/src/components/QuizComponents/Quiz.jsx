@@ -142,7 +142,7 @@ export const Quiz = () => {
         <div className="btn-container">
           {quiz.ruleSet && quiz.ruleSet.timeLimitPerQuiz && (
             <TimeCounter
-              initialSeconds={quiz.ruleSet.timeLimitPerQuiz}
+              initialSeconds={quiz.ruleSet.timeLimitPerQuiz * 60}
               finish={finish}
             />
           )}

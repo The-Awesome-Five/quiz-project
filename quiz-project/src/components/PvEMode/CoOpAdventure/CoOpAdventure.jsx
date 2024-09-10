@@ -66,26 +66,35 @@ export const CoOpAdventure = ({ roomId }) => {
                     }));
 
                     
-                    if (bossHP <=1) {
+                    if (data.game.bossHP <=1) {
                         const endGameWin = async()=>{
-                        await endGameCoOp(roomId)
-                        await updateUserCurrency(20, userData.uid);
-                        navigate('/victory-screen');
+                        await endGameCoOp(roomId, 'win')
                         }
                        
                         endGameWin();
                         return;
                     }
             
-                    if (totalPlayerHP <=1) {
+                    if (data.game.playerHP <=1) {
                         const endGame = async () =>{
-                            await endGameCoOp(roomId)
+                            await endGameCoOp(roomId, 'lose')
                         }
                         endGame()
-                        navigate('/defeat-screen');
+                        
                         return;
                     }
 
+                    if(data.game?.finished=== 'lose')
+                    {
+                        navigate('/defeat-screen')
+                    }
+                    if(data.game?.finished=== 'win')
+                        {
+                            const navigation = async ()=>{
+                            await updateUserCurrency(20, userData.uid);
+                            navigate("/victory-screen");}
+                            navigation();
+                        }
                     setReset(!reset);
                 }
             });

@@ -143,13 +143,13 @@ export const SoloAdventure = ({ roomId, setRoom }) => {
         }
       }
 
-      if (boss.hp < 1) {
+      if (bossHP <= 1) {
         await updateUserCurrency(20, userData.uid);
         navigate("/victory-screen");
         return;
       }
 
-      if (playerHP < 1) {
+      if (playerHP <=1) {
         navigate("/defeat-screen");
         return;
       }

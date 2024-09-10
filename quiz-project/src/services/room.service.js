@@ -267,10 +267,10 @@ export const nextRoundCoOpPvE = async (roomId, nextQuestionIndex,takingDamage) =
 };
 
 
-export const endGameCoOp = async (roomId) => {
+export const endGameCoOp = async (roomId, result) => {
     try {
         await update(ref(db), {
-            [`room/${roomId}/game/finished`]: true,
+            [`room/${roomId}/game/finished`]: result,
 
         });
     } catch (e) {

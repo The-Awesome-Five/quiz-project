@@ -102,7 +102,7 @@ const Home = () => {
             <p>for your students</p>
             <button
               className="btn create-btn btn-info mt-4"
-              onClick={handleCreateQuizOnClick}
+              onClick={handleCreateOrganizationOnClick}
             >
               Organization creator
             </button>
@@ -160,7 +160,7 @@ const Home = () => {
           pagination={{ clickable: true }}
           className="mySwiper"
         >
-          {Object.entries(historyQuizData).map(([id, info]) => {
+          {Object.entries(quizData).map(([id, info]) => {
             return (
               <SwiperSlide key={id}>
                 <div className="quiz-item-container">
