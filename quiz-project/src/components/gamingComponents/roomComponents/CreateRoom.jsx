@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import React, {useState} from 'react';
+import {Form, Button} from 'react-bootstrap';
 import {createRoom} from "../../../services/room.service.js";
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 
-export const CreateRoom = () => {
+export const CreateRoom = ({
+                               setIsCreateRoom
+                           }) => {
 
     const [room, setRoom] = useState({
         name: '',
@@ -17,8 +19,8 @@ export const CreateRoom = () => {
     const navigate = useNavigate();
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setRoom({ ...room, [name]: value ? value : '' });
+        const {name, value} = e.target;
+        setRoom({...room, [name]: value ? value : ''});
     };
 
     const createRoomHandler = async (e) => {
@@ -26,7 +28,7 @@ export const CreateRoom = () => {
         e.preventDefault()
 
         if (Object.values(room).some(x => x === null || x === '')) {
-         return toast.error('Please fill out all fields');
+            return toast.error('Please fill out all fields');
         }
 
         try {
@@ -44,28 +46,27 @@ export const CreateRoom = () => {
 
     }
 
-        return (
+    return (
 
-            <Form onSubmit={createRoomHandler}>
+        <Form onSubmit={createRoomHandler}>
 
-                <Form.Group controlId="formName">
-                    <Form.Label>Name</Form.Label>
-                    <Form.Control
-                        type="text"
-                        name="name"
-                        value={room.name}
-                        onChange={handleInputChange}
-                        placeholder="Enter room name"
-                    />
-                </Form.Group>
+            <Form.Group controlId="formName">
+                <Form.Control
+                    type="text"
+                    name="name"
+                    value={room.name}
+                    onChange={handleInputChange}
+                    placeholder="Enter room name"
+                />
+            </Form.Group>
 
             <Form.Group controlId="formCategory">
-                <Form.Label>Category</Form.Label>
                 <Form.Control
                     as="select"
                     name="category"
                     value={room.category}
                     onChange={handleInputChange}
+                    placeholder="Select category"
                 >
                     <option>Science</option>
                     <option>Math</option>
@@ -75,12 +76,12 @@ export const CreateRoom = () => {
 
 
             <Form.Group controlId="formDifficulty">
-                <Form.Label>Difficulty</Form.Label>
                 <Form.Control
                     as="select"
                     name="difficulty"
                     value={room.difficulty}
                     onChange={handleInputChange}
+                    placeholder="Select difficulty"
                 >
                     <option>Easy</option>
                     <option>Medium</option>
@@ -90,19 +91,30 @@ export const CreateRoom = () => {
 
 
             <Form.Group controlId="formTimePerRound">
-                <Form.Label>Time per Round (minutes)</Form.Label>
                 <Form.Control
                     type="number"
                     name="timePerRound"
                     value={room.timePerRound}
                     onChange={handleInputChange}
-                    placeholder="Enter time per round"
+                    placeholder="Enter minutes per round"
                 />
             </Form.Group>
 
-            <Button variant="primary" type="submit">
-                Submit
-            </Button>
+            <div className="d-flex flex-row align-items-center">
+                <button
+                    className="btn create-btn btn-info m-auto"
+                    type="submit"
+                >
+                    Submit
+                </button>
+                <button
+                    className="btn create-btn btn-info mt-auto"
+                    onClick={() => setIsCreateRoom(false)}
+                >
+                    Cancel
+                </button>
+
+            </div>
         </Form>
     );
 };
