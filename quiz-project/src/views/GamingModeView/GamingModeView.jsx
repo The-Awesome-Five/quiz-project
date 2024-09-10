@@ -31,7 +31,7 @@ export const GamingModeView = () => {
             toast.error('Please enter a room ID');
         }
 
-        navigate(`/room/${roomId}`);
+        navigate(`/room-pve/${roomId}`);
 
     }
 

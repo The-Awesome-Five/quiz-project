@@ -190,3 +190,74 @@ export const getGameQuestions = (category = null) => {
 export const submitAnswer = (roomId, playerId) => {
     return;
 }
+
+
+
+export const startCoOpGape = async (roomId, players, timePerRound, playerHP) => {
+
+    try {
+
+        await update(ref(db), {
+            [`room/${roomId}/game`]: {
+                started: true,
+                currentQuestion: 0,
+                currentRound: 1,
+                nextPlayer: players[0].id,
+                playerHP:playerHP,
+                bossHP:10
+        }});
+    } catch (e) {
+        console.error('Failed to start game:', e);
+    }
+}
+
+
+
+export const nextRoundCoOpPvE = async (roomId, nextQuestionIndex,takingDamage) => {
+    try {
+        const room = await getRoom(roomId);
+        const currentRound = room.game.currentRound;
+        const playerId=room.game.nextPlayer;
+        let bossHP;
+        let playerHP;
+        if(takingDamage===true){
+            bossHP=room.game.bossHP;
+            playerHP= room.game.playerHP-1 ;
+            ('Flag:Player taking Damage')
+            console.log(bossHP);
+        console.log(playerHP)
+        }
+        else{
+           
+            bossHP=room.game.bossHP-1;
+            playerHP= room.game.playerHP;
+            ('Flag:Boss taking Damage')
+            console.log(bossHP);
+            console.log(playerHP)
+        }
+      
+        await update(ref(db), {
+            [`room/${roomId}/game/currentRound`]: currentRound + 1,
+            [`room/${roomId}/game/currentQuestion`]: nextQuestionIndex, 
+            [`room/${roomId}/game/nextPlayer`]: Object.values(room.players).find(player => player.id !== playerId).id,
+            [`room/${roomId}/game/playerHP`]: playerHP, 
+            [`room/${roomId}/game/bossHP`]: bossHP, 
+            
+        });
+    } catch (error) {
+        console.error("Error updating to next round:", error);
+        throw error; 
+    }
+};
+
+
+export const endGameCoOp = async (roomId) => {
+    try {
+        await update(ref(db), {
+            [`room/${roomId}/game/finished`]: true,
+
+        });
+    } catch (e) {
+        console.error('Failed to end game:', e);
+    }
+}

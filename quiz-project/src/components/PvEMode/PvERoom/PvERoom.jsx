@@ -5,11 +5,12 @@ import {AppContext} from "../../../appState/app.context.js";
 import {onValue, ref} from "firebase/database";
 import {db} from "../../../firebase/config.js";
 import {toast} from "react-toastify";
-import {startGame, startSoloGame} from "../../../services/room.service.js";
+import {startCoOpGape, startGame, startSoloGame} from "../../../services/room.service.js";
  
 import { GameQuiz } from "../../gamingComponents/roomComponents/GameQuizPage/GameQuiz/GameQuiz.jsx";
 import { PvERoomLoadingPage } from "../PvERoomLoadingPage/PvERoomLoadingPage.jsx";
 import { SoloAdventure } from "../SoloAdventurePvE/SoloAdenvturePvE.jsx";
+import { CoOpAdventure } from "../CoOpAdventure/CoOpAdventure.jsx";
 
 export const RoomPvE = ({}) => {
 
@@ -39,7 +40,7 @@ export const RoomPvE = ({}) => {
 
                        if (!data.game) {
                            const beginGame = async () => {
-                               await startGame(roomId, Object.values(data.players), data.timePerRound);
+                               await startCoOpGape(roomId, Object.values(data.players), data.timePerRound, 6);
                            }
 
                            beginGame();
@@ -129,8 +130,8 @@ export const RoomPvE = ({}) => {
             }
             {
                 players && ready && !soloAdventure&&
-                <Row className="m-1"><GameQuiz
-                                      room={room}
+                <Row className="m-1"><CoOpAdventure
+                                     
                                       setRoom={setRoom} 
                                       roomId={roomId} /></Row>
             }
