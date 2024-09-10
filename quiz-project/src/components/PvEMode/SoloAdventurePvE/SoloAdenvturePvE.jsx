@@ -120,13 +120,13 @@ export const SoloAdventure = ({
                 }
             }
 
-            if (boss.hp <= 0) {
+            if (boss.hp < 1) {
                 await updateUserCurrency(20, userData.uid);
                 navigate('/victory-screen');
                 return;
             }
 
-            if (playerHP <= 0) {
+            if (playerHP < 1) {
                 navigate('/defeat-screen');
                 return;
             }
@@ -140,6 +140,7 @@ export const SoloAdventure = ({
 
             await nextRoundSoloPvE(roomId, room, nextQuestion);
             setCurrentQuestionIndex(nextQuestion);
+            setAnswers({})
             setReset(!reset);
         }
     };
