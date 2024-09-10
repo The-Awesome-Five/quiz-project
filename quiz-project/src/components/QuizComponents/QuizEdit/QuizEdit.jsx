@@ -89,7 +89,7 @@ const EditQuizForm = () => {
             const { id, organizationID } = quiz;
             await updateQuiz(id, quiz);
             toast.success("Quiz updated successfully!");
-            navigate(`/organization/${organizationID}`);
+            navigate(`/organization/${organizationID.orgID}`);
             
         } catch (error) {
             console.error("Error updating quiz:", error);
