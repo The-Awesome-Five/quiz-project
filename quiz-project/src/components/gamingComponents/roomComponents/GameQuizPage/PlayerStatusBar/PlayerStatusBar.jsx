@@ -85,7 +85,7 @@ const uid = player?.id;
                         />{" "}
                         LAST NAME: {profileData?.lastName}
                     </p>
-                    <Col xs={12} md={3} className="text-center">
+                    <Col style={{width: "250px"}} className="text-center">
                         <div className="hero-section">
                             <Card className="text-center">
                                 <Card.Body className="hero-container">

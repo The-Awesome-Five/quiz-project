@@ -140,7 +140,9 @@ export const GameQuiz = ({
     return (
         <Container className="d-flex flex-row justify-content-around">
 
-            <Row xs={5} className="p-12 mw-100 text-lg-start"><PlayerStatusBar player={players[0]}/></Row>
+            <Row style={{width: "350px", margin: "-10px"}} className="text-lg-start">
+                <PlayerStatusBar player={players[0]}/>
+            </Row>
             <Row xs={1} className="">
 
                 <Container className="d-flex align-items-center flex-column">
@@ -174,7 +176,9 @@ export const GameQuiz = ({
                     }
                 </div>
             </Row>
-            <Row xs={5} className="p-12 text-lg-end"><PlayerStatusBar player={players[1]}/></Row>
+            <Row style={{width: "350px", paddingLeft: "100px", margin: "-10px", alignItems: "center"}} className="p-12 text-lg-end">
+                <PlayerStatusBar player={players[1]}/>
+            </Row>
         </Container>
     )
 }
