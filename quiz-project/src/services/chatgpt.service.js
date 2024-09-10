@@ -38,6 +38,7 @@ export const getOpenAIResponse = async (prompt) => {
                                 type: "object",
                                 properties: {
                                     question: { type: "string" },
+                                    isMultiple: { type: "boolean" },
                                     answers: {
                                         type: "array",
                                         items: {
@@ -46,7 +47,7 @@ export const getOpenAIResponse = async (prompt) => {
                                     },
                                     correctAnswerIndex: { type: "integer" }
                                 },
-                                required: ["question", "answers", "correctAnswerIndex"],
+                                required: ["question", "answers", "correctAnswerIndex", "isMultiple"],
                                 additionalProperties: false
                             }
                         }

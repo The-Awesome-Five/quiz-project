@@ -19,13 +19,20 @@ export const QuestionsAIForm = ({
         const response = await getOpenAIResponse(`Generate ${numberOfQuestions} questions related to ${category} that have ${difficulty} difficulty`);
         const data = await JSON.parse(response.choices[0].message.content);
 
+        const newQuestionData = Object.values(data)[0].map(question => ({
+            ...question,                // Spread existing question data
+            isMultiple: true  // Set isMultiple to true if not provided
+        }));
 
-        questions[0].question ?
+        console.log("newQuestionData");
+        console.log(newQuestionData);
+
+        questions[0]?.question ?
             setQuestions(prevQuestions => {
-            return [...prevQuestions, ...Object.values(data)[0]]
-        })
+                return [...prevQuestions, ...newQuestionData]; // Append the updated questions
+            })
             :
-            setQuestions(Object.values(data)[0]);
+            setQuestions(newQuestionData);  // Replace with updated questions
 
     }
 
