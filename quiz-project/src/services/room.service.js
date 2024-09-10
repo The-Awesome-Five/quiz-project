@@ -160,7 +160,7 @@ export const nextRound = async (roomId, score, playerId, currentQuestion) => {
 
 export const nextRoundSoloPvE = async (roomId, room, currentQuestion) => {
     try {
-       
+
         const currentRound = room.game.currentRound;
         await update(ref(db), {
             [`room/${roomId}/game/currentRound`]: currentRound + 1,
@@ -180,6 +180,22 @@ export const endGame = async (roomId, winner, loser) => {
         });
     } catch (e) {
         console.error('Failed to end game:', e);
+    }
+}
+
+export const rewardWinner = async (roomId, playerId, currency) => {
+
+    try {
+
+        await get(ref(db, `users/${playerId}/currency`)).then((snapshot) => {
+            currency = snapshot.val() + 100;
+        });
+        await update(ref(db), {
+            [`users/${playerId}/currency`]: currency
+        });
+
+    } catch (e) {
+        throw new Error(e.message);
     }
 }
 

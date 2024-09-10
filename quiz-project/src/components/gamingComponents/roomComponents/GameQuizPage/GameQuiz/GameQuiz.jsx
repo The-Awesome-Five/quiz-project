@@ -1,6 +1,6 @@
 import {Card, Container, Row} from "react-bootstrap";
 import React, {useContext, useEffect, useState} from "react";
-import {endGame, getRoom, nextRound, startGame} from "../../../../../services/room.service.js";
+import {endGame, getRoom, nextRound, rewardWinner, startGame} from "../../../../../services/room.service.js";
 import TimeCounter from "../../../../../utills/TimeCounter.jsx";
 import {Question} from "../../../../QuizComponents/Question.jsx";
 import {GameQuestion} from "./GameQuestion/GameQuestion.jsx";
@@ -43,9 +43,6 @@ export const GameQuiz = ({
                     setPlayer(data.game.nextPlayer);
                     setPlayers(Object.values(data.players));
                     setCurrentQuestion(data.game.currentQuestion);
-
-                    console.log('data.game')
-                    console.log(data.game);
 
                     if (data.game.finished) {
                         navigate('/game-over', {state: {room: data}});
@@ -111,6 +108,12 @@ export const GameQuiz = ({
             } else {
                 winner = otherPlayer;
                 loser = currPlayer;
+            }
+
+
+
+            if (winner.id !== "draw") {
+                await rewardWinner(roomId, winner.id);
             }
 
             await endGame(roomId, winner, loser);
