@@ -157,7 +157,7 @@ export const GameQuiz = ({
                                 question={room.questions[currentQuestion]}
                                 handleAnswer={handleAnswer}
                             />
-                            <button onClick={submit}>Submit Quiz</button>
+                            <button onClick={submit}>Submit</button>
                         </>
                     }
 
@@ -176,7 +176,7 @@ export const GameQuiz = ({
                     }
                 </div>
             </Row>
-            <Row style={{width: "350px", paddingLeft: "100px", margin: "-10px", alignItems: "center"}} className="p-12 text-lg-end">
+            <Row style={{width: "350px", paddingLeft: "100px", margin: "-10px"}} className="p-12 text-lg-end">
                 <PlayerStatusBar player={players[1]}/>
             </Row>
         </Container>

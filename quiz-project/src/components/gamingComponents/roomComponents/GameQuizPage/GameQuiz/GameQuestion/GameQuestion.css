@@ -1,0 +1,28 @@
+.game-button {
+    padding: 50px;
+    font-size: 1.2rem;
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+}
+
+/* Hover ефект за бутона */
+.game-button:hover {
+    background-color: orangered;
+    transform: scale(1.05);
+}
+
+/* Активен отговор */
+.game-button.active {
+    background-color: orangered;
+    transform: scale(1.1);
+}
+
+.selected {
+    background-color: orangered;
+    transform: scale(1.1);
+}
