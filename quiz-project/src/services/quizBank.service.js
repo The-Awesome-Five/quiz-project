@@ -148,3 +148,42 @@ export const getQuestionsByCategoryAndDifficulty = async (category,difficulty) =
     return [];
   }
 }
+
+
+export const getQuestionsByCategory = async (category,) => {
+
+  const path = 'questionBank';
+  let allQuestions = [];
+
+  console.log('category', category);
+
+
+  try {
+    const queries = [
+      query(ref(db, path), orderByChild('category'), equalTo(category))
+    ];
+
+    const snapshots = await Promise.all(queries.map(q => get(q)));
+
+    snapshots.forEach(snapshot => {
+
+      if (snapshot && snapshot.val) {
+
+        if (snapshot.exists()) {
+          const questions = snapshot.val();
+
+          allQuestions = [...allQuestions, ...Object.values(questions).filter(q => q.category === category)];
+        }
+
+      } else {
+        console.log('Could not fetch the question banks!');
+      }
+    });
+
+    console.log('allQuestions', allQuestions);
+    return allQuestions;
+  } catch (error) {
+    console.error("Error fetching questions:", error);
+    return [];
+  }
+}

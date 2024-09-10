@@ -137,6 +137,13 @@ export const updateUserFirstName = async (uid, firstName) => {
     await set(userRef, phone);
   };
 
+  export const updateUserCurrency = async (currency, uid) =>{
+    const user = await getUserByID(uid);
+    user.currency+=currency;
+    const userRef = ref(db, `users/${uid}/currency`);
+    await set(userRef, user.currency);
+
+  }
   export const updateUserSelectedItems = async (uid, selectedItems) => {
     try {
       

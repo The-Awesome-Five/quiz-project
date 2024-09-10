@@ -1,4 +1,4 @@
-import {getQuestionsByCategoryAndDifficulty} from "./quizBank.service.js";
+import {getQuestionsByCategory, getQuestionsByCategoryAndDifficulty} from "./quizBank.service.js";
 import {get, push, ref, update} from "firebase/database";
 import {db} from "../firebase/config.js";
 
@@ -32,6 +32,41 @@ export const createRoom = async (room) => {
         throw new Error(e.message);
     }
 }
+
+
+
+export const createRoomPvE = async (room) => {
+
+    try {
+        let id;
+        const questions = await getQuestionsByCategory(room.category.toLowerCase());
+
+        if (questions.length === 0) {
+            throw new Error('No questions found for this category');
+        }
+
+        console.log('Questions:', questions);
+
+        room.questions = questions;
+
+        try {
+            const result = await push(ref(db, 'room'), room);
+            id = result.key;
+            await update(ref(db), {
+                [`room/${id}/id`]: id,
+            })
+        } catch (e) {
+            console.log(e);
+        }
+
+        return id;
+
+    } catch (e) {
+        throw new Error(e.message);
+    }
+}
+
+
 
 export const getRoom = async (roomId) => {
 
@@ -82,6 +117,23 @@ export const startGame = async (roomId, players, timePerRound) => {
     }
 }
 
+
+export const startSoloGame = async (roomId, players, timePerRound) => {
+
+    try {
+
+        await update(ref(db), {
+            [`room/${roomId}/game`]: {
+                started: true,
+                currentQuestion: 0,
+                currentRound: 1,
+        }});
+    } catch (e) {
+        console.error('Failed to start game:', e);
+    }
+}
+
+
 export const getUser = async (userId, roomId) => {
     try {
         const user = await get(ref(db, `room/${roomId}/players/${userId}`));
@@ -99,6 +151,19 @@ export const nextRound = async (roomId, score, playerId, currentQuestion) => {
             [`room/${roomId}/game/currentRound`]: currentRound + 1,
             [`room/${roomId}/players/${playerId}/score`]: room.players[playerId].score + score,
             [`room/${roomId}/game/nextPlayer`]: Object.values(room.players).find(player => player.id !== playerId).id,
+            [`room/${roomId}/game/currentQuestion`]: currentQuestion
+        });
+    } catch (e) {
+        console.error('Failed to start next round:', e);
+    }
+}
+
+export const nextRoundSoloPvE = async (roomId, room, currentQuestion) => {
+    try {
+       
+        const currentRound = room.game.currentRound;
+        await update(ref(db), {
+            [`room/${roomId}/game/currentRound`]: currentRound + 1,
             [`room/${roomId}/game/currentQuestion`]: currentQuestion
         });
     } catch (e) {

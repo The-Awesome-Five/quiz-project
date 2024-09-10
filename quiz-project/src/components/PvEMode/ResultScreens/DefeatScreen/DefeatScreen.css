@@ -1,0 +1,26 @@
+.defeat-screen {
+    background: #f8f9fa;
+    color: #333; 
+    text-align: center;
+}
+
+.defeat-title {
+    font-size: 3rem;
+    color: #dc3545; 
+    margin-bottom: 1rem;
+}
+
+.defeat-message {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.retry-button {
+    background: #007bff; 
+    border: none;
+    font-size: 1.25rem;
+}
+
+.retry-button:hover {
+    background: #0056b3;
+}

@@ -49,6 +49,9 @@ import {
     GameOverPage
 } from "./components/gamingComponents/roomComponents/GameQuizPage/GameQuiz/GameOverPage/GameOverPage.jsx";
 import ResultsPage from './components/QuizComponents/ResultsPage/Results.jsx';
+import { RoomPvE } from './components/PvEMode/PvERoom/PvERoom.jsx';
+import { DefeatScreen } from './components/PvEMode/ResultScreens/DefeatScreen/DefeatScreen.jsx';
+import VictoryScreen from './components/PvEMode/ResultScreens/VictoryScreen/VisctoryScreen.jsx';
 // import {TestAI} from "./views/TestAI.jsx";
 
 function App() {
@@ -125,6 +128,10 @@ function App() {
                         <Route path='/gaming-modes' element={<GamingModeView />} />
                         <Route path={`/room/:roomId`} element={<Room />} />
                         <Route path="game-over" element={<GameOverPage />} />
+
+                        <Route path={`/room-pve/:roomId`} element={<RoomPvE />} />
+                        <Route path={'/defeat-screen'} element={<DefeatScreen/>}/>
+                        <Route path={'/victory-screen'} element={<VictoryScreen/>}/>
 
                         <Route path={`/notifications`} element={<NotificationPage />} />
                         <Route path="/organizations" element={<Organization /> } />

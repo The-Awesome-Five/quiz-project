@@ -7,7 +7,7 @@ const ResultsPage = () => {
   const { quiz, totalScore, userScore } = location.state;
 
   return (
-    <Container className="d-flex justify-content-center align-items-center vh-100">
+    <Container className="d-flex justify-content-center  vh-100">
       <Row className="w-100">
         <Col md={{ span: 6, offset: 3 }}>
           <Card className="text-center shadow">

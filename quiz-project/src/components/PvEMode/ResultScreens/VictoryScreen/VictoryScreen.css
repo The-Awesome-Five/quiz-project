@@ -1,0 +1,26 @@
+.victory-screen {
+    background: #eaf0e9; 
+    color: #333; 
+    text-align: center;
+}
+
+.victory-title {
+    font-size: 3rem;
+    color: #28a745; 
+    margin-bottom: 1rem;
+}
+
+.victory-message {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.retry-button {
+    background: #28a745; 
+    border: none;
+    font-size: 1.25rem;
+}
+
+.retry-button:hover {
+    background: #218838; 
+}
