@@ -13,10 +13,12 @@ import { CreateQuestionForm } from "./CreateQuestionForm/CreateQuestionForm.jsx"
 import { CreateQuizForm } from "./CreateQuizForm/CreateQuizForm.jsx";
 import { PublicQuestionForm } from "./PublicQuestionForm/PublicQuestionForm.jsx";
 import { QuestionsAIForm } from "./QuestionsAIForm/QuestionsAIForm.jsx";
+import {useNavigate} from "react-router-dom";
 
 const CreateQuiz = () => {
 
 
+    const navigate = useNavigate();
     const [quiz, setQuiz] = useState({
         isPublic: true,
     });
@@ -178,7 +180,7 @@ const CreateQuiz = () => {
 
             Object.entries(quiz).map(([key, val]) => {
                 if (!val) {
-                    return toast.error(`Please add a ${key} for your quiz!`);
+                    return console.error(`Please add a ${key} for your quiz!`);
                 }
             });
 
@@ -319,8 +321,13 @@ const CreateQuiz = () => {
                 }
             });
 
-            await Promise.all(promises);
-            toast.success("Quiz and questions successfully created!");
+            Promise.all(promises).then(() => {
+                toast.success("Quiz and questions successfully created!");
+                navigate("/");
+            }).catch((error) => {
+                console.error("Error adding questions to question bank:", error);
+                toast.error("Failed to add questions to question bank. Please try again.");
+            });
         } catch (error) {
             console.error("Error creating quiz or adding questions:", error);
             toast.error("Failed to create quiz. Please try again.");

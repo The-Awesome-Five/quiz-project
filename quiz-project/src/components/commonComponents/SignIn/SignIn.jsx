@@ -42,7 +42,7 @@ const SignIn = () => {
 
       navigate(location.state?.from.pathname ?? '/');
     } catch (error) {
-      toast.error(error.message);
+      toast.error('Failed to log in!');
     }
   }
   const togglePasswordVisibility = () => {

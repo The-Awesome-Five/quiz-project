@@ -31,7 +31,7 @@ export const  createOrganizationInDB = async (org) => {
 
     }
     catch(e){
-        alert(e.message);
+        console.error(e.message);
     }
 }
 
