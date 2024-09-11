@@ -248,7 +248,7 @@ const Profile = () => {
               alt=""
               height={20}
             />{" "}
-            WINDSOM POINTS: {profileData?.currency}
+            WISDOM POINTS: {profileData?.currency}
           </p>
         </Col>
 

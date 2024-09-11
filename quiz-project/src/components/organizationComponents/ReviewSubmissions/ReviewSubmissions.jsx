@@ -72,7 +72,7 @@ const ReviewSubmissions = () => {
       {Object.keys(quiz.submission).map((userId, index) => (
         <Accordion.Item key={userId} eventKey={index.toString()} className="mb-3">
           <Accordion.Header className="d-flex justify-content-between align-items-center py-2 border-bottom">
-            {orgInfo.students && orgInfo.students[userId] ? orgInfo.students[userId] : "Unknown User"}
+            {orgInfo.students && orgInfo.students[userId] ? orgInfo.students[userId] : "Peter"}
             <h5 className="mb-0 text-muted">
               Result: {quiz.submission[userId].score} / {quiz.totalScore}
             </h5>
