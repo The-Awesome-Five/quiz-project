@@ -93,21 +93,7 @@ export const CoOpAdventure = ({ roomId }) => {
     }, [userData]);
 
     const handleBossAttack = () => {
-        const bossAttack = boss.doDamage();
-        if (bossAttack === 1) {
-            setTotalPlayerHP((prevHP) => prevHP - 1);
-           
-            setBossHitAnimation(true);
-            setTimeout(() => {
-                setBossHitAnimation(false);
-            }, 1000); 
-        } else {
-          
-            setBossMissAnimation(true);
-            setTimeout(() => {
-                setBossMissAnimation(false);
-            }, 1000);
-        }
+        
     };
 
     const handleAnswer = (selectedIndex) => {
@@ -137,7 +123,21 @@ export const CoOpAdventure = ({ roomId }) => {
                     }, 1000);
                 } else {
                     console.log("Incorrect answer");
-                    handleBossAttack();
+                    const bossAttack = boss.doDamage();
+        if (bossAttack === 1) {
+            setTotalPlayerHP((prevHP) => prevHP - 1);
+            takingDamage=true;
+            setBossHitAnimation(true);
+            setTimeout(() => {
+                setBossHitAnimation(false);
+            }, 1000); 
+        } else {
+          
+            setBossMissAnimation(true);
+            setTimeout(() => {
+                setBossMissAnimation(false);
+            }, 1000);
+        }
                 }
             }
 
