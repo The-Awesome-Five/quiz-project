@@ -63,3 +63,21 @@ export const getOpenAIResponse = async (prompt) => {
 
     return response.data;
 };
+
+/*export const getOpenAIResponse = async (prompt) => {
+
+    console.log('Prompt:', prompt);
+
+    try {
+        // Make a POST request to the PHP script
+        const result = await axios.post('https://quizhub.donetianpetkov.com/chatapi.php', {
+            prompt
+        });
+
+        return result.data;
+
+
+    } catch (err) {
+        throw new Error(e.message);
+    }
+}*/

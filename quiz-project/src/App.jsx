@@ -52,6 +52,7 @@ import ResultsPage from './components/QuizComponents/ResultsPage/Results.jsx';
 import { RoomPvE } from './components/PvEMode/PvERoom/PvERoom.jsx';
 import { DefeatScreen } from './components/PvEMode/ResultScreens/DefeatScreen/DefeatScreen.jsx';
 import VictoryScreen from './components/PvEMode/ResultScreens/VictoryScreen/VisctoryScreen.jsx';
+import Authenticated from "./hoc/Authenticated.jsx";
 // import {TestAI} from "./views/TestAI.jsx";
 
 function App() {
@@ -134,18 +135,18 @@ function App() {
                         <Route path={'/victory-screen'} element={<VictoryScreen/>}/>
 
                         <Route path={`/notifications`} element={<NotificationPage />} />
-                        <Route path="/organizations" element={<Organization /> } />
+                        <Route path="/organizations" element={<Authenticated><Organization /> </Authenticated>} />
                         <Route path="/create-organization" element={<EducatorAccess><CreateOrganization /></EducatorAccess>} />
                         <Route path="/register" element={<Register />} />
                         <Route path='/profile' element={<Profile />} />
                         <Route path='/profile/:uid' element={<Profile />} />
-                        <Route path='/edit-profile' element={<EditProfile />} />
+                        <Route path='/edit-profile' element={<Authenticated><EditProfile /></Authenticated>} />
                         <Route path="/organization/:organizationId" element={< SingleOrganizationView/>} />
                         <Route path='/create-quiz' element={<EducatorAccess><CreateQuiz/></EducatorAccess>} />
                         <Route path='/edit-quiz/:quizId' element={<EditQuizForm/>}/>
-                        <Route path='/review-quiz/:quizId' element={<ReviewSubmissions/>}/> 
-                        <Route path='/shop' element={<Shop/>}/>
-                        <Route path='/my-quizzes' element={<MyQuizzes/>} />
+                        <Route path='/review-quiz/:quizId' element={<ReviewSubmissions/>}/>
+                        <Route path='/shop' element={<Authenticated><Shop/></Authenticated>}/>
+                        <Route path='/my-quizzes' element={<Authenticated><MyQuizzes/></Authenticated>} />
                         <Route path="/not-authorised" element={<NotAuthorisedView/>} />
                         <Route path='results-page' element= {<ResultsPage />} />
                         {/* <Route path="/testAI" element={<TestAI />} /> */}
