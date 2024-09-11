@@ -131,7 +131,7 @@ const Home = () => {
               <strong>Join a game</strong>
             </h3>
             <p>play with your friends</p>
-            
+
             <input
               type="text"
               value={roomId}
@@ -239,8 +239,6 @@ const Home = () => {
             );
           })}
         </Swiper>
-
-        <Footer />
       </div>
     </div>
   );

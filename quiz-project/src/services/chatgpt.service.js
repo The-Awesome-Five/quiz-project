@@ -2,7 +2,7 @@
 import axios from "axios";
 import {API_KEY} from "../config/apiKeys.js";
 
-const openai = axios.create({
+/*const openai = axios.create({
     baseURL: 'https://api.openai.com/v1/chat',
     headers: {
         'Content-Type': 'application/json',
@@ -62,9 +62,9 @@ export const getOpenAIResponse = async (prompt) => {
     });
 
     return response.data;
-};
+};*/
 
-/*export const getOpenAIResponse = async (prompt) => {
+export const getOpenAIResponse = async (prompt) => {
 
     console.log('Prompt:', prompt);
 
@@ -80,4 +80,4 @@ export const getOpenAIResponse = async (prompt) => {
     } catch (err) {
         throw new Error(e.message);
     }
-}*/
+}

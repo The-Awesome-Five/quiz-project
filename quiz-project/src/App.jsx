@@ -53,6 +53,8 @@ import { RoomPvE } from './components/PvEMode/PvERoom/PvERoom.jsx';
 import { DefeatScreen } from './components/PvEMode/ResultScreens/DefeatScreen/DefeatScreen.jsx';
 import VictoryScreen from './components/PvEMode/ResultScreens/VictoryScreen/VisctoryScreen.jsx';
 import Authenticated from "./hoc/Authenticated.jsx";
+import Footer from "./components/commonComponents/Footer/Footer.jsx";
+import {AboutPage} from "./components/commonComponents/About/AboutPage.jsx";
 // import {TestAI} from "./views/TestAI.jsx";
 
 function App() {
@@ -107,51 +109,59 @@ function App() {
     return (
         <AppContext.Provider value={{ ...appState, setAppState }}>
             <ButtonEffectsProvider>
-                <ToastContainer />
-                <HeaderBar logout={logout} />
+                <ToastContainer/>
+                <HeaderBar logout={logout}/>
                 <div>
                     <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/signin" element={<SignIn />} />
+                        <Route path="/" element={<Home/>}/>
+                        <Route path="/signin" element={<SignIn/>}/>
 
 
-                        <Route path="/admin" element={<AdminAccess><AdminMenuView /></AdminAccess>} />
-                        <Route path="/user-management" element={<AdminAccess><AdminUserMenuView /></AdminAccess>} />
-                        <Route path="/organization-management" element={<AdminAccess><AdminOrganisationView /></AdminAccess>} />
-                        <Route path="/quiz-management" element={<AdminAccess><AdminQuizMenuView /></AdminAccess>} />
-                        <Route path="/qbank-management" element={<AdminAccess><AdminQuestionBankView /></AdminAccess>} />
+                        <Route path="/admin" element={<AdminAccess><AdminMenuView/></AdminAccess>}/>
+                        <Route path="/user-management" element={<AdminAccess><AdminUserMenuView/></AdminAccess>}/>
+                        <Route path="/organization-management"
+                               element={<AdminAccess><AdminOrganisationView/></AdminAccess>}/>
+                        <Route path="/quiz-management" element={<AdminAccess><AdminQuizMenuView/></AdminAccess>}/>
+                        <Route path="/qbank-management" element={<AdminAccess><AdminQuestionBankView/></AdminAccess>}/>
                         <Route path='/shop-management' element={<AdminAccess><AdminShopItem/></AdminAccess>}/>
 
 
-                        <Route path="/all-quizes" element={<AllQuizzes />} />
-                        <Route path="/quizzes/:quizId" element={<Quiz />} />
+                        <Route path="/all-quizes" element={<AllQuizzes/>}/>
+                        <Route path="/quizzes/:quizId" element={<Quiz/>}/>
 
-                        <Route path='/gaming-modes' element={<GamingModeView />} />
-                        <Route path={`/room/:roomId`} element={<Room />} />
-                        <Route path="game-over" element={<GameOverPage />} />
+                        <Route path='/gaming-modes' element={<GamingModeView/>}/>
+                        <Route path={`/room/:roomId`} element={<Room/>}/>
+                        <Route path="game-over" element={<GameOverPage/>}/>
 
-                        <Route path={`/room-pve/:roomId`} element={<RoomPvE />} />
+                        <Route path={`/room-pve/:roomId`} element={<RoomPvE/>}/>
                         <Route path={'/defeat-screen'} element={<DefeatScreen/>}/>
                         <Route path={'/victory-screen'} element={<VictoryScreen/>}/>
 
-                        <Route path={`/notifications`} element={<NotificationPage />} />
-                        <Route path="/organizations" element={<Authenticated><Organization /> </Authenticated>} />
-                        <Route path="/create-organization" element={<EducatorAccess><CreateOrganization /></EducatorAccess>} />
-                        <Route path="/register" element={<Register />} />
-                        <Route path='/profile' element={<Profile />} />
-                        <Route path='/profile/:uid' element={<Profile />} />
-                        <Route path='/edit-profile' element={<Authenticated><EditProfile /></Authenticated>} />
-                        <Route path="/organization/:organizationId" element={< SingleOrganizationView/>} />
-                        <Route path='/create-quiz' element={<EducatorAccess><CreateQuiz/></EducatorAccess>} />
+                        <Route path={'/about'} element={<AboutPage/>}/>
+
+                        <Route path={`/notifications`} element={<NotificationPage/>}/>
+                        <Route path="/organizations" element={<Authenticated><Organization/> </Authenticated>}/>
+                        <Route path="/create-organization"
+                               element={<EducatorAccess><CreateOrganization/></EducatorAccess>}/>
+                        <Route path="/register" element={<Register/>}/>
+                        <Route path='/profile' element={<Profile/>}/>
+                        <Route path='/profile/:uid' element={<Profile/>}/>
+                        <Route path='/edit-profile' element={<Authenticated><EditProfile/></Authenticated>}/>
+                        <Route path="/organization/:organizationId" element={< SingleOrganizationView/>}/>
+                        <Route path='/create-quiz' element={<EducatorAccess><CreateQuiz/></EducatorAccess>}/>
                         <Route path='/edit-quiz/:quizId' element={<EditQuizForm/>}/>
                         <Route path='/review-quiz/:quizId' element={<ReviewSubmissions/>}/>
                         <Route path='/shop' element={<Authenticated><Shop/></Authenticated>}/>
-                        <Route path='/my-quizzes' element={<Authenticated><MyQuizzes/></Authenticated>} />
-                        <Route path="/not-authorised" element={<NotAuthorisedView/>} />
-                        <Route path='results-page' element= {<ResultsPage />} />
+                        <Route path='/my-quizzes' element={<Authenticated><MyQuizzes/></Authenticated>}/>
+                        <Route path="/not-authorised" element={<NotAuthorisedView/>}/>
+                        <Route path='results-page' element={<ResultsPage/>}/>
                         {/* <Route path="/testAI" element={<TestAI />} /> */}
                     </Routes>
                 </div>
+                <br/>
+                <br/>
+                <br/>
+                <Footer/>
             </ButtonEffectsProvider>
         </AppContext.Provider>
     );
