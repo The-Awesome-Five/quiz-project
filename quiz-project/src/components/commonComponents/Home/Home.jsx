@@ -13,6 +13,7 @@ import "./Home.css";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import Footer from "../Footer/Footer.jsx";
 
 const Home = () => {
   const [roomId, setRoomId] = useState("");
@@ -238,6 +239,8 @@ const Home = () => {
             );
           })}
         </Swiper>
+
+        <Footer />
       </div>
     </div>
   );
